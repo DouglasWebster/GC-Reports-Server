@@ -33,6 +33,34 @@
           "buildTarget": "gc-rep-be:build:production"
         }
       }
+    },
+    "db:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "drizzle-kit generate --config=./src/drizzle.config.ts"
+      }
+    },
+    "db:migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "DB_MIGRATE=true drizzle-kit migrate --config=./src/drizzle.config.ts"
+      }
+    },
+    "db:seed": {
+      "executor": "nx:run-script",
+      "options": {
+        "cwd": "{projectRoot}",
+        "script": "db:seed"
+      }
+    },
+    "db:studio": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "drizzle-kit studio"
+      }
     }
   }
 }
