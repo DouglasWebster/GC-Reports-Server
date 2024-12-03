@@ -44,3 +44,4 @@ Thumbs.db
 # private files
 .env
 db-data
+apps/gc-rep-be/drizzle
