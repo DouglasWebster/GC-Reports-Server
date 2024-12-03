@@ -51,9 +51,9 @@
     "db:seed": {
       "executor": "nx:run-script",
       "options": {
-        "cwd": "{projectRoot}",
+        "cwd": "{workspaceRoot}",
         "script": "db:seed"
-      }
+      } 
     },
     "db:studio": {
       "executor": "nx:run-commands",

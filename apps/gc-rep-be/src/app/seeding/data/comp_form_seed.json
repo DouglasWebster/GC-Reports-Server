@@ -1,0 +1,23 @@
+[
+    {
+        "title": "White Medal"
+    },
+    {
+        "title": "White Stableford",
+        "isMedal": false,
+        "isStableford": true
+    },
+    {
+        "title": "Yellow Medal"
+    },
+    {
+        "title": "Yellow Stableford",
+        "isMedal": false,
+        "isStableford": true
+    },
+    {
+        "title": "Texas Scramble",
+        "teamSize": [4, 3],
+        "isScramble": true
+    }
+]

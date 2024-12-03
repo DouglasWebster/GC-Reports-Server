@@ -1,0 +1,18 @@
+[
+    {
+        "compFormId": 1,
+        "teeId": 1
+    },
+    {
+        "compFormId": 1,
+        "teeId": 5
+    },
+    {
+        "compFormId": 2,
+        "teeId": 2
+    },
+    {
+        "compFormId": 2,
+        "teeId": 5
+    }
+]

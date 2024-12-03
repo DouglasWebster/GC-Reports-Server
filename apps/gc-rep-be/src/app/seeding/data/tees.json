@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Gents White",
+        "ladies": false,
+        "gents": true
+    },
+    {
+        "name": "Gents Yellow",
+        "ladies": false,
+        "gents": true
+    },
+    {
+        "name": "Gents Blue",
+        "ladies": false,
+        "gents": true
+    },
+    {
+        "name": "Ladies Yellow",
+        "ladies": true,
+        "gents": false
+    },
+    {
+        "name": "Ladies Red",
+        "ladies": true,
+        "gents": false
+    },
+    {
+        "name": "Ladies Blue",
+        "ladies": true,
+        "gents": false
+    },
+    {
+        "name": "Yellow",
+        "ladies": true,
+        "gents": true
+    },
+    {
+        "name": "Blue",
+        "ladies": true,
+        "gents": true
+    }
+]
