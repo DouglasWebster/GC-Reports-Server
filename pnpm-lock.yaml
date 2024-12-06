@@ -29,6 +29,9 @@ importers:
       drizzle-seed:
         specifier: ^0.1.2
         version: 0.1.2(drizzle-orm@0.36.4(@types/pg@8.11.10)(pg@8.13.1)(react@18.3.1))
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.36.4(@types/pg@8.11.10)(pg@8.13.1)(react@18.3.1))(zod@3.23.8)
       pg:
         specifier: ^8.13.1
         version: 8.13.1
@@ -38,6 +41,9 @@ importers:
       rxjs:
         specifier: ^7.8.0
         version: 7.8.1
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@eslint/js':
         specifier: ^9.8.0
@@ -2984,6 +2990,12 @@ packages:
       drizzle-orm:
         optional: true
 
+  drizzle-zod@0.5.1:
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
@@ -5685,6 +5697,9 @@ packages:
   yocto-queue@1.1.1:
     resolution: {integrity: sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g==}
     engines: {node: '>=12.20'}
+
+  zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
 snapshots:
 
@@ -8932,6 +8947,11 @@ snapshots:
     optionalDependencies:
       drizzle-orm: 0.36.4(@types/pg@8.11.10)(pg@8.13.1)(react@18.3.1)
 
+  drizzle-zod@0.5.1(drizzle-orm@0.36.4(@types/pg@8.11.10)(pg@8.13.1)(react@18.3.1))(zod@3.23.8):
+    dependencies:
+      drizzle-orm: 0.36.4(@types/pg@8.11.10)(pg@8.13.1)(react@18.3.1)
+      zod: 3.23.8
+
   eastasianwidth@0.2.0: {}
 
   ee-first@1.1.1: {}
@@ -11942,3 +11962,5 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yocto-queue@1.1.1: {}
+
+  zod@3.23.8: {}
