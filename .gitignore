@@ -45,3 +45,4 @@ Thumbs.db
 .env
 db-data
 apps/gc-rep-be/drizzle
+.vscode/settings.json
