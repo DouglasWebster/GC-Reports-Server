@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@db/schema": ["apps/gc-rep-be/src/db/schema/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

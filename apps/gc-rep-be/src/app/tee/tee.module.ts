@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TeeController } from './tee.controller';
 import { TeeService } from './tee.service';
-import { DatabaseModule } from '../database/database.module';
+import { DatabaseModule } from '../../db/database/database.module';
 
 @Module({
   imports: [DatabaseModule],
