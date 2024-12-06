@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { TeeModule } from './tee/tee.module';
 import { CompFormModule } from './comp-form/comp-form.module';
+import { CompetitionModule } from './competition/competition.module';
+import { PlayerModule } from './player/player.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { CompFormModule } from './comp-form/comp-form.module';
     DatabaseModule,
     TeeModule,
     CompFormModule,
+    CompetitionModule,
+    PlayerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

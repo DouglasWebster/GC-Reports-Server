@@ -9,10 +9,35 @@
     },
     {
         "compFormId": 2,
-        "teeId": 2
+        "teeId": 1
     },
     {
         "compFormId": 2,
         "teeId": 5
+    },
+    {
+        "compFormId": 3,
+        "teeId": 2
+    },
+    {
+        "compFormId": 3,
+        "teeId": 5
+    },
+    {
+        "compFormId":4,
+        "teeId":2
+    },
+    {
+        "compFormId":4,
+        "teeId":5
+    },
+    {
+        "compFormId":5,
+        "teeId":8
+    },
+    {
+        "compFormId":6,
+        "teeId":8
     }
+
 ]

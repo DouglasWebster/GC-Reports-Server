@@ -10,6 +10,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 import { tee } from '../tee/schema';
+import { competition } from '../competition/schema';
 
 export const compForm = pgTable(
   'comp_form',
@@ -34,6 +35,7 @@ export const compForm = pgTable(
 
 export const compFormRelations = relations(compForm, ({ many }) => ({
   compFormToTee: many(compFormToTee),
+  competition: many(competition)
 }));
 
 export const compFormToTee = pgTable(

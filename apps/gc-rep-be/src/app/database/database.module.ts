@@ -4,6 +4,9 @@ import { DATABASE_CONNECTION } from './database-connection';
 import { ConfigService } from '@nestjs/config';
 import * as teesSchema from '../tee/schema';
 import * as compFormSchema from '../comp-form/schema';
+import * as competitionSchema from '../competition/schema'
+import * as playerSchema from '../player/schema'
+import * as memberSchema from '../member/schema'
 
 @Module({
   providers: [
@@ -15,6 +18,10 @@ import * as compFormSchema from '../comp-form/schema';
           schema: {
             ...teesSchema,
             ...compFormSchema,
+            ...competitionSchema,
+            ...playerSchema,
+            ...memberSchema
+            
           },
           casing: 'snake_case',
         });

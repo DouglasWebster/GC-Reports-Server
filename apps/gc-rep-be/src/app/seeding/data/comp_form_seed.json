@@ -16,6 +16,14 @@
         "isStableford": true
     },
     {
+        "title": "Blue Medal"
+    },
+    {
+        "title": "Blue Stableford",
+        "isMedal": false,
+        "isStableford": true
+    },
+    {
         "title": "Texas Scramble",
         "teamSize": [4, 3],
         "isScramble": true
