@@ -46,3 +46,6 @@ Thumbs.db
 db-data
 apps/gc-rep-be/drizzle
 .vscode/settings.json
+.uploads
+test-data
+.vscode/launch.json
