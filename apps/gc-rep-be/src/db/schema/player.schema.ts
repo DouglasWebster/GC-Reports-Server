@@ -1,7 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
 import { boolean, integer, pgTable, serial } from 'drizzle-orm/pg-core';
-import { competition } from '../schema';
-import { member } from '../schema';
+import { competition } from '.';
+import { member } from '.';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 

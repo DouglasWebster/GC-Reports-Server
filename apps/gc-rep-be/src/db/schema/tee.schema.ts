@@ -6,7 +6,7 @@ import {
   timestamp,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { compFormToTee } from '../schema';
+import { compFormToTee } from '.';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 

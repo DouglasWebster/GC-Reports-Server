@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { aliasedTable, eq } from 'drizzle-orm';
-import * as schema from '../../db/schema/comp-form';
+import * as schema from '../../db/schema/format.schema';
 import { TeeService } from '../tee/tee.service';
 import { tee } from '../../db/schema';
 

@@ -1,14 +1,15 @@
 import { getTableName, sql, Table } from 'drizzle-orm';
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { reset } from 'drizzle-seed';
-import * as compFormSchema from '../comp-form/schema';
-import * as teeSchema from '../tee/schema';
+import * as compFormSchema from '../schema/format.schema';
+import * as teeSchema from '../schema/tee.schema';
+import * as memberSchema from '../schema/member.schema';
 import compForms from './data/comp_form_seed.json';
 import tees from './data/tees.json';
-import compFormsToTees from './data/comp_to_tee_seed.json'
+import compFormsToTees from './data/comp_to_tee_seed.json';
 
 async function resetTable(db: NodePgDatabase, table: Table) {
-  console.log(`reseting table: ${getTableName(table)}`)
+  console.log(`reseting table: ${getTableName(table)}`);
   return db.execute(
     sql.raw(`TRUNCATE TABLE ${getTableName(table)} RESTART IDENTITY CASCADE`)
   );
@@ -25,10 +26,12 @@ async function main() {
   await db.insert(teeSchema.tee).values(tees);
 
   await resetTable(db, compFormSchema.compForm);
-  await db.insert(compFormSchema.compForm).values(compForms)
+  await db.insert(compFormSchema.compForm).values(compForms);
 
-  await reset(db, compFormSchema.compFormToTee);
-  await db.insert(compFormSchema.compFormToTee).values(compFormsToTees)
+  await resetTable(db, compFormSchema.compFormToTee);
+  await db.insert(compFormSchema.compFormToTee).values(compFormsToTees);
+
+  await resetTable(db, memberSchema.member);
 }
 
 main();

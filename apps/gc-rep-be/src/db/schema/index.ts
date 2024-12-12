@@ -1,10 +1,10 @@
-export { tee, teeRelations } from './tee';
-export { competition, competitionRefelations } from './competition';
+export { tee, teeRelations } from './tee.schema';
+export { competition, competitionRefelations } from './competition.schema';
 export {
   compForm,
   compFormRelations,
   compFormToTee,
   compFromToTeeRelations,
-} from './comp-form';
-export { member, memberRelations } from './member';
-export { player, playerRelations } from './player';
+} from './format.schema';
+export { member, memberRelations } from './member.schema';
+export { player, playerRelations } from './player.schema';

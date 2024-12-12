@@ -12,14 +12,17 @@ export const player = pgTable('player', {
     .notNull()
     .references(() => member.id),
   handicap: integer().notNull(),
+  handicapIndex: integer(),
+  grossScore: integer(),
+  points: integer(),
   division: integer().notNull(),
   signedIn: boolean().notNull().default(true),
   inTwos: boolean().notNull().default(false),
   twoHoles: integer()
     .array()
     .default(sql`'{}'::integer[]`),
-  position: integer().notNull(),
-  teamNo: integer().notNull().default(0),
+  position: integer().notNull().default(0),
+  teamNo: integer(),
 });
 
 export const playerRelations = relations(player, ({ one }) => ({

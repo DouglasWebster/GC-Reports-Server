@@ -6,9 +6,9 @@ import {
     serial,
     timestamp,
   } from 'drizzle-orm/pg-core';
-  import { compForm } from '../schema'
+  import { compForm } from '.'
   import { relations, sql } from 'drizzle-orm';
-  import { player } from '../schema';
+  import { player } from '.';
   
   export const competition = pgTable(
     'competition',
