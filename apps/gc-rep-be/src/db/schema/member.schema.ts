@@ -16,7 +16,7 @@ export const member = pgTable(
     id: serial().primaryKey(),
     surname: varchar({ length: 64 }).notNull(),
     foreName: varchar({ length: 64 }).notNull(),
-    createdAt: timestamp({ mode: 'date', precision: 2 }).defaultNow().notNull(),
+    createdAt: timestamp({ mode: 'date', precision: 2 }).defaultNow(),
     updatedAt: timestamp({ mode: 'date', precision: 2 }).$onUpdate(
       () => new Date()
     ),
@@ -30,5 +30,9 @@ export const memberRelations = relations(member, ({ many }) => ({
   player: many(player),
 }));
 
-export const memberSchema = createInsertSchema(member);
-export type MemberSchema = z.infer<typeof memberSchema>;
+export const memberSchema = createInsertSchema(member, {
+  foreName: (schema) => schema.foreName.min(1),
+  surname: (schema) => schema.surname.min(1)
+})
+export type MemberSchemaDTO = z.infer<typeof memberSchema>;
+export type NewMember = typeof member.$inferInsert

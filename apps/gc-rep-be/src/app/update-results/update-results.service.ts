@@ -10,7 +10,7 @@ export class UpdateResultsService {
   async storeResult(resultData: string) : Promise<IResult> {
     const isStableford: boolean = resultData.includes('Stableford');
     const buffer: string = resultData.toString().replace(/"/g, '');
-    console.log(buffer)
+    // console.log(buffer)
     const data: string[] = buffer.split(/\r?\n/);
 
     const compName: string = data[1];
