@@ -4,9 +4,13 @@ import {
   IResult,
   ITwos,
 } from '../../utils/models/report.interface';
+import { NewMember } from '../../db/schema/member.schema';
+import { MemberService } from '../member/member.service';
 
 @Injectable()
 export class UpdateResultsService {
+  constructor( private readonly memberService: MemberService) {}
+
   async storeResult(resultData: string) : Promise<IResult> {
     const isStableford: boolean = resultData.includes('Stableford');
     const buffer: string = resultData.toString().replace(/"/g, '');
@@ -93,5 +97,22 @@ export class UpdateResultsService {
     };
 
     return result;
+  }
+
+  async sendUnknowPlayersToDB(results: IResult) :Promise<number> {
+    const players: ICompetitor[] = results.players;
+    const members: NewMember[] = [];
+    players.forEach((player) => {
+      const nameParts: string[] = player.name.split(' ');
+      const member: NewMember = {
+        foreName: nameParts.at(0),
+        surname: nameParts.at(-1),
+      };
+      members.push(member);
+    });
+    
+    const result = await this.memberService.insertMembers(members);
+    console.log(result)
+    return result
   }
 }
