@@ -13,45 +13,54 @@ export class CompFormService {
     private readonly database: NodePgDatabase<typeof schema>,
     private readonly teeService: TeeService
   ) {}
-
+  
   async getCompsForms() {
     const compForm = aliasedTable(schema.compForm, 'comp_form');
     return this.database
-      .select({
-        Name: compForm.title,
-        'Team size': compForm.teamSize,
-        Medal: compForm.isMedal,
-        Stableford: compForm.isStableford,
-        Scramble: compForm.isScramble,
-        Major: compForm.isMajor,
-        tee: tee.name,
-      })
-      .from(schema.compForm)
-      .leftJoin(
-        schema.compFormToTee,
-        eq(schema.compForm.id, schema.compFormToTee.compFormId)
-      )
-      .leftJoin(tee, eq(schema.compFormToTee.teeId, tee.id));
+    .select({
+      Name: compForm.title,
+      'Team size': compForm.teamSize,
+      Medal: compForm.isMedal,
+      Stableford: compForm.isStableford,
+      Scramble: compForm.isScramble,
+      Major: compForm.isMajor,
+      tee: tee.name,
+    })
+    .from(schema.compForm)
+    .leftJoin(
+      schema.compFormToTee,
+      eq(schema.compForm.id, schema.compFormToTee.compFormId)
+    )
+    .leftJoin(tee, eq(schema.compFormToTee.teeId, tee.id));
   }
-
+  
   getCompsForm(compFormId: number) {
     const compForm = aliasedTable(schema.compForm, 'comp_form');
     return this.database
-      .select({
-        Name: compForm.title,
-        'Team size': compForm.teamSize,
-        Medal: compForm.isMedal,
-        Stableford: compForm.isStableford,
-        Scramble: compForm.isScramble,
-        Major: compForm.isMajor,
-        tee: tee.name,
-      })
-      .from(schema.compForm)
-      .leftJoin(
-        schema.compFormToTee,
-        eq(schema.compForm.id, schema.compFormToTee.compFormId)
-      )
-      .leftJoin(tee, eq(schema.compFormToTee.teeId, tee.id))
-      .where(eq(compForm.id, compFormId));
+    .select({
+      Name: compForm.title,
+      'Team size': compForm.teamSize,
+      Medal: compForm.isMedal,
+      Stableford: compForm.isStableford,
+      Scramble: compForm.isScramble,
+      Major: compForm.isMajor,
+      tee: tee.name,
+    })
+    .from(schema.compForm)
+    .leftJoin(
+      schema.compFormToTee,
+      eq(schema.compForm.id, schema.compFormToTee.compFormId)
+    )
+    .leftJoin(tee, eq(schema.compFormToTee.teeId, tee.id))
+    .where(eq(compForm.id, compFormId));
+  
+  }
+  async getCompFormIdFromName(compName: string) {
+    const compForm = aliasedTable(schema.compForm, 'comp_form');
+    return this.database.query.compForm.findMany({
+      columns: {id: true},
+      where: eq(compForm.title, compName)
+    })
+      
   }
 }
