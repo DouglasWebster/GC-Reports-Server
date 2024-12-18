@@ -27,5 +27,13 @@
         "title": "Texas Scramble",
         "teamSize": [4, 3],
         "isScramble": true
+    },
+    {
+        "title": "Winter Stableford",
+        "isStableford": true,
+        "isMedal": false
+    },
+    {
+        "title": "Winter Medal"
     }
 ]

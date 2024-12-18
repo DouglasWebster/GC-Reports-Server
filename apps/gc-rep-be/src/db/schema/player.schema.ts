@@ -1,5 +1,5 @@
 import { relations, sql } from 'drizzle-orm';
-import { boolean, integer, pgTable, serial } from 'drizzle-orm/pg-core';
+import { boolean, integer, pgTable, serial, uniqueIndex } from 'drizzle-orm/pg-core';
 import { competition } from '.';
 import { member } from '.';
 import { createInsertSchema } from 'drizzle-zod';
@@ -13,16 +13,22 @@ export const player = pgTable('player', {
   memberId: integer()
     .notNull()
     .references(() => member.id),
+  grossScore: integer().notNull(),
+  stablefordPoints: integer().notNull(),
   handicap: integer().notNull(),
+  handicapIndex: integer(),
   division: integer().notNull(),
   signedIn: boolean().notNull().default(true),
-  inTwos: boolean().notNull().default(false),
+  inTwos: boolean().notNull().default(true),
   twoHoles: integer()
     .array()
     .default(sql`'{}'::integer[]`),
   position: integer().notNull(),
   teamNo: integer().notNull().default(0),
-});
+},
+(t) => [
+  uniqueIndex('competition_id_and_player_id.idx').on(t.competitionId, t.memberId)
+]);
 
 export const playerRelations = relations(player, ({ one }) => ({
   competition: one(competition, {
@@ -37,3 +43,4 @@ export const playerRelations = relations(player, ({ one }) => ({
 
 export const playerSchema = createInsertSchema(player)
 export type PlayerSchema = z.infer<typeof playerSchema>
+export type NewPlayer = typeof player.$inferInsert

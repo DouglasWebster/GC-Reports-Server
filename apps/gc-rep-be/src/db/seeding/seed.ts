@@ -4,6 +4,8 @@ import { reset } from 'drizzle-seed';
 import * as compFormSchema from '../schema/format.schema';
 import * as teeSchema from '../schema/tee.schema';
 import * as memberSchema from '../schema/member.schema';
+import * as competitionSchema from '../schema/competition.schema';
+import * as playerSchema from '../schema/player.schema';
 import compForms from './data/comp_form_seed.json';
 import tees from './data/tees.json';
 import compFormsToTees from './data/comp_to_tee_seed.json';
@@ -32,6 +34,8 @@ async function main() {
   await db.insert(compFormSchema.compFormToTee).values(compFormsToTees);
 
   await resetTable(db, memberSchema.member);
+  await resetTable(db, competitionSchema.competition)
+  await resetTable(db, playerSchema.player)
 }
 
 main();

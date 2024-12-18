@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import * as schema from '../../db/schema/member.schema';
-import { member } from './schema';
+import { member } from '../../db/schema/member.schema';
 
 @Injectable()
 export class MemberService {
@@ -51,10 +51,6 @@ export class MemberService {
   }
 
   async insertMembers(members: schema.NewMember[]) : Promise<number> {
-    // members.forEach(async (member) => {
-    //   const foundMember = await this.getMemberByName(member);
-    //   if (foundMember.length === 0) this.createMember(member);
-    // });
     let membersDetails = '';
     members.forEach((member) => {
       membersDetails += `('${member.foreName}','${member.surname}'),`
@@ -68,7 +64,6 @@ export class MemberService {
     // console.log(`sql statement: ${sqlStatement}`)
 
     const res = await this.database.execute(sqlStatement)
-    console.log(`rows inserted: ${res.rowCount}`)
     return res.rowCount
   }
 }

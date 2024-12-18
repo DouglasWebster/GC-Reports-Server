@@ -1,17 +1,26 @@
 import { Injectable } from '@nestjs/common';
+import { NewCompetion } from '../../db/schema/competition.schema';
+import { NewMember } from '../../db/schema/member.schema';
 import {
   ICompetitor,
   IResult,
   ITwos,
 } from '../../utils/models/report.interface';
-import { NewMember } from '../../db/schema/member.schema';
+import { CompFormService } from '../comp-form/comp-form.service';
+import { CompetitionService } from '../competition/competition.service';
 import { MemberService } from '../member/member.service';
+import { PlayerService } from '../player/player.service';
 
 @Injectable()
 export class UpdateResultsService {
-  constructor( private readonly memberService: MemberService) {}
+  constructor(
+    private readonly memberService: MemberService,
+    private readonly compFormService: CompFormService,
+    private readonly competitionService: CompetitionService,
+    private readonly playerService: PlayerService
+  ) {}
 
-  async storeResult(resultData: string) : Promise<IResult> {
+  async storeResult(resultData: string): Promise<IResult> {
     const isStableford: boolean = resultData.includes('Stableford');
     const buffer: string = resultData.toString().replace(/"/g, '');
     // console.log(buffer)
@@ -37,7 +46,7 @@ export class UpdateResultsService {
       }
       if ((line[0] >= '0' && line[0] <= '9') || line[0] === '-') {
         const lineSections = line.split(',');
-        if(lineSections.length < 4) continue  // ignore dq'd entries
+        if (lineSections.length < 4) continue; // ignore dq'd entries
         const compPostition: number =
           line[0] !== '-' ? Number(lineSections[0]) : null;
         // if (isNaN(compPostition)) continue;
@@ -61,7 +70,7 @@ export class UpdateResultsService {
           grossScore: grossScore,
           points: points,
           handicap: handicap,
-          handicapIndex: null
+          handicapIndex: null,
         });
       } else {
         incrementDivisionCount = true;
@@ -99,7 +108,7 @@ export class UpdateResultsService {
     return result;
   }
 
-  async sendUnknowPlayersToDB(results: IResult) :Promise<number> {
+  async sendUnknowPlayersToDB(results: IResult): Promise<number> {
     const players: ICompetitor[] = results.players;
     const members: NewMember[] = [];
     players.forEach((player) => {
@@ -110,9 +119,67 @@ export class UpdateResultsService {
       };
       members.push(member);
     });
-    
+
     const result = await this.memberService.insertMembers(members);
-    console.log(result)
-    return result
+    console.log(result);
+    return result;
   }
+
+  async recordCompetition(results: IResult) {
+    const competionDate = results.date;
+    const competitionName = results.name;
+    const competitionCardCount = results.cards;
+
+    const idResult = await this.compFormService.getCompFormIdFromName(
+      competitionName
+    );
+
+    // if no format defined exit gracefully.
+    if (idResult === undefined)
+      throw new Error('Competion format not yet defined.');
+
+    const newCompInsertDetails: NewCompetion = {
+      compFormId: idResult.id,
+      computerEntries: competitionCardCount,
+      compDate: competionDate,
+      playerCount: results.players.length,
+      sheetEntries: results.cards,
+      twosEntered: results.cards,
+    };
+    const compInsertResult = await this.competitionService.createNamedComp(
+      newCompInsertDetails
+    );
+    console.log(compInsertResult);
+    if (compInsertResult === undefined)
+      throw new Error(
+        'Unable to create competition - competition already exists'
+      );
+
+    return compInsertResult[0].competitionId;
+  }
+
+  async addPlayers(result: IResult) {
+    const competitionFormatId =
+      await this.compFormService.getCompFormIdFromName(result.name);
+
+    // if no format defined exit gracefully.
+    if (competitionFormatId === undefined)
+      throw new Error('Competion format not yet defined.');
+
+    const competitionId =
+      await this.competitionService.getCompetitionFromFormatIdAndDate(
+        competitionFormatId.id,
+        result.date
+      );
+
+    const playerAddedResult = await this.playerService.addPlayersToCompetition(
+      competitionId.id,
+      result.players
+    );
+
+    if(playerAddedResult === undefined)
+      throw new  Error('Unable to proccess the players for this competition.')
+
+    return playerAddedResult.rowCount
+  } 
 }

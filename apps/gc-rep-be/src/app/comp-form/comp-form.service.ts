@@ -5,6 +5,7 @@ import { aliasedTable, eq } from 'drizzle-orm';
 import * as schema from '../../db/schema/format.schema';
 import { TeeService } from '../tee/tee.service';
 import { tee } from '../../db/schema';
+import { PgRelationalQuery } from 'drizzle-orm/pg-core/query-builders/query';
 
 @Injectable()
 export class CompFormService {
@@ -57,10 +58,13 @@ export class CompFormService {
   }
   async getCompFormIdFromName(compName: string) {
     const compForm = aliasedTable(schema.compForm, 'comp_form');
-    return this.database.query.compForm.findMany({
-      columns: {id: true},
+    const result =  this.database.query.compForm.findFirst({
+      columns: {
+        id: true
+      },
       where: eq(compForm.title, compName)
     })
-      
+
+    return result
   }
 }

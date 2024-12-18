@@ -30,9 +30,6 @@ export const memberRelations = relations(member, ({ many }) => ({
   player: many(player),
 }));
 
-export const memberSchema = createInsertSchema(member, {
-  foreName: (schema) => schema.foreName.min(1),
-  surname: (schema) => schema.surname.min(1)
-})
+export const memberSchema = createInsertSchema(member)
 export type MemberSchemaDTO = z.infer<typeof memberSchema>;
 export type NewMember = typeof member.$inferInsert
