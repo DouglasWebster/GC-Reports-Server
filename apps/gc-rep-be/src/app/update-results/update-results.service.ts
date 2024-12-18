@@ -88,8 +88,8 @@ export class UpdateResultsService {
           const items = data[twosIndex].split(',');
           if (items.length < 3 || items[(0)[0]] === '') break;
           twosWinners.push({
-            name: items[0],
-            hole: +items[2],
+            name: items.at(0),
+            hole: +items.at(-2),
           });
           ++twosIndex;
         }
@@ -121,7 +121,7 @@ export class UpdateResultsService {
     });
 
     const result = await this.memberService.insertMembers(members);
-    console.log(result);
+    // console.log(result);
     return result;
   }
 
