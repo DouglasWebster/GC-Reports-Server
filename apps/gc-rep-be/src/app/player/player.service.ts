@@ -60,7 +60,7 @@ export class PlayerService {
     };
 
     const playersToInsert = await getPlayersToInsert(compId, players);
-    console.log(playersToInsert);
+    // console.log(playersToInsert);
     let playersValuesString = '';
     for (const player of playersToInsert) {
       playersValuesString += `(${player.competitionId}, ${player.division}, ${player.grossScore}, ${player.handicap}, ${player.memberId}, ${player.position}, ${player.stablefordPoints}),`;
@@ -72,7 +72,7 @@ export class PlayerService {
 
     const playersInsertSqlStatment = `WITH data(competition_id, division, gross_score, handicap, member_id, position, stableford_points) AS (values ${playersValuesString}) INSERT INTO player (competition_id, division, gross_score, handicap, member_id, position, stableford_points) SELECT d.competition_id, d.division, d.gross_score, d.handicap, d.member_id, d.position, d.stableford_points FROM data d WHERE not EXISTS (SELECT 1 FROM player m2 WHERE m2.competition_id = d.competition_id AND m2.member_id = d.member_id);`;
 
-    console.log(playersInsertSqlStatment);
+    // console.log(playersInsertSqlStatment);
     const res = await this.database.execute(playersInsertSqlStatment);
     // console.log(`${res.rowCount} players details added for competion`)
     return res;
