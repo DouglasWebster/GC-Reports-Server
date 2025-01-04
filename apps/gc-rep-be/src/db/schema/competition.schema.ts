@@ -1,15 +1,14 @@
+import { relations, sql } from 'drizzle-orm';
 import {
-    check,
-    date,
-    integer,
-    pgTable,
-    serial,
-    timestamp,
-    uniqueIndex,
-  } from 'drizzle-orm/pg-core';
-  import { compForm } from '.'
-  import { relations, SQL, sql } from 'drizzle-orm';
-  import { player } from '.';
+  check,
+  date,
+  integer,
+  pgTable,
+  serial,
+  timestamp,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core';
+import { compForm, player, two } from '.';
   
   export const competition = pgTable(
     'competition',
@@ -39,7 +38,8 @@ import {
       fields: [competition.compFormId],
       references: [compForm.id],
     }),
-    player: many(player)
+    player: many(player),
+    two: many(two)
   }));
 
 

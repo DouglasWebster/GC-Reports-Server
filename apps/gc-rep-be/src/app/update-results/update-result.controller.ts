@@ -55,13 +55,30 @@ export class UpdateResultController {
     }
 
     try {
-      await this.updateResultService.addPlayers(result).then((result) => {
-        replyMessages.push(
-          `${result} players added to the players list for this competition`
-        );
-      });
+      await this.updateResultService
+        .addPlayers(result)
+        .then((playersAddedCount) => {
+          replyMessages.push(
+            `${playersAddedCount} players added to the players list for this competition`
+          );
+        });
     } catch (error) {
       if (error instanceof Error) replyMessages.push(error.message);
+    }
+    if (result.twos.length !== 0) {
+      try {
+        await this.updateResultService
+          .addTwos(result)
+          .then((twosRegisteredCount) => {
+            replyMessages.push(
+              `${twosRegisteredCount} twos registered for the competition `
+            );
+          });
+      } catch (error) {
+        if (error instanceof Error) replyMessages.push(error.message);
+      }
+    } else {
+      replyMessages.push('No twos recorded for this competion');
     }
 
     return replyMessages;

@@ -10,6 +10,7 @@ import { CompFormService } from '../comp-form/comp-form.service';
 import { CompetitionService } from '../competition/competition.service';
 import { MemberService } from '../member/member.service';
 import { PlayerService } from '../player/player.service';
+import { TwoService } from '../two/two.service';
 
 @Injectable()
 export class UpdateResultsService {
@@ -17,7 +18,8 @@ export class UpdateResultsService {
     private readonly memberService: MemberService,
     private readonly compFormService: CompFormService,
     private readonly competitionService: CompetitionService,
-    private readonly playerService: PlayerService
+    private readonly playerService: PlayerService,
+    private readonly twoService: TwoService
   ) {}
 
   async storeResult(resultData: string): Promise<IResult> {
@@ -27,10 +29,24 @@ export class UpdateResultsService {
     const data: string[] = buffer.split(/\r?\n/);
 
     const compName: string = data[1];
+
+    // get the date of the competition - convert to UTC otherwise it is one day off in summer
     const dateItems: string[] = data[4].split(' ');
     const compDate: Date = new Date(
       Date.parse(dateItems[3] + ' ' + dateItems[4] + ' ' + dateItems[5])
     );
+    const compUTCDateString = compDate.toLocaleDateString();
+
+    const compUTCDay = +compUTCDateString.substring(0, 2);
+    const compUTCMonth = +compUTCDateString.substring(3, 5) - 1;
+    const compUTCYear = +compUTCDateString.substring(6);
+
+    const compUTCDate = new Date(
+      Date.UTC(compUTCYear, compUTCMonth, compUTCDay)
+    );
+
+    console.log(compDate.toLocaleDateString());
+
     const twosWinners: ITwos[] = [];
 
     let noOfCards = 0;
@@ -99,7 +115,7 @@ export class UpdateResultsService {
 
     const result: IResult = {
       name: compName,
-      date: compDate,
+      date: compUTCDate,
       cards: noOfCards,
       players: competitors,
       twos: twosWinners,
@@ -177,9 +193,35 @@ export class UpdateResultsService {
       result.players
     );
 
-    if(playerAddedResult === undefined)
-      throw new  Error('Unable to proccess the players for this competition.')
+    if (playerAddedResult === undefined)
+      throw new Error('Unable to proccess the players for this competition.');
 
-    return playerAddedResult.rowCount
-  } 
+    return playerAddedResult.rowCount;
+  }
+
+  async addTwos(result: IResult) {
+    const competitionFormatId =
+      await this.compFormService.getCompFormIdFromName(result.name);
+
+    // if no format defined exit gracefully.
+    if (competitionFormatId === undefined)
+      throw new Error('Competion format not yet defined.');
+
+    const competitionId =
+      await this.competitionService.getCompetitionFromFormatIdAndDate(
+        competitionFormatId.id,
+        result.date
+      );
+
+    const twosRegisteredResult =
+      await this.twoService.registerTwosForCompetition(
+        competitionId.id,
+        result.twos
+      );
+
+    if (twosRegisteredResult === undefined)
+      throw new Error('Unable to register the twos for this competition');
+
+    return twosRegisteredResult.rowCount;
+  }
 }

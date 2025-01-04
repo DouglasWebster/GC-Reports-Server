@@ -6,7 +6,7 @@ import {
   uniqueIndex,
   varchar
 } from 'drizzle-orm/pg-core';
-import { player } from '.';
+import { player, two } from '.';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -28,6 +28,7 @@ export const member = pgTable(
 
 export const memberRelations = relations(member, ({ many }) => ({
   player: many(player),
+  two: many(two)
 }));
 
 export const memberSchema = createInsertSchema(member)

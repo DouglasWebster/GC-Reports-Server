@@ -9,6 +9,7 @@ import { MemberModule } from './member/member.module';
 import { PlayerModule } from './player/player.module';
 import { TeeModule } from './tee/tee.module';
 import { UpdateResultsModule } from './update-results/update-results.module';
+import { TwoModule } from './two/two.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UpdateResultsModule } from './update-results/update-results.module';
     PlayerModule,
     UpdateResultsModule,
     MemberModule,
+    TwoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

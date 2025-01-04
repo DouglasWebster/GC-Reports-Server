@@ -6,6 +6,7 @@ import * as teeSchema from '../schema/tee.schema';
 import * as memberSchema from '../schema/member.schema';
 import * as competitionSchema from '../schema/competition.schema';
 import * as playerSchema from '../schema/player.schema';
+import * as twoSchem from '../schema/two.schema'
 import compForms from './data/comp_form_seed.json';
 import tees from './data/tees.json';
 import compFormsToTees from './data/comp_to_tee_seed.json';
@@ -36,6 +37,7 @@ async function main() {
   await resetTable(db, memberSchema.member);
   await resetTable(db, competitionSchema.competition)
   await resetTable(db, playerSchema.player)
+  await resetTable(db, twoSchem.two)
 }
 
 main();
