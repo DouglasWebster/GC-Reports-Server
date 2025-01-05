@@ -2,7 +2,7 @@
   "name": "gc-rep-fe",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "gcRepFe",
+  "prefix": "gc-rep-fe",
   "sourceRoot": "apps/gc-rep-fe/src",
   "tags": [],
   "targets": {
@@ -15,14 +15,14 @@
         "browser": "apps/gc-rep-fe/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/gc-rep-fe/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
+        "inlineStyleLanguage": "css",
         "assets": [
           {
             "glob": "**/*",
             "input": "apps/gc-rep-fe/public"
           }
         ],
-        "styles": ["apps/gc-rep-fe/src/styles.scss"],
+        "styles": ["apps/gc-rep-fe/src/styles.css"],
         "scripts": []
       },
       "configurations": {

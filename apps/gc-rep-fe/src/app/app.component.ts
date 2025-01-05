@@ -4,10 +4,10 @@ import { NxWelcomeComponent } from './nx-welcome.component';
 
 @Component({
     imports: [NxWelcomeComponent, RouterModule],
-    selector: 'gcRepFe-root',
+    selector: 'gc-rep-fe-root',
     templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'gc-rep-fe';
+  title = 'BPGC Competition Reports';
 }
