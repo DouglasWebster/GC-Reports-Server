@@ -1,0 +1,6 @@
+{
+  "/apps/gc-rep-be": {
+    "target": "http://localhost:3333",
+    "secure": false
+  }
+}
