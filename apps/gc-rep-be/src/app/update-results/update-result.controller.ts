@@ -31,10 +31,10 @@ export class UpdateResultController {
       result
     );
 
-    if (insertCount === 0) replyMessages.push('Players list was up to date');
+    if (insertCount === 0) replyMessages.push('Members: list was up to date');
     else
       replyMessages.push(
-        `${insertCount} unknow players(s) added to the member list.`
+        `Members: ${insertCount} unknow players(s) added to the member list.`
       );
 
     // setup the basis for new competion
@@ -42,12 +42,15 @@ export class UpdateResultController {
     try {
       await this.updateResultService.recordCompetition(result).then(() => {
         replyMessages.push(
-          `Competion outline dated ${result.date.toLocaleDateString(undefined, {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })} added to database`
+          `Competion: outline dated ${result.date.toLocaleDateString(
+            undefined,
+            {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            }
+          )} added to database`
         );
       });
     } catch (error) {
@@ -58,9 +61,12 @@ export class UpdateResultController {
       await this.updateResultService
         .addPlayers(result)
         .then((playersAddedCount) => {
-          replyMessages.push(
-            `${playersAddedCount} players added to the players list for this competition`
-          );
+          if (playersAddedCount === 0)
+            replyMessages.push('Players: all players already registered.');
+          else
+            replyMessages.push(
+              `Players: ${playersAddedCount} players added to the players list for this competition`
+            );
         });
     } catch (error) {
       if (error instanceof Error) replyMessages.push(error.message);
@@ -70,15 +76,18 @@ export class UpdateResultController {
         await this.updateResultService
           .addTwos(result)
           .then((twosRegisteredCount) => {
-            replyMessages.push(
-              `${twosRegisteredCount} twos registered for the competition `
-            );
+            if (twosRegisteredCount === 0)
+              replyMessages.push('Twos: all twos already registered.');
+            else
+              replyMessages.push(
+                `Twos: ${twosRegisteredCount} registered for this competition `
+              );
           });
       } catch (error) {
         if (error instanceof Error) replyMessages.push(error.message);
       }
     } else {
-      replyMessages.push('No twos recorded for this competion');
+      replyMessages.push('Twos: No twos recorded for this competion');
     }
 
     return replyMessages;

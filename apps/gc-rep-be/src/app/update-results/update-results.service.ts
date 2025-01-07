@@ -168,7 +168,7 @@ export class UpdateResultsService {
     console.log(compInsertResult);
     if (compInsertResult === undefined)
       throw new Error(
-        'Unable to create competition - competition already exists'
+        'Competition : competition already exists'
       );
 
     return compInsertResult[0].competitionId;
