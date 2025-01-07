@@ -1,5 +1,6 @@
 import { relations, sql } from 'drizzle-orm';
 import {
+  boolean,
   check,
   date,
   integer,
@@ -23,10 +24,9 @@ import { compForm, player, two } from '.';
       sheetEntries: integer().notNull(),
       twosEntered: integer().notNull(),
       playerCount: integer().notNull(),
+      isValid: boolean().notNull().default(false),
       createdAt: timestamp({ mode: 'date', precision: 2 }).defaultNow().notNull(),
-      updatedAt: timestamp({ mode: 'date', precision: 2 }).$onUpdate(
-        () => new Date()
-      ),
+      updatedAt: timestamp({ mode: 'date', precision: 2 }).defaultNow().notNull()
     },
     (t) => [check('twos_entry_check', sql`${t.twosEntered} <= ${t.sheetEntries}`),
       uniqueIndex('comp_format_and_date_idx').on(t.compFormId, t.compDate)
