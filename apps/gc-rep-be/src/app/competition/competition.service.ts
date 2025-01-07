@@ -1,5 +1,6 @@
+import { compForm } from '../../db/schema/format.schema';
 import { Inject, Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import * as schema from '../../db/schema/competition.schema';
@@ -10,7 +11,19 @@ export class CompetitionService {
     @Inject(DATABASE_CONNECTION)
     private readonly database: NodePgDatabase<typeof schema>
   ) {}
-
+  
+  async getCompetitionList() {
+      return await this.database.select({
+        id: schema.competition.id,
+        date: schema.competition.compDate,
+        compFormat: compForm.title,
+        validated: schema.competition.isValid
+      })
+      .from(schema.competition)
+      .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
+      .orderBy(desc(schema.competition.compDate))
+  }
+  
   async createNamedComp(record: schema.NewCompetion) {
     const competitionId = await this.database
       .select({
