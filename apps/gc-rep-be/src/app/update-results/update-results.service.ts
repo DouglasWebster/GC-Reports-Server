@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { NewCompetion } from '../../db/schema/competition.schema';
-import { NewMember } from '../../db/schema/member.schema';
+import { InsertCompetion, InsertMember } from '@lib/drizzle';
+// import { NewMember } from '../../db/schema/member.schema';
 import {
   ICompetitor,
   IResult,
@@ -126,10 +126,10 @@ export class UpdateResultsService {
 
   async sendUnknowPlayersToDB(results: IResult): Promise<number> {
     const players: ICompetitor[] = results.players;
-    const members: NewMember[] = [];
+    const members: InsertMember[] = [];
     players.forEach((player) => {
       const nameParts: string[] = player.name.split(' ');
-      const member: NewMember = {
+      const member: InsertMember = {
         foreName: nameParts.at(0),
         surname: nameParts.at(-1),
       };
@@ -154,7 +154,7 @@ export class UpdateResultsService {
     if (idResult === undefined)
       throw new Error('Competion format not yet defined.');
 
-    const newCompInsertDetails: NewCompetion = {
+    const newCompInsertDetails: InsertCompetion = {
       compFormId: idResult.id,
       computerEntries: competitionCardCount,
       compDate: competionDate,
