@@ -2,8 +2,8 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '../../db/schema/member.schema';
-import { member } from '../../db/schema/member.schema';
+import * as schema from '@lib/drizzle';
+import { member, InsertMember } from '@lib/drizzle';
 
 @Injectable()
 export class MemberService {
@@ -20,36 +20,36 @@ export class MemberService {
     return await this.database.$count(member);
   }
 
-  async getMemberByName(memberName: typeof schema.member.$inferInsert) {
+  async getMemberByName(memberName: InsertMember) {
     const result = await this.database
       .select()
-      .from(schema.member)
+      .from(member)
       .where(
         and(
-          eq(schema.member.foreName, memberName.foreName),
-          eq(schema.member.surname, memberName.surname)
+          eq(member.foreName, memberName.foreName),
+          eq(member.surname, memberName.surname)
         )
       );
     return result;
   }
 
-  async createMember(member: typeof schema.member.$inferInsert) {
+  async createMember(memberName: InsertMember) {
     const memberId = await this.database
-      .select({ id: schema.member.id })
-      .from(schema.member)
+      .select({ id: member.id })
+      .from(member)
       .where(
         and(
-          eq(schema.member.foreName, member.foreName),
-          eq(schema.member.surname, member.surname)
+          eq(member.foreName, memberName.foreName),
+          eq(member.surname, memberName.surname)
         )
       );
 
     if (memberId.length !== 0)
       return { error: HttpStatus.FOUND, message: 'Member already exists.' };
-    await this.database.insert(schema.member).values(member);
+    await this.database.insert(member).values(memberName);
   }
 
-  async insertMembers(members: schema.NewMember[]) : Promise<number> {
+  async insertMembers(members: InsertMember[]) : Promise<number> {
     let membersDetails = '';
     members.forEach((member) => {
       membersDetails += `('${member.foreName}','${member.surname}'),`
