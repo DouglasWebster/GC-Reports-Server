@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import { member } from '../../db/schema/member.schema';
-import * as schema from '../../db/schema/two.schema';
+import { member, InsertTwo } from '@lib/drizzle';
+import * as schema from '@lib/drizzle';
 import { ITwos } from '../../utils/models/report.interface';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class TwoService {
 
   async registerTwosForCompetition(compId: number, twos: ITwos[]) {
     const getTwosToRegister = async (compId: number, twos: ITwos[]) => {
-      const twoArray: schema.NewTwo[] = [];
+      const twoArray: InsertTwo[] = [];
       for (const two of twos) {
         const memberNameParts = two.name.split(' ');
         const memberForename = memberNameParts.at(0);
@@ -31,7 +31,7 @@ export class TwoService {
             )
           );
 
-        const twoDetail: schema.NewTwo = {
+        const twoDetail: InsertTwo = {
           competitionId: compId,
           memberId: twoMemberId[0].id,
           hole: two.hole,
