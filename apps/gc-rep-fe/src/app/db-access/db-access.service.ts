@@ -8,8 +8,21 @@ import { Observable } from 'rxjs';
 export class DbAccessService {
   constructor(private readonly http: HttpClient) {}
 
-  addCompetion(fd: FormData) : Observable<HttpResponse<string>>{
-    return this.http
-      .post<string>(`/api/update-result`, fd, { observe: 'response' })
+  addCompetion(fd: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(`/api/update-result`, fd, {
+      observe: 'response',
+    });
+  }
+
+  countMembers(): Observable<number> {
+    return this.http.get<number>('api/member/count');
+  }
+
+  countAllComps(): Observable<number> {
+    return this.http.get<number>('api/competitions/count');
+  }
+
+  countCompsToReview() : Observable<number>{
+    return this.http.get<number>('api/competitions/to_review')
   }
 }

@@ -13,12 +13,11 @@ export class MemberService {
   ) {}
 
   async getMembers() {
-    await this.database.query.member.findMany();
+    return await this.database.query.member.findMany();
   }
 
   async countMembers() {
-    const size: number = await this.database.$count(member);
-    return size;
+    return await this.database.$count(member);
   }
 
   async getMemberByName(memberName: typeof schema.member.$inferInsert) {

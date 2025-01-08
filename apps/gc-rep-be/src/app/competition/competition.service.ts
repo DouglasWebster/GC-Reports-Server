@@ -11,19 +11,35 @@ export class CompetitionService {
     @Inject(DATABASE_CONNECTION)
     private readonly database: NodePgDatabase<typeof schema>
   ) {}
-  
+
   async getCompetitionList() {
-      return await this.database.select({
+    return await this.database
+      .select({
         id: schema.competition.id,
         date: schema.competition.compDate,
         compFormat: compForm.title,
-        validated: schema.competition.isValid
+        validated: schema.competition.isValid,
       })
       .from(schema.competition)
       .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
-      .orderBy(desc(schema.competition.compDate))
+      .orderBy(desc(schema.competition.compDate));
   }
-  
+
+  async getCompetitionDetails() {
+    return await this.database.query.competition.findMany();
+  }
+
+  async getAllCompsCount() {
+    return await this.database.$count(schema.competition);
+  }
+
+  async getCompsToReviewCount() {
+    return await this.database.$count(
+      schema.competition,
+      eq(schema.competition.isValid, false)
+    );
+  }
+
   async createNamedComp(record: schema.NewCompetion) {
     const competitionId = await this.database
       .select({
@@ -45,13 +61,12 @@ export class CompetitionService {
       .returning({ competitionId: schema.competition.id });
   }
 
-  async getCompetitionFromFormatIdAndDate(
-    formatId: number,
-    date: Date
-  ) {
+  async getCompetitionFromFormatIdAndDate(formatId: number, date: Date) {
     return await this.database.query.competition.findFirst({
-      where: and(eq(schema.competition.compFormId, formatId),
-    eq(schema.competition.compDate, date))
-    })
+      where: and(
+        eq(schema.competition.compFormId, formatId),
+        eq(schema.competition.compDate, date)
+      ),
+    });
   }
 }
