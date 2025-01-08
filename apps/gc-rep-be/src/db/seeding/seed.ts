@@ -7,7 +7,8 @@ import { reset } from 'drizzle-seed';
 // import * as competitionSchema from '../schema/competition.schema';
 // import * as playerSchema from '../schema/player.schema';
 // import * as twoSchem from '../schema/two.schema'
-import {compForm, compFormToTee, tee, member, competition, two, player } from "@lib/drizzle";
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import {compForm, compFormToTee, tee, member, competition, two, player } from "../../../../../libs/shared/drizzle/src/index";
 import compForms from './data/comp_form_seed.json';
 import tees from './data/tees.json';
 import compFormsToTees from './data/comp_to_tee_seed.json';
