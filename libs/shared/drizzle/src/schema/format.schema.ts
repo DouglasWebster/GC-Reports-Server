@@ -9,8 +9,7 @@ import {
   timestamp,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { tee } from '.';
-import { competition } from '.';
+import { tee, competition } from '../index';
 
 export const compForm = pgTable(
   'comp_form',

@@ -9,7 +9,7 @@ import {
   timestamp,
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
-import { compForm, player, two } from '.';
+import { compForm, player, two } from '../index';
   
   export const competition = pgTable(
     'competition',

@@ -8,7 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-import { player, two } from '.';
+import { player, two } from '../index';
 
 export const member = pgTable(
   'member',
