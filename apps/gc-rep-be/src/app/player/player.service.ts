@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '../../db/schema/player.schema';
-import { NewPlayer } from '../../db/schema/player.schema';
+import * as schema from '@lib/drizzle';
+import { InsertPlayer, member } from '@lib/drizzle';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { ICompetitor } from '../../utils/models/report.interface';
-import { member } from '../../db/schema/member.schema';
 import { and, eq } from 'drizzle-orm';
 
 @Injectable()
@@ -21,7 +20,7 @@ export class PlayerService {
       compId: number,
       players: ICompetitor[]
     ) => {
-      const playersArray: NewPlayer[] = [];
+      const playersArray: InsertPlayer[] = [];
       for (const player of players) {
         const playerNameParts = player.name.split(' ');
         const memberForename = playerNameParts.at(0);
@@ -44,7 +43,7 @@ export class PlayerService {
               eq(member.surname, memberSurname)
             )
           );
-        const playerDetail: NewPlayer = {
+        const playerDetail: InsertPlayer = {
           competitionId: compId,
           division: player.division,
           grossScore: grossScore,
