@@ -1,1 +1,53 @@
-<p>review works!</p>
+<div class="p-4">
+    <div class="top-4 m-4">
+        <div
+            class="bg-inherit dark:bg-inherit text-inherit dark:text-white p-4">
+            <!-- <button type="button"
+                class="text-white bg-blue-700 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                (click)="updateData()">Refresh general information</button> -->
+
+            <section>
+                <div class="flex flex-row pt-4">
+                    <div class="basis-2/3">
+                        @if(unreviewedComps$ | async; as comps) {
+                        <table
+                            class="w-10/12 border-collapse border-spacing-2 border-slate-500">
+                            <thead>
+                                <tr>
+                                    <th class="border border-slate-600">
+                                        Competition
+                                        Name</th>
+                                    <th class="border border-slate-600">Date
+                                    </th>
+                                    <th class="w=-6 border border-slate-600">
+                                        Validated
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @for(comp of comps; track comp.id){
+                                <tr class="text-center">
+                                    <td class="border border-slate-700 pl-2 pr-4">
+                                        {{comp.compFormat}}</td>
+                                    <td
+                                        class="border border-slate-700 pl-2 pr-4">
+                                        {{comp.date | date: "fullDate"}}</td>
+                                    <td
+                                        class="border border-slate-700 pl-2 pr-4">
+                                        {{comp.validated}}</td>
+                                </tr>
+                                } @empty {
+                                    <tr>
+                                        <td class="border-s-slate-700">There are no unreviewed competions</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        }
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
