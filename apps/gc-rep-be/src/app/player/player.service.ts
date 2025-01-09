@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '@lib/drizzle';
-import { InsertPlayer, member } from '@lib/drizzle';
+import * as schema from '@libs/drizzle';
+import { InsertPlayer, member } from '@libs/drizzle';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { ICompetitor } from '@libs/models';
 import { and, eq } from 'drizzle-orm';

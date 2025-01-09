@@ -5,7 +5,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { IResult } from '../../utils/models/report.interface';
+import { IResult } from '@libs/models';
 import { UpdateResultsService } from './update-results.service';
 
 @Controller('update-result')

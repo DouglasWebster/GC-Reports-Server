@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InsertCompetion, InsertMember } from '@lib/drizzle';
+import { InsertCompetion, InsertMember } from '@libs/drizzle';
 // import { NewMember } from '../../db/schema/member.schema';
 import {
   ICompetitor,

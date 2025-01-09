@@ -1,5 +1,5 @@
 {
-  "name": "@lib/drizzle",
+  "name": "@libs/drizzle",
   "version": "0.0.1",
   "dependencies": {},
   "private": true

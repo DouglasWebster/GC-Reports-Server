@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import { member, InsertTwo } from '@lib/drizzle';
-import * as schema from '@lib/drizzle';
-import { ITwos } from '../../utils/models/report.interface';
+import { member, InsertTwo } from '@libs/drizzle';
+import * as schema from '@libs/drizzle';
+import { ITwos } from '@libs/models';
 
 @Injectable()
 export class TwoService {

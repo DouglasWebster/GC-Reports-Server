@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 // import * as competitionSchema from '../competition/schema'
 // import * as playerSchema from '../player/schema'
 // import * as memberSchema from '../member/schema'
-import * as schemas from '@lib/drizzle'
+import * as schemas from '@libs/drizzle'
 
 @Module({
   providers: [

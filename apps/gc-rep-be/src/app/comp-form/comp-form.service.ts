@@ -1,9 +1,9 @@
-import { compForm, compFormToTee, tee } from '@lib/drizzle';
+import { compForm, compFormToTee, tee } from '@libs/drizzle';
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '@lib/drizzle';
+import * as schema from '@libs/drizzle';
 
 @Injectable()
 export class CompFormService {

@@ -15,9 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@db/schema": ["apps/gc-rep-be/src/db/schema/index.ts"],
-      "@lib/drizzle": ["libs/shared/drizzle/src/index.ts"],
-      "@libs/models": ["libs/shared/models/src/index.ts"]
+      "@libs/drizzle": ["libs/shared/drizzle/src/index.ts"],
+      "@libs/models": ["libs/shared/models/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
