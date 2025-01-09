@@ -25,6 +25,20 @@ export class CompetitionService {
       .orderBy(desc(competition.compDate));
   }
 
+  async getCompetitionUnreviewedList() {
+    return await this.database
+      .select({
+        id: competition.id,
+        date: competition.compDate,
+        compFormat: compForm.title,
+        validated: competition.isValid,
+      })
+      .from(competition)
+      .where(eq(competition.isValid, false))
+      .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
+      .orderBy(desc(competition.compDate));
+  }
+
   async getCompetitionDetails() {
     return await this.database.query.competition.findMany();
   }

@@ -20,8 +20,14 @@ export class CompetitionController {
     return this.competitionService.getAllCompsCount();
   }
 
-  @Get('to_review')
+  @Get('count-unreviewed')
   async getCompetitionsToReviewCount() {
     return this.competitionService.getCompsToReviewCount();
+  }
+
+  @Get('list-unreviewed')
+  async getCompetitionUnrevieweList() {
+    return this.competitionService.getCompetitionUnreviewedList()
+
   }
 }
