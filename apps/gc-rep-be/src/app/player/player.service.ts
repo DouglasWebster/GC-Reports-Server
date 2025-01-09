@@ -3,7 +3,7 @@ import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import * as schema from '@lib/drizzle';
 import { InsertPlayer, member } from '@lib/drizzle';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { ICompetitor } from '../../utils/models/report.interface';
+import { ICompetitor } from '@libs/models';
 import { and, eq } from 'drizzle-orm';
 
 @Injectable()

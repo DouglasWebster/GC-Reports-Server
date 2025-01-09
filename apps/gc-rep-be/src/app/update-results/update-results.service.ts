@@ -5,7 +5,7 @@ import {
   ICompetitor,
   IResult,
   ITwos,
-} from '../../utils/models/report.interface';
+} from '@libs/models';
 import { CompFormService } from '../comp-form/comp-form.service';
 import { CompetitionService } from '../competition/competition.service';
 import { MemberService } from '../member/member.service';
