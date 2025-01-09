@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "gc-rep-fe",
   "sourceRoot": "apps/gc-rep-fe/src",
-  "tags": [],
+  "tags": ["scope: front-end", "type: app"],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
