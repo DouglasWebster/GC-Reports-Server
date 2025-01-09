@@ -48,5 +48,6 @@ apps/gc-rep-be/drizzle
 .vscode/settings.json
 .uploads
 .vscode/launch.json
+test-data
 
 .angular
