@@ -1,5 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ICompetitionGeneral } from '@libs/models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -23,6 +24,14 @@ export class DbAccessService {
   }
 
   countCompsToReview() : Observable<number>{
-    return this.http.get<number>('api/competitions/to_review')
+    return this.http.get<number>('api/competitions/count-unreviewed')
+  }
+
+  getCompShortForm(): Observable<ICompetitionGeneral[]> {
+    return this.http.get<ICompetitionGeneral[]>('api/competitions')
+  }
+
+  getCompUnreviewedHeaders(): Observable<ICompetitionGeneral[]> {
+    return this.http.get<ICompetitionGeneral[]>('api/competitions/list-unreviewed')
   }
 }
