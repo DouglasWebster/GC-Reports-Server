@@ -3,7 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/drizzle/src",
   "projectType": "library",
-  "tags": [],
+  "tags": ["scope: shared", "type: schema"],
   "// targets": "to see all targets run: nx show project drizzle --web",
   "targets": {}
 }
