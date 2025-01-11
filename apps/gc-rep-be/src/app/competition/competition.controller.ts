@@ -5,13 +5,7 @@ import { CompetitionService } from './competition.service';
 export class CompetitionController {
   constructor(private readonly competitionService: CompetitionService) {}
 
-  @Get(':id')
-  async getCompetition(@Param('id') compId: string) {
-    console.log(`getting competition with id of ${compId}`);
-    return this.competitionService.getCompetition(parseInt(compId));
-  }
-
-  @Get()
+  @Get('list')
   async getCompetitionList() {
     console.log(`getting all competition list`);
     return this.competitionService.getCompetitionList();
@@ -35,5 +29,11 @@ export class CompetitionController {
   @Get('list-unreviewed')
   async getCompetitionUnrevieweList() {
     return this.competitionService.getCompetitionUnreviewedList();
+  }
+
+  @Get(':id')
+  async getCompetition(@Param('id') id: string) {
+    console.log(`getting competition with id of ${id}`);
+    return this.competitionService.getCompetition(parseInt(id));
   }
 }

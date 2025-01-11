@@ -40,7 +40,9 @@ export class CompetitionService {
   }
   
   async getCompetition(compId: number) {
-    return await this.database.select().from(competition).where(eq(competition.id, compId))
+    return await this.database.query.competition.findFirst({
+      where: eq(competition.id, compId)
+    })
   }
   
   async getCompetitionDetails() {
