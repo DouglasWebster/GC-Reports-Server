@@ -10,12 +10,23 @@ import { DbAccessService } from '../db-access/db-access.service';
   templateUrl: './review.component.html',
   styleUrl: './review.component.css',
 })
-export class ReviewComponent implements OnInit{
-unreviewedComps$!: Observable<ICompetitionGeneral[]>
+export class ReviewComponent implements OnInit {
+  unreviewedComps$!: Observable<ICompetitionGeneral[]>;
+  reviewIds: number [] = []
+  reviewId: number | null = null
 
-constructor(private readonly dbAccessService: DbAccessService)  {}
+  constructor(private readonly dbAccessService: DbAccessService) {}
 
-ngOnInit(): void {
+  ngOnInit(): void {
     this.unreviewedComps$ = this.dbAccessService.getCompUnreviewedHeaders()
-}
+    this.unreviewedComps$.subscribe((items) => {
+      for (const item of items) {
+        this.reviewIds.push(item.id)
+      }
+    })
+  }
+
+  reviewBtnClicked(id: number) {
+      this.reviewId = this.reviewIds[id];
+  }
 }
