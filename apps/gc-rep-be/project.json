@@ -58,7 +58,7 @@
     "db:studio": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "{projectRoot}",
+        "cwd": "{projectRoot}/src",
         "command": "drizzle-kit studio"
       }
     }
