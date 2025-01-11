@@ -1,0 +1,16 @@
+import { Controller, Get, Param } from '@nestjs/common';
+import { PlayerService } from './player.service';
+
+@Controller('players')
+export class PlayerController {
+  constructor(private readonly playerService: PlayerService) {}
+
+  @Get()
+  async getPlayers() {
+    return this.playerService.getPlayers()
+  }
+  @Get(':id')
+  async getPlayersInComp(@Param('id') id: string) {
+    return this.playerService.getPlayersInComp(parseInt(id));
+  }
+}

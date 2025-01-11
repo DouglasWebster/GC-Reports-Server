@@ -76,4 +76,14 @@ export class PlayerService {
     // console.log(`${res.rowCount} players details added for competion`)
     return res;
   }
+
+  async getPlayersInComp(compId: number) {
+    return await this.database.query.player.findMany({
+      where: eq(schema.player.competitionId, compId),
+    });
+  }
+
+  async getPlayers() {
+    return await this.database.select().from(schema.player)
+  }
 }
