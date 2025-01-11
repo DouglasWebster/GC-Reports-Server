@@ -2,6 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICompetitionGeneral } from '@libs/models';
 import { Observable } from 'rxjs';
+import * as schema from "@libs/drizzle";
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +34,8 @@ export class DbAccessService {
 
   getCompUnreviewedHeaders(): Observable<ICompetitionGeneral[]> {
     return this.http.get<ICompetitionGeneral[]>('api/competitions/list-unreviewed')
+  }
+  getCompetitionDetailsById(id: number): Observable<schema.SelectCompetion> {
+    return this.http.get<schema.SelectCompetion>(`api/competitions/${id}`)
   }
 }

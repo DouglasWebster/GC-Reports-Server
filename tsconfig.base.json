@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@libs/drizzle": ["libs/shared/drizzle/src/index.ts"],
-      "@libs/models": ["libs/shared/models/src/index.ts"],
+      "@libs/models": ["libs/shared/models/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
