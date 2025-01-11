@@ -11,34 +11,38 @@ export class CompetitionService {
     @Inject(DATABASE_CONNECTION)
     private readonly database: NodePgDatabase<typeof schema>
   ) {}
-
+  
   async getCompetitionList() {
     return await this.database
-      .select({
-        id: competition.id,
-        date: competition.compDate,
-        compFormat: compForm.title,
-        validated: competition.isValid,
-      })
-      .from(competition)
-      .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
-      .orderBy(desc(competition.compDate));
+    .select({
+      id: competition.id,
+      date: competition.compDate,
+      compFormat: compForm.title,
+      validated: competition.isValid,
+    })
+    .from(competition)
+    .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
+    .orderBy(desc(competition.compDate));
   }
-
+  
   async getCompetitionUnreviewedList() {
     return await this.database
-      .select({
-        id: competition.id,
-        date: competition.compDate,
-        compFormat: compForm.title,
-        validated: competition.isValid,
-      })
-      .from(competition)
-      .where(eq(competition.isValid, false))
-      .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
-      .orderBy(desc(competition.compDate));
+    .select({
+      id: competition.id,
+      date: competition.compDate,
+      compFormat: compForm.title,
+      validated: competition.isValid,
+    })
+    .from(competition)
+    .where(eq(competition.isValid, false))
+    .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
+    .orderBy(desc(competition.compDate));
   }
-
+  
+  async getCompetition(compId: number) {
+    return await this.database.select().from(competition).where(eq(competition.id, compId))
+  }
+  
   async getCompetitionDetails() {
     return await this.database.query.competition.findMany();
   }
