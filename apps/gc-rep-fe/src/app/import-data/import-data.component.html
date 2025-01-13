@@ -1,26 +1,75 @@
-<div class="p-4">
-    <input type="file" class="hidden" accept=".csv" (change)="onChange($event)"
-        #fileUpload />
-    <div class="top-4 m-4">
-        <div
-            class="bg-inherit dark:bg-inherit text-inherit dark:text-white p-4">
-            <button type="button"
-                class="text-white bg-blue-700 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                (click)="fileUpload.click()">Select Competition to
-                import</button>
+<div class="p-4 max-w-6xl mx-auto">
 
-            <section>
-                <div class="flex flex-row pt-4">
-                    <div class="basis-2/3">
-                        <p class="pb-4">{{fileName}}</p>
-                    </div>
-                </div>
-                @if(response$ | async; as response) {
-                @for(message of response.body; track $index) {
-                <li>{{message}}</li>
-                }
-                }
-            </section>
+    <div class="top-4 m-4">
+        <div>
+            <h3 class="text-4xl font-extrabold dark:text-white">Import
+                competition records into the database </h3>
+            <p class="my-4 text-lg text-gray-500">Start developing with an
+                open-source library of over 450+ UI components, sections, and
+                pages built with the utility classes from Tailwind CSS and
+                designed in Figma.</p>
+            <p
+                class="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400">
+                Deliver great service experiences fast - without the complexity
+                of traditional ITSM solutions. Accelerate critical development
+                work, eliminate toil, and deploy changes with ease.</p>
         </div>
+        <form class="max-w-3xl mx-auto">
+            <label
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                for="user_avatar">Import competion file selection</label>
+            <input
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                aria-describedby="user_avatar_help" id="user_avatar" type="file"
+                accept=".csv" (change)="onChange($event)">
+
+            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                id="user_avatar_help">Select the exported competion file (.csv
+                format) to import the the database.
+            </div>
+
+            <div class="pt-4">
+                <label for="message"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Raw
+                    file contents</label>
+                <textarea id="message" rows="10"
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Raw competition data for export goes here...">{{rawData}}</textarea>
+            </div>
+
+            @if(fileName !== '') {
+            <div class="pt-4">
+                <button type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    (click)="importFile()">
+                    Import competion
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9" />
+                    </svg>
+                </button>
+            </div>
+            }
+
+            @if(response$ | async; as response) {
+            <div class="pt-2">
+                <h2
+                    class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                    Import Result:</h2>
+                @for(message of response.body; track $index) {
+                <ul
+                    class="max-w-3xl space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+                    <li>
+                        {{message}}
+                    </li>
+                </ul>
+                }
+            </div>
+            }
+        </form>
+
     </div>
 </div>
