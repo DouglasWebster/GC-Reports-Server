@@ -38,4 +38,8 @@ export class DbAccessService {
   getCompetitionDetailsById(id: number): Observable<schema.SelectCompetion> {
     return this.http.get<schema.SelectCompetion>(`api/competitions/${id}`)
   }
+
+  getPlayersInCompetition(id: number) : Observable<schema.SelectPlayer[]>{
+    return this.http.get<schema.SelectPlayer[]>(`api/players/${id}`)
+  }
 }
