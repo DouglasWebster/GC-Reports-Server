@@ -83,6 +83,9 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
+      simple-datatables:
+        specifier: ^9.2.1
+        version: 9.2.1
       zod:
         specifier: ^3.24.1
         version: 3.24.1
@@ -4252,6 +4255,9 @@ packages:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
     engines: {node: '>=4.0'}
 
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
     peerDependencies:
@@ -4367,6 +4373,9 @@ packages:
 
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
+
+  diff-dom@5.1.4:
+    resolution: {integrity: sha512-TSEaVdVGictY1KHg7VpVw2nuM02YKC9C8/qBkGiCnkiAybVbu1zQTMj2/dnVLRO7Z62UsqzHGpXweiOj5/jaZg==}
 
   diff-sequences@29.6.3:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
@@ -7278,6 +7287,9 @@ packages:
   sigstore@3.0.0:
     resolution: {integrity: sha512-PHMifhh3EN4loMcHCz6l3v/luzgT3za+9f8subGgeMNjbJjzH4Ij/YoX3Gvu+kaouJRIlVdTHHCREADYf+ZteA==}
     engines: {node: ^18.17.0 || >=20.5.0}
+
+  simple-datatables@9.2.1:
+    resolution: {integrity: sha512-R+KRyZ4GNQdqj5IoW08OYi9FHqCbndbw+MfdOJDnwOGs6me9+BhbNuj2QHZR/GXQ04TLra43Uj2/Lk1KcLiJRw==}
 
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -12731,6 +12743,8 @@ snapshots:
 
   date-format@4.0.14: {}
 
+  dayjs@1.11.13: {}
+
   debug@2.6.9:
     dependencies:
       ms: 2.0.0
@@ -12804,6 +12818,8 @@ snapshots:
       - supports-color
 
   didyoumean@1.2.2: {}
+
+  diff-dom@5.1.4: {}
 
   diff-sequences@29.6.3: {}
 
@@ -16100,6 +16116,11 @@ snapshots:
       '@sigstore/verify': 2.0.0
     transitivePeerDependencies:
       - supports-color
+
+  simple-datatables@9.2.1:
+    dependencies:
+      dayjs: 1.11.13
+      diff-dom: 5.1.4
 
   sisteransi@1.0.5: {}
 
