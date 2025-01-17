@@ -1,6 +1,6 @@
 import { compForm, competition } from '@libs/drizzle';
 import { Inject, Injectable } from '@nestjs/common';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import * as schema from '@libs/drizzle';
@@ -29,7 +29,8 @@ export class CompetitionService {
     return await this.database
     .select({
       id: competition.id,
-      date: competition.compDate,
+      // date: competition.compDate,
+      date: sql<string> `to_char(${competition.compDate}, 'YYYY-MM-DD')`.as('date'),
       compFormat: compForm.title,
       validated: competition.isValid,
     })

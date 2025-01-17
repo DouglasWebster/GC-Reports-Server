@@ -9,7 +9,7 @@
             <section>
                 <div class="flex flex-row pt-4">
                     <div class="basis-2/3">
-                        @if(unreviewedComps$; as comps) {
+                        <!-- @if(unreviewedComps$; as comps) {
                         <table
                             class="w-10/12 border-collapse border-spacing-2 border-slate-500">
                             <thead>
@@ -53,7 +53,11 @@
                                 }
                             </tbody>
                         </table>
-                        }
+                        } -->
+                        <table #testTable id="testTable"
+                            class="w-10/12 border-collapse border-spacing-2 border-slate-500">
+                            ...
+                        </table>
                     </div>
                 </div>
             </section>
@@ -62,7 +66,11 @@
                 <form class="max-w-sm mx-auto" #compDetailForm="ngForm">
                     <div class="mb-5">
                         <h2>Competion Detials</h2>
-                        <input type="number" id="sheetEntries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="comp sheet entries" required [(ngModel)]="compToReview.sheetEntries" name="sheetEntries"/>
+                        <input type="number" id="sheetEntries"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="comp sheet entries" required
+                            [(ngModel)]="compToReview.sheetEntries"
+                            name="sheetEntries" />
                     </div>
                 </form>
                 }
