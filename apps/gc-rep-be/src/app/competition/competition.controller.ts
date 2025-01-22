@@ -31,6 +31,16 @@ export class CompetitionController {
     return this.competitionService.getCompetitionUnreviewedList();
   }
 
+  @Get('unreviewed-json')
+  async getUnreviewedJson() {
+    const resp = this.competitionService.getCompetitionUnreviewedList().then((data) => {
+      const  respString = '{ "data" : ' + JSON.stringify(data) + '}';
+      console.log(respString);
+      return JSON.parse(respString);
+     });
+    return resp
+  }
+
   @Get(':id')
   async getCompetition(@Param('id') id: string) {
     console.log(`getting competition with id of ${id}`);
