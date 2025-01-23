@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { ImportDataComponent } from './import-data/import-data.component';
 import { HomeComponent } from './home/home.component';
 import { ReviewComponent } from './review/review.component';
+import { ReviewCompComponent } from './review-comp/review-comp.component';
 
 export const appRoutes: Route[] = [
   {
@@ -9,5 +10,5 @@ export const appRoutes: Route[] = [
     component: ImportDataComponent,
   },
   { path: 'home', component: HomeComponent },
-  { path: 'review', component: ReviewComponent}
+  { path: 'review', component: ReviewCompComponent}
 ];
