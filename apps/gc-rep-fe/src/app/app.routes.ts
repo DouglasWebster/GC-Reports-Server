@@ -1,7 +1,6 @@
 import { Route } from '@angular/router';
-import { ImportDataComponent } from './import-data/import-data.component';
 import { HomeComponent } from './home/home.component';
-import { ReviewComponent } from './review/review.component';
+import { ImportDataComponent } from './import-data/import-data.component';
 import { ReviewCompComponent } from './review-comp/review-comp.component';
 
 export const appRoutes: Route[] = [
