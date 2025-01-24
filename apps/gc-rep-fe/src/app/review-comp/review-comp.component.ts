@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectCompetion, SelectPlayer } from '@libs/drizzle';
 import { DataTable } from 'simple-datatables';
+import { DbAccessService } from '../db-access/db-access.service';
 
 @Component({
   selector: 'gc-rep-fe-review-comp',
@@ -18,7 +19,10 @@ export class ReviewCompComponent implements OnInit {
 
   dataTable?: DataTable;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly dbAccessService: DbAccessService
+  ) {}
 
   ngOnInit(): void {
     this.updateTable();
@@ -30,16 +34,16 @@ export class ReviewCompComponent implements OnInit {
       .subscribe((resp) => {
         this.dataTable?.destroy();
         console.log(resp);
-        this.dataTable = new DataTable('#testTable', {
+        this.dataTable = new DataTable('#reviewTable', {
           data: {
-            headings: Object.keys(resp[0]),
+            headings: ['Competition ID', 'Date', 'Format', 'Review'],
             data: resp.map((item) => Object.values(item)),
           },
           columns: [
             {
               select: 0,
               sortable: true,
-              hidden: true
+              hidden: true,
             },
             {
               select: 1,
@@ -54,21 +58,13 @@ export class ReviewCompComponent implements OnInit {
             {
               select: 3,
               sortable: true,
-              render: (rowValue, _td, rowIndex, _cellIndex) =>
+              render: (rowValue, _td, rowIndex) =>
                 `<button type='button' data-id='${rowIndex}' class='class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'> Review Comp </button>`,
             },
           ],
+          searchable: false,
         });
-        this.dataTable.on('datatable.init', () => {
-          const collumns = this.dataTable?.columns; // Get the columns
-          const noOfCols = collumns?.size(); // Get the number of columns
-          if (noOfCols !== undefined) {
-            for (let i = 0; i < noOfCols; i++) {
-              const column = collumns?.get(i);
-              console.log(column);
-            }
-          }
-        });
+
         this.dataTable?.dom.addEventListener('click', (e: MouseEvent) => {
           console.log(e);
           if (
@@ -83,26 +79,36 @@ export class ReviewCompComponent implements OnInit {
                 data: any;
               }[];
               // @ts-expect-error: doesn't know about property cell.
-              const data = [].slice.call(rowData).map(cell => cell.data)
+              const data = [].slice.call(rowData).map((cell) => cell.data);
               let messageStr = `Yow wish to review the following competition:\n\n`;
-              console.log(data)
+              console.log(data);
               const compId = rowData[0].data[0].data;
               messageStr += `Copetition ID: ${compId}\n`;
               messageStr += `Copetition Date: ${rowData[1].data}\n`;
               messageStr += `Copetition Name: ${rowData[2].data[0].data}\n`;
               messageStr += `Copetition Validation: ${rowData[3].data[0].data}\n`;
+              console.log(messageStr);
 
-              this.compId = compId
+              this.compId = compId;
 
-              alert(messageStr);
+              this.reviewBtnClicked(compId);
             }
           }
         });
       });
   }
 
-  renderButton = (data: any, _td: any, rowIndex: number, _cellIndex: number): string =>  {
-    console.log(data, _td, rowIndex, _cellIndex);
-    return `<button type='button' data-id='${rowIndex}' class='btn btn-sm`
+  reviewBtnClicked(id: number) {
+    if (id) {
+      this.dbAccessService
+        .getCompetitionDetailsById(id)
+        .subscribe((competion) => {
+          this.compToReview = competion;
+          console.log(this.compToReview);
+        });
+      this.dbAccessService.getPlayersInCompetition(id).subscribe((players) => {
+        for (const player of players) this.compPlayers.push(player);
+      });
+    }
   }
 }
