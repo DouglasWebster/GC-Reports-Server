@@ -63,6 +63,7 @@ export class ReviewCompComponent implements OnInit {
             },
           ],
           searchable: false,
+          perPage: 5,
         });
 
         this.dataTable?.dom.addEventListener('click', (e: MouseEvent) => {
