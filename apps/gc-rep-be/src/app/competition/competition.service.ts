@@ -90,4 +90,21 @@ export class CompetitionService {
       ),
     });
   }
+
+  async getCompetitionReviewDetails(compId: number) {
+    return await this.database
+    .select({
+      id: competition.id,
+      compDate: competition.compDate,
+      format: compForm.title,
+      compEntries: competition.computerEntries,
+      sheetEntries: competition.sheetEntries,
+      playerCount: competition.playerCount,
+      twosCount: competition.twosEntered
+    })
+    .from(competition)
+    .where(eq(competition.id, compId))
+    .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
+
+  };
 }

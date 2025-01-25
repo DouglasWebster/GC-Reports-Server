@@ -41,6 +41,11 @@ export class CompetitionController {
     return resp
   }
 
+  @Get('review/:id') 
+  async getReviewComp(@Param('id') id: string) {
+    return this.competitionService.getCompetitionReviewDetails(parseInt(id))
+  }
+
   @Get(':id')
   async getCompetition(@Param('id') id: string) {
     console.log(`getting competition with id of ${id}`);
