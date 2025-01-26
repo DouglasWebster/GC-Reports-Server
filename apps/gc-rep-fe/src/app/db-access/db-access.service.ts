@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICompetitionGeneral, IReviewHeader } from '@libs/models';
+import { ICompetitionGeneral, IReviewHeader, ICompetitionWithFormat } from '@libs/models';
 import { Observable } from 'rxjs';
 import * as schema from "@libs/drizzle";
 
@@ -35,11 +35,18 @@ export class DbAccessService {
   getCompUnreviewedHeaders(): Observable<IReviewHeader[]> {
     return this.http.get<IReviewHeader[]>('api/competitions/list-unreviewed')
   }
+
   getCompetitionDetailsById(id: number): Observable<schema.SelectCompetion> {
     return this.http.get<schema.SelectCompetion>(`api/competitions/${id}`)
+  }
+
+  getCompetitionWithFormatById(id: number): Observable<ICompetitionWithFormat> {
+    return this.http.get<ICompetitionWithFormat>(`api/competitions/review/${id}`)
   }
 
   getPlayersInCompetition(id: number) : Observable<schema.SelectPlayer[]>{
     return this.http.get<schema.SelectPlayer[]>(`api/players/${id}`)
   }
+
+  
 }
