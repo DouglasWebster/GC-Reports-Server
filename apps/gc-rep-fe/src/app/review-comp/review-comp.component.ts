@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SelectCompetion, SelectPlayer } from '@libs/drizzle';
+import { SelectPlayer } from '@libs/drizzle';
+import { ICompetitionWithFormat } from '@libs/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
 
@@ -14,10 +15,11 @@ import { DbAccessService } from '../db-access/db-access.service';
 })
 export class ReviewCompComponent implements OnInit {
   compId: number | null = null;
-  compToReview: SelectCompetion | null = null;
+  compToReview: ICompetitionWithFormat | null = null;
   compPlayers: SelectPlayer[] = [];
+  compDate = ''
 
-  dataTable?: DataTable;
+  reviewTable?: DataTable;
 
   constructor(
     private readonly http: HttpClient,
@@ -31,13 +33,13 @@ export class ReviewCompComponent implements OnInit {
   updateTable(): void {
     this.http
       .get<any[]>('api/competitions/list-unreviewed')
-      .subscribe((resp) => {
-        this.dataTable?.destroy();
-        console.log(resp);
-        this.dataTable = new DataTable('#reviewTable', {
+      .subscribe((data) => {
+        this.reviewTable?.destroy();
+        console.log(data);
+        this.reviewTable = new DataTable('#reviewTable', {
           data: {
-            headings: ['Competition ID', 'Date', 'Format', 'Review'],
-            data: resp.map((item) => Object.values(item)),
+            headings: ['Competition', 'Date   ↕️', 'Format   ↕️', ''],
+            data: data.map((item) => Object.values(item)),
           },
           columns: [
             {
@@ -50,6 +52,14 @@ export class ReviewCompComponent implements OnInit {
               sortable: true,
               type: 'date',
               format: 'YYYY-MM-DD',
+              render: (rowValue, _td, _rowIndex, _cellIndex) =>
+                `${new Intl.DateTimeFormat('en-GB', {
+                  weekday: 'short',
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                }).format(new Date(rowValue as string | number | Date))}`,
+              // `${new Date(rowValue as string | number | Date).toDateString()}`
             },
             {
               select: 2,
@@ -57,16 +67,17 @@ export class ReviewCompComponent implements OnInit {
             },
             {
               select: 3,
-              sortable: true,
+              sortable: false,
+
               render: (rowValue, _td, rowIndex) =>
-                `<button type='button' data-id='${rowIndex}' class='class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'> Review Comp </button>`,
+                `<button type='button' data-id='${rowIndex}' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'> Review Comp </button>`,
             },
           ],
           searchable: false,
           perPage: 5,
         });
 
-        this.dataTable?.dom.addEventListener('click', (e: MouseEvent) => {
+        this.reviewTable?.dom.addEventListener('click', (e: MouseEvent) => {
           console.log(e);
           if (
             e.target instanceof HTMLButtonElement &&
@@ -76,7 +87,7 @@ export class ReviewCompComponent implements OnInit {
             if (dataId) {
               const index = parseInt(dataId, 10);
               console.log(index);
-              const rowData = this.dataTable?.data.data[index].cells as {
+              const rowData = this.reviewTable?.data.data[index].cells as {
                 data: any;
               }[];
               // @ts-expect-error: doesn't know about property cell.
@@ -96,14 +107,32 @@ export class ReviewCompComponent implements OnInit {
             }
           }
         });
+/** 
+ * TODO: Remove this code for final release 
+ * only here to speed up development by loading a default competioin 
+ */        
+        const rowData = this.reviewTable?.data.data[0].cells as {
+          data: any;
+        }[];
+        this.reviewBtnClicked(rowData[0].data[0].data);
+
+/**
+ * End of TODO sectopm
+ */
       });
   }
 
   reviewBtnClicked(id: number) {
     if (id) {
       this.dbAccessService
-        .getCompetitionDetailsById(id)
+        .getCompetitionWithFormatById(id)
         .subscribe((competion) => {
+          this.compDate  = new Intl.DateTimeFormat('en-GB', {
+                  weekday: 'short',
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                }).format(new Date(competion.compDate))
           this.compToReview = competion;
           console.log(this.compToReview);
         });
