@@ -1,10 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import * as schema from '@libs/drizzle';
 import { InsertPlayer, member } from '@libs/drizzle';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { ICompetitor } from '@libs/models';
-import { and, eq } from 'drizzle-orm';
+import { Inject, Injectable } from '@nestjs/common';
+import { and, asc, eq, sql } from 'drizzle-orm';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 
 @Injectable()
 export class PlayerService {
@@ -84,6 +84,21 @@ export class PlayerService {
   }
 
   async getPlayers() {
-    return await this.database.select().from(schema.player)
+    return await this.database.select().from(schema.player);
+  }
+
+  async GetPlayersForCompToReview(compId: number) {
+    return await this.database
+      .select({
+        memberId: schema.player.memberId,
+        inTwos: schema.player.inTwos,
+        signedIn: schema.player.signedIn,
+        surname: schema.member.surname,
+        forename: schema.member.foreName,
+      })
+      .from(schema.player)
+      .where(eq(schema.player.competitionId, compId))
+      .leftJoin(member, eq(member.id, schema.player.memberId))
+      .orderBy(asc(schema.member.surname));
   }
 }

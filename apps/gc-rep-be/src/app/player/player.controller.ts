@@ -9,6 +9,13 @@ export class PlayerController {
   async getPlayers() {
     return this.playerService.getPlayers()
   }
+
+  @Get('comp-review/:id')
+  async GetPlayersForCompToReview(@Param('id') id: string) {
+
+    return this.playerService.GetPlayersForCompToReview(parseInt(id))
+  }
+  
   @Get(':id')
   async getPlayersInComp(@Param('id') id: string) {
     return this.playerService.getPlayersInComp(parseInt(id));
