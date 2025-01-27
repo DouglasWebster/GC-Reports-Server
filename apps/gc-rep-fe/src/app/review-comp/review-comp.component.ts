@@ -17,9 +17,10 @@ export class ReviewCompComponent implements OnInit {
   compId: number | null = null;
   compToReview: ICompetitionWithFormat | null = null;
   compPlayers: SelectPlayer[] = [];
-  compDate = ''
+  compDate = '';
 
   reviewTable?: DataTable;
+  playerTable?: DataTable;
 
   constructor(
     private readonly http: HttpClient,
@@ -90,16 +91,7 @@ export class ReviewCompComponent implements OnInit {
               const rowData = this.reviewTable?.data.data[index].cells as {
                 data: any;
               }[];
-              // @ts-expect-error: doesn't know about property cell.
-              const data = [].slice.call(rowData).map((cell) => cell.data);
-              let messageStr = `Yow wish to review the following competition:\n\n`;
-              console.log(data);
               const compId = rowData[0].data[0].data;
-              messageStr += `Copetition ID: ${compId}\n`;
-              messageStr += `Copetition Date: ${rowData[1].data}\n`;
-              messageStr += `Copetition Name: ${rowData[2].data[0].data}\n`;
-              messageStr += `Copetition Validation: ${rowData[3].data[0].data}\n`;
-              console.log(messageStr);
 
               this.compId = compId;
 
@@ -107,18 +99,6 @@ export class ReviewCompComponent implements OnInit {
             }
           }
         });
-/** 
- * TODO: Remove this code for final release 
- * only here to speed up development by loading a default competioin 
- */        
-        const rowData = this.reviewTable?.data.data[0].cells as {
-          data: any;
-        }[];
-        this.reviewBtnClicked(rowData[0].data[0].data);
-
-/**
- * End of TODO sectopm
- */
       });
   }
 
@@ -127,18 +107,110 @@ export class ReviewCompComponent implements OnInit {
       this.dbAccessService
         .getCompetitionWithFormatById(id)
         .subscribe((competion) => {
-          this.compDate  = new Intl.DateTimeFormat('en-GB', {
-                  weekday: 'short',
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                }).format(new Date(competion.compDate))
+          this.compDate = new Intl.DateTimeFormat('en-GB', {
+            weekday: 'short',
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          }).format(new Date(competion.compDate));
           this.compToReview = competion;
           console.log(this.compToReview);
+          this.reviewPlayersDetails(id);
         });
-      this.dbAccessService.getPlayersInCompetition(id).subscribe((players) => {
-        for (const player of players) this.compPlayers.push(player);
-      });
     }
+  }
+
+  reviewPlayersDetails(compId: number) {
+    this.http
+      .get<any[]>(`api/players/comp-review/${compId}`)
+      .subscribe((data) => {
+        this.playerTable?.destroy();
+        console.log(data);
+        this.playerTable = new DataTable('#playersTable', {
+          data: {
+            headings: [
+              'memberId',
+              'In Twos',
+              'Signed In',
+              'Surname',
+              'First Name',
+            ],
+            data: data.map((item) => Object.values(item)),
+          },
+          columns: [
+            {
+              select: 0,
+              sortable: true,
+              hidden: true,
+            },
+            {
+              select: 1,
+              render: (value, _td, _rowIndex, _cellIndex) =>
+                `<span class="checkbox" cell-index='${_cellIndex}' row-index='${_rowIndex}'  which-box='twos'>${
+                  value ? '☑️' : '☐'
+                }</span>`,
+            },
+            {
+              select: 2,
+              render: (value, _td, _rowIndex, _cellIndex) =>
+                `<span class="checkbox" cell-index='${_cellIndex}' row-index='${_rowIndex}' which-box='signed'>${
+                  value ? '☑' : '☐'
+                }</span>`,
+            },
+          ],
+          searchable: true,
+          perPage: 5,
+        });
+        this.playerTable.columns.order([0, 3, 4, 2, 1]);
+
+        this.playerTable?.dom.addEventListener('click', (event: MouseEvent) => {
+          if (
+            event.target instanceof HTMLSpanElement &&
+            event.target.hasAttribute('cell-index')
+          ) {
+            console.log(event);
+            event.preventDefault();
+            event.stopPropagation();
+            const cellIndex = event.target.getAttribute('cell-index');
+            const rowIndex = event.target.getAttribute('row-index');
+            let memberId = -1;
+            if (rowIndex) {
+              const index = parseInt(rowIndex, 10);
+              const rowData = this.playerTable?.data.data[index].cells as {
+                data: any;
+              }[];
+              memberId = rowData[0].data[0].data;
+            }
+            const checkBoxType = event.target.getAttribute('which-box');
+            if (cellIndex) {
+              const playerCell = parseInt(cellIndex, 10);
+              // prettier-ignore
+              // @ts-expect-error: doesn't know about property cell.
+              const tableIndex = parseInt(event.target.parentElement?.parentElement?.dataset.index, 10);
+              const tableRow = this.playerTable?.data.data[tableIndex];
+              const cell = tableRow?.cells[playerCell];
+              if (cell) {
+                const checked = cell?.data;
+                cell.data = !checked;
+                this.playerTable?.update();
+                this.updatePlayerCorrection(memberId, checkBoxType);
+              }
+            }
+          }
+        });
+      });
+  }
+
+  updatePlayerCorrection(id: any, which: string | null) {
+    if (!which) return;
+    console.log(`member id: ${id}, to change: ${which}`);
+  }
+
+  cancelReviewBtnClicked() {
+    this.compId = null;
+    this.compToReview = null;
+    this.compPlayers.length = 0;
+    this.compDate = '';
+    this.playerTable?.destroy();
   }
 }
