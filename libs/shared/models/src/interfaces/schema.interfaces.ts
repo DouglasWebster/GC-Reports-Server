@@ -21,6 +21,12 @@ export interface ICompetitionWithFormat {
   playerCount: number;
   twosEntered: number;
   compForm: {
-    title: string
-  }
+    title: string;
+  };
+}
+
+export interface IPlayerReviewUpdate {
+  memberId: number;
+  inTwos: boolean;
+  onSheet: boolean;
 }
