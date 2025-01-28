@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectPlayer } from '@libs/drizzle';
-import { ICompetitionWithFormat } from '@libs/models';
+import { ICompetitionWithFormat, IPlayerReviewUpdate } from '@libs/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
 
@@ -14,10 +14,14 @@ import { DbAccessService } from '../db-access/db-access.service';
   styleUrl: './review-comp.component.css',
 })
 export class ReviewCompComponent implements OnInit {
-  compId: number | null = null;
+  @Input()
   compToReview: ICompetitionWithFormat | null = null;
+
+  compId: number | null = null;
   compPlayers: SelectPlayer[] = [];
   compDate = '';
+  playerUpdates: IPlayerReviewUpdate[] = [];
+  reviewValid = true;
 
   reviewTable?: DataTable;
   playerTable?: DataTable;
@@ -162,6 +166,7 @@ export class ReviewCompComponent implements OnInit {
           perPage: 5,
         });
         this.playerTable.columns.order([0, 3, 4, 2, 1]);
+        this.checkReviewValidity();
 
         this.playerTable?.dom.addEventListener('click', (event: MouseEvent) => {
           if (
@@ -201,9 +206,51 @@ export class ReviewCompComponent implements OnInit {
       });
   }
 
-  updatePlayerCorrection(id: any, which: string | null) {
+  updatePlayerCorrection(id: number, which: string | null) {
     if (!which) return;
     console.log(`member id: ${id}, to change: ${which}`);
+    const player = this.playerUpdates.find(({ memberId }) => memberId == id);
+    if (player) {
+      const currentTwos = player.inTwos;
+      const currentOnSheet = player.onSheet;
+      if (which === 'twos') player.inTwos = !currentTwos;
+      if (which === 'signed') player.onSheet = !currentOnSheet;
+    } else {
+      const newPlayer: IPlayerReviewUpdate = {
+        memberId: id,
+        inTwos: true,
+        onSheet: true,
+      };
+      if (which === 'twos') newPlayer.inTwos = false;
+      if (which === 'signed') newPlayer.onSheet = false;
+      this.playerUpdates.push(newPlayer);
+    }
+    this.checkReviewValidity();
+  }
+
+  checkReviewValidity() {
+    if (!this.compToReview) return;
+
+    let reviewState = true; // assume everything is OK
+
+    const computerEntries = this.compToReview?.computerEntries;
+    const signedIn = this.compToReview?.sheetEntries;
+    const inTwos = this.compToReview?.twosEntered;
+    let notSignedIn = 0;
+    let notInTwos = 0;
+    if (this.playerUpdates?.length !== 0) {
+      notSignedIn = this.playerUpdates.filter(
+        (item) => item.onSheet === false
+      ).length;
+      notInTwos = this.playerUpdates.filter(
+        (item) => item.inTwos === false
+      ).length;
+    }
+
+    if (computerEntries + notSignedIn < signedIn) reviewState = false;
+    if (computerEntries - notInTwos > inTwos) reviewState = false;
+
+    this.reviewValid = reviewState;
   }
 
   cancelReviewBtnClicked() {
@@ -212,5 +259,7 @@ export class ReviewCompComponent implements OnInit {
     this.compPlayers.length = 0;
     this.compDate = '';
     this.playerTable?.destroy();
+    this.playerUpdates.length = 0;
+    this.reviewValid = true;
   }
 }
