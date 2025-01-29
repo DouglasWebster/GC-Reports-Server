@@ -30,3 +30,12 @@ export interface IPlayerReviewUpdate {
   inTwos: boolean;
   onSheet: boolean;
 }
+
+export interface ICompReviewUpdate {
+  compId: number;
+  twosCount: number;
+  signedInCount: number;
+  memberId: number;
+  inTwos: boolean;
+  onSheet: boolean;
+}
