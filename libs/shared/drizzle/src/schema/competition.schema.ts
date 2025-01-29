@@ -24,7 +24,7 @@ import { compForm, player, two } from '../index';
       sheetEntries: integer().notNull(),
       twosEntered: integer().notNull(),
       playerCount: integer().notNull(),
-      isValid: boolean().notNull().default(false),
+      isValid: boolean().notNull(), //.default(false),
       createdAt: timestamp({ mode: 'date', precision: 2 }).defaultNow().notNull(),
       updatedAt: timestamp({ mode: 'date', precision: 2 }).defaultNow().notNull()
     },

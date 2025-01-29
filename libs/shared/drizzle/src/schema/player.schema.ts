@@ -17,8 +17,8 @@ export const player = pgTable('player', {
   handicap: integer().notNull(),
   handicapIndex: integer(),
   division: integer().notNull(),
-  signedIn: boolean().notNull().default(true),
-  inTwos: boolean().notNull().default(true),
+  signedIn: boolean().notNull(),
+  inTwos: boolean().notNull(),
   twoHoles: integer()
     .array()
     .default(sql`'{}'::integer[]`),

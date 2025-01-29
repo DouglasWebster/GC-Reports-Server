@@ -51,6 +51,8 @@ export class PlayerService {
           memberId: playerMemberId[0].id,
           position: position,
           stablefordPoints: points,
+          inTwos: true,
+          signedIn: true,
         };
         playersArray.push(playerDetail);
       }

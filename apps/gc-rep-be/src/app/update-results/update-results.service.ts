@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InsertCompetion, InsertMember } from '@libs/drizzle';
 // import { NewMember } from '../../db/schema/member.schema';
-import {
-  ICompetitor,
-  IResult,
-  ITwos,
-} from '@libs/models';
+import { ICompetitor, IResult, ITwos } from '@libs/models';
 import { CompFormService } from '../comp-form/comp-form.service';
 import { CompetitionService } from '../competition/competition.service';
 import { MemberService } from '../member/member.service';
@@ -161,15 +157,14 @@ export class UpdateResultsService {
       playerCount: results.players.length,
       sheetEntries: results.cards,
       twosEntered: results.cards,
+      isValid: false,
     };
     const compInsertResult = await this.competitionService.createNamedComp(
       newCompInsertDetails
     );
     console.log(compInsertResult);
     if (compInsertResult === undefined)
-      throw new Error(
-        'Competition : competition already exists'
-      );
+      throw new Error('Competition : competition already exists');
 
     return compInsertResult[0].competitionId;
   }
