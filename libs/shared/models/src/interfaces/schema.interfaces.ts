@@ -35,7 +35,5 @@ export interface ICompReviewUpdate {
   compId: number;
   twosCount: number;
   signedInCount: number;
-  memberId: number;
-  inTwos: boolean;
-  onSheet: boolean;
+  players: IPlayerReviewUpdate[]
 }
