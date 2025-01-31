@@ -4,15 +4,11 @@
         <div>
             <h3 class="text-4xl font-extrabold dark:text-white">Import
                 competition records into the database </h3>
-            <p class="my-4 text-lg text-gray-500">Start developing with an
-                open-source library of over 450+ UI components, sections, and
-                pages built with the utility classes from Tailwind CSS and
-                designed in Figma.</p>
-            <p
-                class="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400">
-                Deliver great service experiences fast - without the complexity
-                of traditional ITSM solutions. Accelerate critical development
-                work, eliminate toil, and deploy changes with ease.</p>
+            <p class="my-4 text-lg text-gray-500 dark:text-gray-400">From Handicap Master print a competition in .csv format to a local drive location.  
+                Once it has been exported use the Chose file to select the file.  The raw contents of th file will be displayed for you to check and 
+                the Import Competition button will be shown.
+                If all is satisfactory then press the Import Competition button to start the import process.  The result of the import is then shown.
+            </p>
         </div>
         <form class="max-w-3xl mx-auto">
             <label
@@ -41,7 +37,7 @@
             <div class="pt-4">
                 <button type="button"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    (click)="importFile()">
+                    (click)="importFile()" [disabled]="fileNotImported === false" [ngClass]="fileNotImported ? '' : 'hidden'">
                     Import competion
                     <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

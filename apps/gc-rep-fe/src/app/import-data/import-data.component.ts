@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 // import { ChangeDetectorRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DbAccessService } from '../db-access/db-access.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class ImportDataComponent {
   fd: FormData = new FormData();
   fileReader = new FileReader();
   rawData = ''
+  fileNotImported = true
 
   response$!: Observable<HttpResponse<string>>;
   constructor(
@@ -29,6 +30,7 @@ export class ImportDataComponent {
   
   // @ts-expect-error Parameter '$event' implicitly has an 'any' type.ts(7006)
   onChange($event) {
+    this.response$ = of();
     const file = $event.target.files[0];
     console.log(`User has selected a file.`);
     
@@ -36,26 +38,27 @@ export class ImportDataComponent {
     const self = this;
 
     if (file) {
+      this.fileNotImported = true
       this.selectedFile = file;
       this.fileName = file.name;
       // this.fd = new FormData();
       this.fd.delete('file');
-
+      
       this.fd.append('file', this.selectedFile, this.fileName);
       this.fileReader.onloadend = function () {
         self.rawData = self.fileReader.result as string
       };
       this.fileReader.readAsText(file);
     } else {
-        this.fileName = ''
-        this.fd.delete('file')
-        this.rawData = ''
-        
+      this.fileName = ''
+      this.fd.delete('file')
+      this.rawData = ''    
     }
   }
 
   importFile() {
     console.log('importing file');
     this.response$ = this.dbAccessService.addCompetion(this.fd);
+    this.fileNotImported = false
   }
 }
