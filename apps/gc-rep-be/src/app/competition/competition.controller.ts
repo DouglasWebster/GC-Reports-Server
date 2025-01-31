@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { CompetitionService } from './competition.service';
+import { ICompReviewUpdate } from '@libs/models';
 
 @Controller('competitions')
 export class CompetitionController {
@@ -33,22 +34,30 @@ export class CompetitionController {
 
   @Get('unreviewed-json')
   async getUnreviewedJson() {
-    const resp = this.competitionService.getCompetitionUnreviewedList().then((data) => {
-      const  respString = '{ "data" : ' + JSON.stringify(data) + '}';
-      console.log(respString);
-      return JSON.parse(respString);
-     });
-    return resp
+    const resp = this.competitionService
+      .getCompetitionUnreviewedList()
+      .then((data) => {
+        const respString = '{ "data" : ' + JSON.stringify(data) + '}';
+        console.log(respString);
+        return JSON.parse(respString);
+      });
+    return resp;
   }
 
-  @Get('review/:id') 
+  @Get('review/:id')
   async getReviewComp(@Param('id') id: string) {
-    return this.competitionService.getCompetitionReviewDetails(parseInt(id))
+    return this.competitionService.getCompetitionReviewDetails(parseInt(id));
   }
 
   @Get(':id')
   async getCompetition(@Param('id') id: string) {
     console.log(`getting competition with id of ${id}`);
     return this.competitionService.getCompetition(parseInt(id));
+  }
+
+  @Patch('update-comp')
+  async updateCompAndPlayersAfterReview(@Body() updateData: ICompReviewUpdate) {
+    console.log('Updating competition with: ', updateData)
+    return this.competitionService.updateCompAndPlayersAfterReview(updateData);
   }
 }
