@@ -64,14 +64,14 @@ export class PlayerService {
     // console.log(playersToInsert);
     let playersValuesString = '';
     for (const player of playersToInsert) {
-      playersValuesString += `(${player.competitionId}, ${player.division}, ${player.grossScore}, ${player.handicap}, ${player.memberId}, ${player.position}, ${player.stablefordPoints}),`;
+      playersValuesString += `(${player.competitionId}, ${player.division}, ${player.grossScore}, ${player.handicap}, ${player.memberId}, ${player.position}, ${player.stablefordPoints}, ${player.signedIn}, ${player.inTwos}),`;
     }
     playersValuesString = playersValuesString.substring(
       0,
       playersValuesString.length - 1
     );
 
-    const playersInsertSqlStatment = `WITH data(competition_id, division, gross_score, handicap, member_id, position, stableford_points) AS (values ${playersValuesString}) INSERT INTO player (competition_id, division, gross_score, handicap, member_id, position, stableford_points) SELECT d.competition_id, d.division, d.gross_score, d.handicap, d.member_id, d.position, d.stableford_points FROM data d WHERE not EXISTS (SELECT 1 FROM player m2 WHERE m2.competition_id = d.competition_id AND m2.member_id = d.member_id);`;
+    const playersInsertSqlStatment = `WITH data(competition_id, division, gross_score, handicap, member_id, position, stableford_points, signed_in, in_twos) AS (values ${playersValuesString}) INSERT INTO player (competition_id, division, gross_score, handicap, member_id, position, stableford_points, signed_in, in_twos) SELECT d.competition_id, d.division, d.gross_score, d.handicap, d.member_id, d.position, d.stableford_points, d.signed_in, d.in_twos FROM data d WHERE not EXISTS (SELECT 1 FROM player m2 WHERE m2.competition_id = d.competition_id AND m2.member_id = d.member_id);`;
 
     // console.log(playersInsertSqlStatment);
     const res = await this.database.execute(playersInsertSqlStatment);
