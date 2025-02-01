@@ -1,10 +1,10 @@
-import { compForm, competition } from '@libs/drizzle';
+import * as schema from '@libs/drizzle';
+import { competition, compForm } from '@libs/drizzle';
+import { ICompReviewUpdate } from '@libs/models';
 import { Inject, Injectable } from '@nestjs/common';
 import { and, desc, eq, sql } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '@libs/drizzle';
-import { ICompReviewUpdate } from '@libs/models';
 
 @Injectable()
 export class CompetitionService {
@@ -116,66 +116,60 @@ export class CompetitionService {
   }
 
   async updateCompAndPlayersAfterReview(reviewResult: ICompReviewUpdate) {
-    return await this.database.transaction(async (compDetailsTx) => {
-      const replyMessage: string[] = []
-      try {
-        const compResult = await compDetailsTx
-          .update(competition)
-          .set({
-            sheetEntries: reviewResult.signedInCount,
-            twosEntered: reviewResult.twosCount,
-            isValid: true,
-          })
-          .where(
-            and(
-              eq(competition.id, reviewResult.compId),
-              eq(competition.isValid, false)
-            )
-          );
-
-        if (compResult.rowCount != 1) {
-          replyMessage.push(`Failed to update competition details.\nReview update transaction terminated: ${compResult.rowCount} competition rows affected`)
-          console.log(
-            `Failed to update competition details.\nReview update transaction terminated: ${compResult.rowCount} competition rows affected`
-          );
-          compDetailsTx.rollback();
-        }
-
-        return await this.database.transaction(async (playerDetailTx) => {
-          try {
-            for (const member of reviewResult.players) {
-              const playerResult = await playerDetailTx
-                .update(schema.player)
-                .set({
-                  inTwos: member.inTwos,
-                  signedIn: member.onSheet,
-                })
-                .where(
-                  and(
-                    eq(schema.player.competitionId, reviewResult.compId),
-                    eq(schema.player.memberId, member.memberId)
-                  )
-                );
-              if (playerResult.rowCount !== 1) {
-                replyMessage.push(`Failed to ammend a players details.`)
-                console.log(
-                  `Review update transaction terminated: ${compResult.rowCount} competition rows affected`
-                );
-                playerDetailTx.rollback();
-                compDetailsTx.rollback();
-              }
-            }
-          } catch (error) {
-            replyMessage.push('Player update transaction canceled.')
-            if (error) return ;
+    const replyMessage: string[] = [];
+    const updatesToDo = reviewResult.players.length + 1;
+    let updatesDone = 0;
+    try{
+        return await this.database.transaction(async (compDetailsTx) => {
+          for (const member of reviewResult.players) {
+            const playerResult = await compDetailsTx
+              .update(schema.player)
+              .set({
+                inTwos: member.inTwos,
+                signedIn: member.onSheet,
+              })
+              .where(
+                and(
+                  eq(schema.player.competitionId, reviewResult.compId),
+                  eq(schema.player.memberId, member.memberId)
+                )
+              );
+            if (playerResult.rowCount === 1) ++updatesDone;
           }
-        });
-      } catch (error) {
-        replyMessage.push('Competition update transaction canceled.')
-        if (error) return replyMessage;
+          if (updatesDone !== reviewResult.players.length)
+            replyMessage.push('Failed to update all players details.');
+          else replyMessage.push('Players details updated successfully.');
+
+          const compResult = await compDetailsTx
+            .update(competition)
+            .set({
+              sheetEntries: reviewResult.signedInCount,
+              twosEntered: reviewResult.twosCount,
+              isValid: true,
+            })
+            .where(
+              and(
+                eq(competition.id, reviewResult.compId),
+                eq(competition.isValid, false)
+              )
+            );
+          if (compResult.rowCount === 1) {
+            ++updatesDone;
+            replyMessage.push('Competition details updated successfully.');
+          } else replyMessage.push('Failed to update competition details.');
+
+          if (updatesDone !== updatesToDo) {
+            replyMessage.push('Not all updates completed successfully.  All updates cancelled!')  
+            compDetailsTx.rollback()
+          } else replyMessage.push('All updates completed successfully.');
+
+          return replyMessage;
+        })
+      }catch(error) {
+        console.log(error)
+        if(updatesDone !== updatesToDo) {
+          return replyMessage;
+        }
       }
-      replyMessage.push('Competition updated successfull')
-      return replyMessage;
-    });
   }
 }

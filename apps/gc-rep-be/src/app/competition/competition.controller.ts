@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { CompetitionService } from './competition.service';
 import { ICompReviewUpdate } from '@libs/models';
+import { repl } from '@nestjs/core';
 
 @Controller('competitions')
 export class CompetitionController {
@@ -57,7 +58,10 @@ export class CompetitionController {
 
   @Patch('update-comp')
   async updateCompAndPlayersAfterReview(@Body() updateData: ICompReviewUpdate) {
-    console.log('Updating competition with: ', updateData)
-    return this.competitionService.updateCompAndPlayersAfterReview(updateData);
+    console.log('Updating competition with: ', updateData);
+    const reply  =
+      this.competitionService.updateCompAndPlayersAfterReview(updateData);
+    console.log(`update comp result: ${reply}`)
+    return reply;
   }
 }
