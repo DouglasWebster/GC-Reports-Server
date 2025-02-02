@@ -64,6 +64,13 @@ export class CompetitionService {
     );
   }
 
+  async getCompsReviewedCount() {
+    return await this.database.$count(
+      competition,
+      eq(competition.isValid, true)
+    );
+  }
+
   async createNamedComp(record: schema.InsertCompetion) {
     const competitionId = await this.database
       .select({
