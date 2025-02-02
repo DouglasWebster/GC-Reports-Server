@@ -33,12 +33,20 @@ export class DbAccessService {
     return this.http.get<number>('api/competitions/count-unreviewed');
   }
 
+  countCompsReviewed(): Observable<number> {
+    return this.http.get<number>('api/competitions/count-reviewed');
+  }
+
   getCompShortForm(): Observable<ICompetitionGeneral[]> {
     return this.http.get<ICompetitionGeneral[]>('api/competitions');
   }
 
   getCompUnreviewedHeaders(): Observable<IReviewHeader[]> {
     return this.http.get<IReviewHeader[]>('api/competitions/list-unreviewed');
+  }
+
+  getCompRevieweHeaders(): Observable<IReviewHeader[]> {
+    return this.http.get<IReviewHeader[]>('api/competitions/list-reviewed')
   }
 
   getCompetitionDetailsById(id: number): Observable<schema.SelectCompetion> {
