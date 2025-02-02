@@ -34,13 +34,18 @@ export class CompetitionController {
 
   @Get('list-unreviewed')
   async getCompetitionUnrevieweList() {
-    return this.competitionService.getCompetitionUnreviewedList();
+    return this.competitionService.getCompetitionReviewedList(false);
+  }
+
+  @Get('list-reviewed')
+  async getCompetitionRevieweList() {
+    return this.competitionService.getCompetitionReviewedList(true);
   }
 
   @Get('unreviewed-json')
   async getUnreviewedJson() {
     const resp = this.competitionService
-      .getCompetitionUnreviewedList()
+      .getCompetitionReviewedList(false)
       .then((data) => {
         const respString = '{ "data" : ' + JSON.stringify(data) + '}';
         console.log(respString);
