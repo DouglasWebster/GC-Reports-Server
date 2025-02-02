@@ -58,6 +58,8 @@ export class DbAccessService {
   patchCompetitionReviewData(
     reviewData: ICompReviewUpdate
   ) {
-    return this.http.patch<string>('api/competitions/update-comp', reviewData)
+    const reply = this.http.patch<string>('api/competitions/update-comp', reviewData)
+    console.log(reply)
+    return reply
   }
 }

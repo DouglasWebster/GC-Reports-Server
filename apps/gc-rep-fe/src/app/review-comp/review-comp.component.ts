@@ -3,7 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectPlayer } from '@libs/drizzle';
-import { ICompetitionWithFormat, IPlayerReviewUpdate } from '@libs/models';
+import {
+  ICompetitionWithFormat,
+  ICompReviewUpdate,
+  IPlayerReviewUpdate,
+} from '@libs/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
 
@@ -22,9 +26,13 @@ export class ReviewCompComponent implements OnInit {
   compDate = '';
   playerUpdates: IPlayerReviewUpdate[] = [];
   reviewValid = true;
+  updatePosted = false
+
+  reviewUpdateResponse = '';
 
   reviewTable?: DataTable;
   playerTable?: DataTable;
+  haveUnreviewedComps$!: boolean
 
   constructor(
     private readonly http: HttpClient,
@@ -32,7 +40,12 @@ export class ReviewCompComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.updateTable();
+   this.dbAccessService.countCompsToReview().subscribe(
+      result => {
+        this.haveUnreviewedComps$ = (result === 0) ? false : true
+        this.updateTable();
+      }
+    )
   }
 
   updateTable(): void {
@@ -40,6 +53,7 @@ export class ReviewCompComponent implements OnInit {
       .get<any[]>('api/competitions/list-unreviewed')
       .subscribe((data) => {
         this.reviewTable?.destroy();
+        if(this.haveUnreviewedComps$){  
         console.log(data);
         this.reviewTable = new DataTable('#reviewTable', {
           data: {
@@ -80,7 +94,7 @@ export class ReviewCompComponent implements OnInit {
           ],
           searchable: false,
           perPage: 5,
-        });
+        });}
 
         this.reviewTable?.dom.addEventListener('click', (e: MouseEvent) => {
           console.log(e);
@@ -253,6 +267,25 @@ export class ReviewCompComponent implements OnInit {
     this.reviewValid = reviewState;
   }
 
+  acceptReviewBtnClicked() {
+    if (this.compId && this.compToReview) {
+      const reviewCorrections: ICompReviewUpdate = {
+        compId: this.compId,
+        twosCount: this.compToReview.twosEntered,
+        signedInCount: this.compToReview.sheetEntries,
+        players: this.playerUpdates,
+      };
+      this.dbAccessService
+        .patchCompetitionReviewData(reviewCorrections)
+        .subscribe((result) => {
+          console.log(result);
+          this.reviewUpdateResponse = result
+          this.updatePosted = true
+        });
+    }
+
+  }
+
   cancelReviewBtnClicked() {
     this.compId = null;
     this.compToReview = null;
@@ -261,5 +294,8 @@ export class ReviewCompComponent implements OnInit {
     this.playerTable?.destroy();
     this.playerUpdates.length = 0;
     this.reviewValid = true;
+    this.reviewUpdateResponse = ''
+    this.updatePosted = false
+    this.ngOnInit();
   }
 }

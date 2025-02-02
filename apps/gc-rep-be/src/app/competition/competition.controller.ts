@@ -61,7 +61,7 @@ export class CompetitionController {
     console.log('Updating competition with: ', updateData);
     const reply  =
       this.competitionService.updateCompAndPlayersAfterReview(updateData);
-    console.log(`update comp result: ${reply}`)
+    console.log(reply)
     return reply;
   }
 }
