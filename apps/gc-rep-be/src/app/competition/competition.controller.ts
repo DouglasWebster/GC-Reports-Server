@@ -1,7 +1,6 @@
+import { ICompReviewUpdate } from '@libs/models';
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { CompetitionService } from './competition.service';
-import { ICompReviewUpdate } from '@libs/models';
-import { repl } from '@nestjs/core';
 
 @Controller('competitions')
 export class CompetitionController {
