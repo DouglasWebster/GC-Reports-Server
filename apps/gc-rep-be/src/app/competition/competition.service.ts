@@ -26,7 +26,7 @@ export class CompetitionService {
       .orderBy(desc(competition.compDate));
   }
 
-  async getCompetitionUnreviewedList() {
+  async getCompetitionReviewedList(isReviewed: boolean) {
     return await this.database
       .select({
         id: competition.id,
@@ -38,7 +38,7 @@ export class CompetitionService {
         validated: competition.isValid,
       })
       .from(competition)
-      .where(eq(competition.isValid, false))
+      .where(eq(competition.isValid, isReviewed))
       .leftJoin(compForm, eq(compForm.id, schema.competition.compFormId))
       .orderBy(desc(competition.compDate));
   }
