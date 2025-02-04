@@ -45,7 +45,7 @@ export class DbAccessService {
     return this.http.get<IReviewHeader[]>('api/competitions/list-unreviewed');
   }
 
-  getCompRevieweHeaders(): Observable<IReviewHeader[]> {
+  getCompReviewedHeaders(): Observable<IReviewHeader[]> {
     return this.http.get<IReviewHeader[]>('api/competitions/list-reviewed')
   }
 
