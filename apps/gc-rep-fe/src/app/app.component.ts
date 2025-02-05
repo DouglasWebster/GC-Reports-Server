@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 
+interface NavBarInfo {
+  routerLink: string;
+  text: string;
+}
+
 @Component({
   standalone: true,
   imports: [RouterModule],
@@ -11,12 +16,21 @@ import { initFlowbite } from 'flowbite';
 })
 export class AppComponent implements OnInit {
   title = 'BPGC Competition Reports';
+  navBarInfos: NavBarInfo[] = [
+    { routerLink: '/home', text: 'Home' },
+    { routerLink: '/results', text: 'Results' },
+    { routerLink: '/review', text: 'Reviews' },
+    { routerLink: '/import-comp', text: 'Import' },
+    { routerLink: '/about', text: 'About' },
+  ];
 
   ngOnInit(): void {
     initFlowbite();
-    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleDarkIcon = document.getElementById(
+      'theme-toggle-dark-icon'
+    );
     const themeToggleLightIcon = document.getElementById(
-      'theme-toggle-light-icon',
+      'theme-toggle-light-icon'
     );
 
     // Change the icons inside the button based on previous settings
