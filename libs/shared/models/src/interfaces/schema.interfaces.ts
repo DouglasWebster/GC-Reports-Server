@@ -37,3 +37,8 @@ export interface ICompReviewUpdate {
   signedInCount: number;
   players: IPlayerReviewUpdate[]
 }
+
+export interface IDateRange {
+  minDate: Date;
+  maxDate: Date;
+}

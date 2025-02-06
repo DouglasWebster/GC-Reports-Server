@@ -5,6 +5,7 @@ import {
   IReviewHeader,
   ICompetitionWithFormat,
   ICompReviewUpdate,
+  IDateRange,
 } from '@libs/models';
 import { Observable } from 'rxjs';
 import * as schema from '@libs/drizzle';
@@ -69,5 +70,9 @@ export class DbAccessService {
     const reply = this.http.patch<string>('api/competitions/update-comp', reviewData)
     console.log(reply)
     return reply
+  }
+
+  getFinalisedCompDateRange() {
+    return this.http.get<IDateRange[]>('api/competitions/finalised-date-range')
   }
 }

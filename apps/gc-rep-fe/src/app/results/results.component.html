@@ -5,6 +5,30 @@
                 <div class="basis-1/3">
                     <h2 class="text-xl font-bold dark:text-white pt-2 pb-2">
                         Finalised Competions</h2>
+                    <label for="years"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Limit
+                        To Year</label>
+                    <select #years id="years"
+                        (change)="onSelectedYear(years.value)"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option></option>
+                        @for(year of compYears; track year){
+                        <option>{{ year }}</option>
+                        }
+                    </select>
+                    <div [hidden]="viableMonths.length === 0">
+                        <label for="months"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Limit
+                            To Month</label>
+                        <select #months id="months"
+                            (change)="onSelectedYear(years.value)"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option></option>
+                            @for(year of compYears; track year){
+                            <option>{{ year }}</option>
+                            }
+                        </select>
+                    </div>
                     <table id="finalisedComp">
                         ...
                     </table>
