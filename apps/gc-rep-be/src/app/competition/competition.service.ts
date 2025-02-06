@@ -2,7 +2,7 @@ import * as schema from '@libs/drizzle';
 import { competition, compForm } from '@libs/drizzle';
 import { ICompReviewUpdate } from '@libs/models';
 import { Inject, Injectable } from '@nestjs/common';
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, min, sql, max } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 
@@ -126,57 +126,66 @@ export class CompetitionService {
     const replyMessage: string[] = [];
     const updatesToDo = reviewResult.players.length + 1;
     let updatesDone = 0;
-    try{
-        return await this.database.transaction(async (compDetailsTx) => {
-          for (const member of reviewResult.players) {
-            const playerResult = await compDetailsTx
-              .update(schema.player)
-              .set({
-                inTwos: member.inTwos,
-                signedIn: member.onSheet,
-              })
-              .where(
-                and(
-                  eq(schema.player.competitionId, reviewResult.compId),
-                  eq(schema.player.memberId, member.memberId)
-                )
-              );
-            if (playerResult.rowCount === 1) ++updatesDone;
-          }
-          if (updatesDone !== reviewResult.players.length)
-            replyMessage.push('Failed to update all players details.');
-          else replyMessage.push('Players details updated successfully.');
-
-          const compResult = await compDetailsTx
-            .update(competition)
+    try {
+      return await this.database.transaction(async (compDetailsTx) => {
+        for (const member of reviewResult.players) {
+          const playerResult = await compDetailsTx
+            .update(schema.player)
             .set({
-              sheetEntries: reviewResult.signedInCount,
-              twosEntered: reviewResult.twosCount,
-              isValid: true,
+              inTwos: member.inTwos,
+              signedIn: member.onSheet,
             })
             .where(
               and(
-                eq(competition.id, reviewResult.compId),
-                eq(competition.isValid, false)
+                eq(schema.player.competitionId, reviewResult.compId),
+                eq(schema.player.memberId, member.memberId)
               )
             );
-          if (compResult.rowCount === 1) {
-            ++updatesDone;
-            replyMessage.push('Competition details updated successfully.');
-          } else replyMessage.push('Failed to update competition details.');
-
-          if (updatesDone !== updatesToDo) {
-            replyMessage.push('Not all updates completed successfully.  All updates cancelled!')  
-            compDetailsTx.rollback()
-          } else replyMessage.push('All updates completed successfully.');
-
-          return replyMessage;
-        })
-      }catch(error) {
-        console.log(error)
-        if(updatesDone !== updatesToDo) {
-          return replyMessage;
+          if (playerResult.rowCount === 1) ++updatesDone;
         }
+        if (updatesDone !== reviewResult.players.length)
+          replyMessage.push('Failed to update all players details.');
+        else replyMessage.push('Players details updated successfully.');
+
+        const compResult = await compDetailsTx
+          .update(competition)
+          .set({
+            sheetEntries: reviewResult.signedInCount,
+            twosEntered: reviewResult.twosCount,
+            isValid: true,
+          })
+          .where(
+            and(
+              eq(competition.id, reviewResult.compId),
+              eq(competition.isValid, false)
+            )
+          );
+        if (compResult.rowCount === 1) {
+          ++updatesDone;
+          replyMessage.push('Competition details updated successfully.');
+        } else replyMessage.push('Failed to update competition details.');
+
+        if (updatesDone !== updatesToDo) {
+          replyMessage.push(
+            'Not all updates completed successfully.  All updates cancelled!'
+          );
+          compDetailsTx.rollback();
+        } else replyMessage.push('All updates completed successfully.');
+
+        return replyMessage;
+      });
+    } catch (error) {
+      console.log(error);
+      if (updatesDone !== updatesToDo) {
+        return replyMessage;
       }
+    }
+  }
+
+  async getMinMaxDates() {
+    return await this.database.select({
+      minDate: min(competition.compDate),
+      maxDate: max(competition.compDate),
+    }).from(competition).where(eq(competition.isValid, true));
   }
 }

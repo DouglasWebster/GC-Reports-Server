@@ -59,6 +59,11 @@ export class CompetitionController {
     return this.competitionService.getCompetitionReviewDetails(parseInt(id));
   }
 
+  @Get('finalised-date-range')
+  async getMinMaxDates() {
+    return this.competitionService.getMinMaxDates()
+  }
+
   @Get(':id')
   async getCompetition(@Param('id') id: string) {
     console.log(`getting competition with id of ${id}`);
