@@ -77,7 +77,7 @@ export class ResultsComponent implements OnInit {
                 `<button type='button' data-id='${rowIndex}' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'> View Result</button>`,
             },
           ],
-          searchable: true,
+          searchable: false,
           perPage: 5,
         });
       }
@@ -132,7 +132,11 @@ export class ResultsComponent implements OnInit {
 
   onSelectedYear(value: string) {
     this.filterOnYear = !value ? false : true;
-    this.selectedYear = !value ? 0 : parseInt(value);
-    console.log(this.selectedYear);
+    if(value) {
+      this.finalisedComps?.search(value)
+      // if(value === this.compYears[0])
+    } else {
+      this.finalisedComps?.search('')
+    }
   }
 }
