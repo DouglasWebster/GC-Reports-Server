@@ -16,10 +16,24 @@ export class ResultsComponent implements OnInit {
   selectedYear = 0;
   minMonth = 1;
   maxMonth = 12;
-  months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  months: string[] = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   viableMonths: string[] = [];
 
   filterOnYear = false;
+  filterOnMonth = false;
   compId: number | null = null;
 
   finalisedComps?: DataTable;
@@ -131,12 +145,33 @@ export class ResultsComponent implements OnInit {
   }
 
   onSelectedYear(value: string) {
-    this.filterOnYear = !value ? false : true;
-    if(value) {
-      this.finalisedComps?.search(value)
-      // if(value === this.compYears[0])
+    this.filterOnYear = value === 'All' ? false : true;
+    if (this.filterOnYear) {
+      this.selectedYear = parseInt(value, 10);
+      this.finalisedComps?.search(value);
+      this.viableMonths = this.months;
+      if (value === this.compYears[0]) {
+        this.viableMonths = this.months.slice(this.minMonth, 12);
+      }
+      if (value === this.compYears[this.compYears.length - 1]) {
+        this.viableMonths = this.months.slice(0, this.maxMonth + 1);
+      }
+
     } else {
-      this.finalisedComps?.search('')
+      this.finalisedComps?.search('');
     }
+  }
+
+  onSelectedMonth(value: string) {
+    this.filterOnMonth = value === 'All' ? false : true;
+    if (this.filterOnMonth) {
+      const monthIndex = this.months.indexOf(value) +1;
+      const searchString = `${this.selectedYear}-${monthIndex.toString().padStart(2, '0')}`;
+      console.log(searchString);
+      this.finalisedComps?.search(searchString);
+    } else {
+      this.finalisedComps?.search(this.selectedYear.toString());
+    }
+
   }
 }

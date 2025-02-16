@@ -13,7 +13,7 @@
                             <select #years id="years"
                                 (change)="onSelectedYear(years.value)"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option></option>
+                                <option>All</option>
                                 @for(year of compYears; track year){
                                 <option>{{ year }}</option>
                                 }
@@ -25,11 +25,11 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Limit
                                 To Month</label>
                             <select #months id="months"
-                                (change)="onSelectedYear(years.value)"
+                                (change)="onSelectedMonth(months.value)"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option></option>
-                                @for(year of compYears; track year){
-                                <option>{{ year }}</option>
+                                <option>All</option>
+                                @for(month of viableMonths; track month){
+                                <option>{{ month }}</option>
                                 }
                             </select>
                         </div>
