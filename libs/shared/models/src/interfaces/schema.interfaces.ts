@@ -35,10 +35,22 @@ export interface ICompReviewUpdate {
   compId: number;
   twosCount: number;
   signedInCount: number;
-  players: IPlayerReviewUpdate[]
+  players: IPlayerReviewUpdate[];
 }
 
 export interface IDateRange {
   minDate: Date;
   maxDate: Date;
+}
+
+export interface IResultPlayers {
+  foreName: string;
+  surnamne: string;
+  handicap: number;
+  divison: number;
+  position: number;
+  score: number;
+  stablefordPoints: number;
+  inTwos: boolean;
+  signedIn: boolean;
 }
