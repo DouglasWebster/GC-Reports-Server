@@ -78,4 +78,10 @@ export class CompetitionController {
     console.log(reply)
     return reply;
   }
+
+  @Get('results/:id')
+  async getCompetitionResults(@Param('id') id: string) {
+    console.log(`getting competition results with id of ${id}`);
+    return this.competitionService.getCompetitionResults(parseInt(id));
+  }
 }

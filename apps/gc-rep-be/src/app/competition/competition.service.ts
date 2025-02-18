@@ -2,7 +2,7 @@ import * as schema from '@libs/drizzle';
 import { competition, compForm } from '@libs/drizzle';
 import { ICompReviewUpdate } from '@libs/models';
 import { Inject, Injectable } from '@nestjs/common';
-import { and, desc, eq, min, sql, max } from 'drizzle-orm';
+import { and, desc, eq, min, sql, max, is, gt } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 
@@ -183,9 +183,39 @@ export class CompetitionService {
   }
 
   async getMinMaxDates() {
-    return await this.database.select({
-      minDate: min(competition.compDate),
-      maxDate: max(competition.compDate),
-    }).from(competition).where(eq(competition.isValid, true));
+    return await this.database
+      .select({
+        minDate: min(competition.compDate),
+        maxDate: max(competition.compDate),
+      })
+      .from(competition)
+      .where(eq(competition.isValid, true));
+  }
+
+  async getCompetitionResults(compId: number) {
+    const isValid = await this.database.query.competition.findFirst({
+      where: and(eq(competition.id, compId), eq(competition.isValid, true)),
+    });
+    console.log(isValid);
+    if (isValid === undefined) return isValid;
+    return await this.database
+      .select({
+        foreName: schema.member.foreName,
+        surnamne: schema.member.surname,
+        handicap: schema.player.handicap,
+        divison: schema.player.division,
+        position: schema.player.position,
+        score: schema.player.grossScore,
+        stablefordPoints: schema.player.stablefordPoints,
+        inTwos: schema.player.inTwos,
+        signedIn: schema.player.signedIn,
+      })
+      .from(schema.player)
+      .leftJoin(schema.member, eq(schema.member.id, schema.player.memberId))
+      .where(
+        and(
+          eq(schema.player.competitionId, compId)
+        )
+      );
   }
 }
