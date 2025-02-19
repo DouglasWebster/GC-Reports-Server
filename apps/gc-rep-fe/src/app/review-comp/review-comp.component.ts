@@ -261,7 +261,7 @@ export class ReviewCompComponent implements OnInit {
       ).length;
     }
 
-    if (computerEntries + notSignedIn < signedIn) reviewState = false;
+    if (computerEntries - notSignedIn > signedIn) reviewState = false;
     if (computerEntries - notInTwos > inTwos) reviewState = false;
 
     this.reviewValid = reviewState;
