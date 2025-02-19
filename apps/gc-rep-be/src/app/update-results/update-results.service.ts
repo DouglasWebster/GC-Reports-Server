@@ -89,10 +89,11 @@ export class UpdateResultsService {
       }
     }
 
-    const hasTwos = /There were .+ Twos recorded/g;
+    const hasTwos = /There were \d+ Twos recorded/g;
+    const hasTwo = /There was 1 Two recorded/g;
 
     for (let index = data.length - 1; index > 0; --index) {
-      const twosFound = data[index].match(hasTwos);
+      const twosFound = data[index].match(hasTwos) || data[index].match(hasTwo);
       if (twosFound !== null) {
         if (data[index] === 'There were no Twos recorded.') break;
         let twosIndex: number = index + 2;
