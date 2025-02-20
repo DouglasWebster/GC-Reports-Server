@@ -14,4 +14,9 @@ export class TeeController {
   async getTee(@Param('id') teeId: string) {
     return this.teeService.getTee(parseInt(teeId));
   }
+
+  @Get('competition/:id')
+  async getTeesForCompetition(@Param('id') competitionId: string) {
+    return this.teeService.getTeesForCompetition(parseInt(competitionId));
+  }
 }
