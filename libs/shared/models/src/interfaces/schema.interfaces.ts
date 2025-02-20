@@ -54,3 +54,9 @@ export interface IResultPlayers {
   inTwos: boolean;
   signedIn: boolean;
 }
+
+export interface ITeesFromCompetitionID {
+  teeName: string;
+  isLadies: boolean;
+  isMens: boolean;
+}
