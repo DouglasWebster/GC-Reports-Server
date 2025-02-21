@@ -203,7 +203,7 @@ export class CompetitionService {
         foreName: schema.member.foreName,
         surnamne: schema.member.surname,
         handicap: schema.player.handicap,
-        divison: schema.player.division,
+        division: schema.player.division,
         position: schema.player.position,
         score: schema.player.grossScore,
         stablefordPoints: schema.player.stablefordPoints,
