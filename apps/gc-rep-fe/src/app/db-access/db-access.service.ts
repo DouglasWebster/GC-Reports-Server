@@ -6,6 +6,8 @@ import {
   ICompetitionWithFormat,
   ICompReviewUpdate,
   IDateRange,
+  IResultPlayers,
+  ITeesFromCompetitionID,
 } from '@libs/models';
 import { Observable } from 'rxjs';
 import * as schema from '@libs/drizzle';
@@ -74,5 +76,13 @@ export class DbAccessService {
 
   getFinalisedCompDateRange() {
     return this.http.get<IDateRange[]>('api/competitions/finalised-date-range')
+  }
+
+  getFinalisedCompetitionPlayersDetails(compId: number) {
+    return this.http.get<IResultPlayers[]>(`api/competitions/results/${compId}`)
+  }
+
+  getTeesPlayedInCompetition(compId: number) {
+    return this.http.get<ITeesFromCompetitionID[]>(`api/tees/competition/${compId}`)
   }
 }
