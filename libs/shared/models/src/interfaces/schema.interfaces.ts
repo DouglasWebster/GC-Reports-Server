@@ -47,7 +47,7 @@ export interface IResultPlayers {
   foreName: string;
   surnamne: string;
   handicap: number;
-  divison: number;
+  division: number;
   position: number;
   score: number;
   stablefordPoints: number;
@@ -59,4 +59,10 @@ export interface ITeesFromCompetitionID {
   teeName: string;
   isLadies: boolean;
   isMens: boolean;
+}
+
+export interface IWinners {
+  title: string;
+  name: string;
+  prize: number;
 }
