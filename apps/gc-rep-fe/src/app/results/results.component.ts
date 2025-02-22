@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { IDateRange, IResultPlayers, IWinners } from '@libs/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
-import { IDateRange } from '@libs/models';
+import { max } from 'drizzle-orm';
 
 @Component({
   selector: 'gc-rep-fe-results',
@@ -34,10 +35,19 @@ export class ResultsComponent implements OnInit {
 
   filterOnYear = false;
   filterOnMonth = false;
-  compId: number | null = null;
+  resultCompId: number | null = null;
+  resultCompName: string | null = null;
+  resultCompDate: string | null = null;
+  resultMensTees = signal('');
+  resultLadiesTees = signal('');
+  resultCompEntries = signal(0);
+  resultCompFees = signal(0);
+  resultTwosEntries = signal(0);
+
+  resultWinners = signal<IWinners[]>([]);
 
   finalisedComps?: DataTable;
-  playerTable?: DataTable;
+  compPlayers: IResultPlayers[] | null = null;
 
   constructor(
     private readonly dbAccessService: DbAccessService,
@@ -109,11 +119,13 @@ export class ResultsComponent implements OnInit {
             const rowData = this.finalisedComps?.data.data[index].cells as {
               data: any;
             }[];
-            const compId = rowData[0].data[0].data;
+            console.log(rowData);
+            this.closeResult();
+            this.resultCompId = rowData[0].data[0].data;
+            this.resultCompName = rowData[2].data[0].data;
+            this.resultCompDate = rowData[1].data;
 
-            this.compId = compId;
-
-            this.generateResultDisplay(compId);
+            this.populateCompetionPlayers();
           }
         }
       });
@@ -139,11 +151,6 @@ export class ResultsComponent implements OnInit {
       });
   }
 
-  generateResultDisplay(compId: number) {
-    console.log(`competition ${compId} selected`);
-    // this.finalisedComps?.search('2024')
-  }
-
   onSelectedYear(value: string) {
     this.filterOnYear = value === 'All' ? false : true;
     if (this.filterOnYear) {
@@ -156,7 +163,6 @@ export class ResultsComponent implements OnInit {
       if (value === this.compYears[this.compYears.length - 1]) {
         this.viableMonths = this.months.slice(0, this.maxMonth + 1);
       }
-
     } else {
       this.finalisedComps?.search('');
     }
@@ -165,13 +171,171 @@ export class ResultsComponent implements OnInit {
   onSelectedMonth(value: string) {
     this.filterOnMonth = value === 'All' ? false : true;
     if (this.filterOnMonth) {
-      const monthIndex = this.months.indexOf(value) +1;
-      const searchString = `${this.selectedYear}-${monthIndex.toString().padStart(2, '0')}`;
+      const monthIndex = this.months.indexOf(value) + 1;
+      const searchString = `${this.selectedYear}-${monthIndex
+        .toString()
+        .padStart(2, '0')}`;
       console.log(searchString);
       this.finalisedComps?.search(searchString);
     } else {
       this.finalisedComps?.search(this.selectedYear.toString());
     }
+  }
 
+  populateCompetionPlayers() {
+    console.log(
+      `competition ${this.resultCompId}, date: ${this.resultCompDate}, name: ${this.resultCompName} selected`
+    );
+    if (this.resultCompId === null) return;
+    this.dbAccessService
+      .getFinalisedCompetitionPlayersDetails(this.resultCompId)
+      .subscribe((data) => {
+        this.compPlayers = data;
+        this.compPlayers.sort((a, b) => a.position - b.position);
+        console.log(this.compPlayers);
+        if (this.compPlayers.length > 0) {
+          if (this.resultCompId !== null) {
+            this.fillInCompDetails(this.resultCompId);
+            this.fillInTwosDetails();
+          }
+        }
+      });
+  }
+
+  fillInCompDetails(compId: number) {
+    this.dbAccessService
+      .getTeesPlayedInCompetition(compId)
+      .subscribe((data) => {
+        console.log(data);
+        for (const tee of data) {
+          if (tee.isMens) {
+            this.resultMensTees.set(tee.teeName);
+          } else {
+            this.resultMensTees.set('');
+          }
+          if (tee.isLadies) {
+            this.resultLadiesTees.set(tee.teeName);
+          } else {
+            this.resultLadiesTees.set('');
+          }
+        }
+      });
+    this.dbAccessService.getCompetitionDetailsById(compId).subscribe((data) => {
+      console.log(data);
+      this.resultCompEntries.set(data.sheetEntries);
+      this.resultCompFees.set(data.entryFee);
+      this.resultTwosEntries.set(data.twosEntered);
+
+      this.determinWinners();
+    });
+  }
+
+  determinWinners() {
+    console.log('determining winners');
+    if (this.compPlayers === null) return;
+
+    const validPlayers = this.compPlayers.filter(
+      (player) => player.position > 0
+    );
+
+    validPlayers.sort(
+      (a, b) => a.position - b.position
+    );
+
+    const maxDivision = Math.max(
+      ...validPlayers.map((player) => player.division)
+    );
+    const winners: IWinners[] = [];
+
+    switch (maxDivision) {
+      case 1:
+        winners.push({ title: 'Overall winner', name: '', prize: 0 });
+        break;
+      case 2:
+        winners.push({ title: 'Tiger', name: '', prize: 0 });
+        winners.push({ title: 'Rabbit', name: '', prize: 0 });
+        break;
+      case 3:
+        winners.push({ title: 'Winner division 1', name: '', prize: 0 });
+        winners.push({ title: 'Winner division 2', name: '', prize: 0 });
+        winners.push({ title: 'Winner division 3', name: '', prize: 0 });
+        break;
+    }
+
+    for (let i = 1; i <= maxDivision; i++) {
+      const divisionWinner = validPlayers.find(
+        (player) => player.division === i
+      );
+      if (divisionWinner) {
+        validPlayers.splice(
+          validPlayers.findIndex(
+            (player) => player.position === divisionWinner.position
+          ),
+          1
+        );
+        const winner = winners.at(i - 1);
+        if (winner) {
+          winner.name = `${divisionWinner.foreName} ${divisionWinner.surnamne}`;
+        }
+      }
+    }
+
+    const prizeBase = this.resultCompFees() * this.resultCompEntries();
+
+    if (validPlayers.length < 36) {
+      const prize = Math.round(prizeBase / maxDivision);
+      for (const winner of winners) winner.prize = prize;
+    }
+
+    if (
+      this.resultCompEntries() > 35 &&
+      this.resultCompEntries() < 46 &&
+      maxDivision === 3
+    ) {
+      const winnersPrize = Math.round((prizeBase * 0.84) / 3);
+      for (const winner of winners) winner.prize = winnersPrize;
+      const nextWinner = validPlayers.at(0);
+      if (nextWinner)
+        winners.push({
+          title: 'Next best highest score',
+          name: `${nextWinner.foreName} ${nextWinner.surnamne}`,
+          prize: prizeBase * 0.16,
+        });
+    }
+
+    if (this.resultCompEntries() > 45 && maxDivision === 3) {
+      const winnersPrize = Math.round((prizeBase * 0.7) / 3);
+      for (const winner of winners) winner.prize = winnersPrize;
+
+      // 2 runners up + 1 more for every 20 extra players
+      const extraWinners = 2 + Math.round((this.resultCompEntries() - 46) / 20);
+      const runnerUpPrize = Math.round((prizeBase * 0.3) / extraWinners);
+      for (let i = 0; i < extraWinners; i++) {
+        const nextWinner = validPlayers.at(i);
+        if (nextWinner)
+          winners.push({
+            title: 'Next best highest score',
+            name: `${nextWinner.foreName} ${nextWinner.surnamne}`,
+            prize: runnerUpPrize,
+          });
+      }
+    }
+
+    this.resultWinners.set(winners);
+  }
+
+  fillInTwosDetails() {
+    console.log('filling in twos details');
+  }
+
+  closeResult() {
+    this.resultCompId = null;
+    this.resultCompName = null;
+    this.resultCompDate = null;
+    this.resultMensTees.set('');
+    this.resultCompEntries.set(0);
+    this.resultCompFees.set(0);
+    this.resultTwosEntries.set(0);
+    this.compPlayers = null;
   }
 }
