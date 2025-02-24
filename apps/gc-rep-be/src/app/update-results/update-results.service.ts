@@ -89,26 +89,55 @@ export class UpdateResultsService {
       }
     }
 
-    const hasTwos = /There were \d+ Twos recorded/g;
-    const hasTwo = /There was 1 Two recorded/g;
+    // there is Always a section that starts 'Twos:' and ends with a blank line
+    const startOfTwos = /Twos:/g;
+
+    // if a two has been scored there is a header line that starts with an
+    // optional Division header followd by the Hole header
+    const startOfTwosFound = /(,?:Division)?,Hole,/g;
+
+    let twosRowsStart = 0;
+    let twosHoleColumn = 1; // assume there is no division column
 
     for (let index = data.length - 1; index > 0; --index) {
-      const twosFound = data[index].match(hasTwos) || data[index].match(hasTwo);
-      if (twosFound !== null) {
-        if (data[index] === 'There were no Twos recorded.') break;
-        let twosIndex: number = index + 2;
-        while (data[twosIndex] !== '') {
-          const items = data[twosIndex].split(',');
-          if (items.length < 3 || items[(0)[0]] === '') break;
-          twosWinners.push({
-            name: items.at(0),
-            hole: +items.at(-2),
-          });
-          ++twosIndex;
-        }
+      if (data[index].match(startOfTwosFound)) {
+        twosRowsStart = index + 1;
+        if (data[index].startsWith(',Division')) twosHoleColumn = 2;
         break;
       }
+      if (data[index].match(startOfTwos)) break;
     }
+
+    if (twosRowsStart !== 0) {
+      let twosIndex: number = twosRowsStart;
+      while (data[twosIndex] !== '') {
+        const items = data[twosIndex].split(',');
+        if (items.length < 3 || items[0][0] == '') break;
+        twosWinners.push({ name: items[0], hole: +items[twosHoleColumn] });
+        ++twosIndex;
+      }
+    }
+
+    // const hasTwos = /There were \d+ Twos recorded/g;
+    // const hasTwo = /There was 1 Two recorded/g;
+
+    // for (let index = data.length - 1; index > 0; --index) {
+    //   const twosFound = data[index].match(hasTwos) || data[index].match(hasTwo);
+    //   if (twosFound !== null) {
+    //     if (data[index] === 'There were no Twos recorded.') break;
+    //     let twosIndex: number = index + 2;
+    //     while (data[twosIndex] !== '') {
+    //       const items = data[twosIndex].split(',');
+    //       if (items.length < 3 || items[(0)[0]] === '') break;
+    //       twosWinners.push({
+    //         name: items.at(0),
+    //         hole: +items.at(-2),
+    //       });
+    //       ++twosIndex;
+    //     }
+    //     break;
+    //   }
+    // }
 
     const result: IResult = {
       name: compName,
