@@ -118,27 +118,6 @@ export class UpdateResultsService {
       }
     }
 
-    // const hasTwos = /There were \d+ Twos recorded/g;
-    // const hasTwo = /There was 1 Two recorded/g;
-
-    // for (let index = data.length - 1; index > 0; --index) {
-    //   const twosFound = data[index].match(hasTwos) || data[index].match(hasTwo);
-    //   if (twosFound !== null) {
-    //     if (data[index] === 'There were no Twos recorded.') break;
-    //     let twosIndex: number = index + 2;
-    //     while (data[twosIndex] !== '') {
-    //       const items = data[twosIndex].split(',');
-    //       if (items.length < 3 || items[(0)[0]] === '') break;
-    //       twosWinners.push({
-    //         name: items.at(0),
-    //         hole: +items.at(-2),
-    //       });
-    //       ++twosIndex;
-    //     }
-    //     break;
-    //   }
-    // }
-
     const result: IResult = {
       name: compName,
       date: compUTCDate,
