@@ -63,11 +63,19 @@ export class TwoService {
         forName: schema.member.foreName,
         surname: schema.member.surname,
         hole: schema.two.hole,
+        inTwos: schema.player.inTwos,
       })
       .from(schema.two)
       .leftJoin(schema.member, eq(schema.two.memberId, schema.member.id))
+      .leftJoin(
+        schema.player,
+        and(
+          eq(schema.member.id, schema.player.memberId),
+          eq(schema.two.competitionId, schema.player.competitionId)
+        )
+      )
       .where(eq(schema.two.competitionId, compId))
-      .orderBy(asc(schema.member.surname), asc(schema.two.hole));
+      .orderBy(schema.player.inTwos, schema.member.surname, schema.two.hole);
     return twos;
   }
 }
