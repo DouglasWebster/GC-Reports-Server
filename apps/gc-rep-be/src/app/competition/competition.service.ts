@@ -2,7 +2,7 @@ import * as schema from '@libs/drizzle';
 import { competition, compForm } from '@libs/drizzle';
 import { ICompReviewUpdate } from '@libs/models';
 import { Inject, Injectable } from '@nestjs/common';
-import { and, desc, eq, min, sql, max, is, gt } from 'drizzle-orm';
+import { and, desc, eq, max, min, sql } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 
