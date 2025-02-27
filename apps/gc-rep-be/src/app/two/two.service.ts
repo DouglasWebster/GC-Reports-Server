@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import { member, InsertTwo } from '@libs/drizzle';
@@ -55,5 +55,19 @@ export class TwoService {
     console.log(`${res.rowCount} twos registered for the competion`);
 
     return res;
+  }
+
+  async getTwosForCompetition(compId: number) {
+    const twos = await this.database
+      .select({
+        forName: schema.member.foreName,
+        surname: schema.member.surname,
+        hole: schema.two.hole,
+      })
+      .from(schema.two)
+      .leftJoin(schema.member, eq(schema.two.memberId, schema.member.id))
+      .where(eq(schema.two.competitionId, compId))
+      .orderBy(asc(schema.member.surname), asc(schema.two.hole));
+    return twos;
   }
 }
