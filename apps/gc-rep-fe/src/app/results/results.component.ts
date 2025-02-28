@@ -1,10 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
-import { IDateRange, IResultPlayers, IWinners } from '@libs/models';
+import {
+  IDateRange,
+  IResultPlayers,
+  ITwosResults,
+  ITwosScorersForComp,
+  IWinners,
+} from '@libs/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
-import { max } from 'drizzle-orm';
 
 @Component({
   selector: 'gc-rep-fe-results',
@@ -45,6 +50,7 @@ export class ResultsComponent implements OnInit {
   resultTwosEntries = signal(0);
 
   resultWinners = signal<IWinners[]>([]);
+  resultTwosScorers = signal<ITwosResults[]>([]);
 
   finalisedComps?: DataTable;
   compPlayers: IResultPlayers[] | null = null;
@@ -196,7 +202,7 @@ export class ResultsComponent implements OnInit {
         if (this.compPlayers.length > 0) {
           if (this.resultCompId !== null) {
             this.fillInCompDetails(this.resultCompId);
-            this.fillInTwosDetails();
+            this.fillInTwosDetails(this.resultCompId);
           }
         }
       });
@@ -238,9 +244,7 @@ export class ResultsComponent implements OnInit {
       (player) => player.position > 0
     );
 
-    validPlayers.sort(
-      (a, b) => a.position - b.position
-    );
+    validPlayers.sort((a, b) => a.position - b.position);
 
     const maxDivision = Math.max(
       ...validPlayers.map((player) => player.division)
@@ -324,8 +328,47 @@ export class ResultsComponent implements OnInit {
     this.resultWinners.set(winners);
   }
 
-  fillInTwosDetails() {
-    console.log('filling in twos details');
+  fillInTwosDetails(compId: number) {
+    let twosScorers: ITwosScorersForComp[];
+    this.dbAccessService
+      .getTwosScorersForCompetition(compId)
+      .subscribe((data) => {
+        twosScorers = data;
+        const twosResult: ITwosResults[] = [];
+        const twosScorersNames = new Set<string>();
+        for (const twosScorer of twosScorers) {
+          const fullName = `${twosScorer.foreName} ${twosScorer.surname}`;
+          if (twosScorersNames.has(fullName)) {
+            const existingTwos = twosResult.find(
+              (twos) => twos.name === fullName
+            );
+            if (existingTwos) {
+              existingTwos.holes += `, ${twosScorer.hole}`;
+              existingTwos.count++;
+            } else {
+              twosResult.push({
+                name: fullName,
+                holes: `${twosScorer.hole}`,
+                count: 1,
+                inTwos: twosScorer.inTwos,
+              });
+            }
+            continue;
+          }
+          twosScorersNames.add(fullName);
+          twosResult.push({
+            name: fullName,
+            holes: `${twosScorer.hole}`,
+            count: 1,
+            inTwos: twosScorer.inTwos,
+          });
+        }
+        console.log('twos scorers:')
+        console.log(twosScorers);
+        console.log('twos winners:')
+        console.log(twosResult);
+        this.resultTwosScorers.set(twosResult);
+      });
   }
 
   closeResult() {

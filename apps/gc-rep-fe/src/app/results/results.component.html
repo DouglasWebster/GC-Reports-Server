@@ -1,8 +1,8 @@
 <div class="p-4">
-    <div class="top-4 m-4">
+    <div class="top-4 sm:m-4">
         <section>
-            <div class="flex flex-row gap-16 pt-4">
-                <div class="basis-1/3">
+            <div class="flex flex-wrap gap-16 pt-4">
+                <div class="lg:w-1/3 lg:grow-0 grow">
                     <h2 class="text-xl font-bold dark:text-white pt-2 pb-2">
                         Finalised Competions</h2>
                     <div class="flex flex-row w-max">
@@ -37,136 +37,187 @@
                         ...
                     </table>
                 </div>
-                <div class="basis-2/3">
+                <div class="grow">
                     @if (resultCompName) {
                     <h2 class="text-2xl font-bold dark:text-white pt-2 pb-2 text-center">
                         Competition Result
                     </h2>
-                    <div class="relative overflow-x-auto">
-                        <table class="w-1/2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <caption
-                                class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                                Details
+                    <div class="flex flex-wrap pt-4">
+                        <div class="grow">
+                            <div class="relative overflow-x-auto">
+                                <table class=" text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <caption
+                                        class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                                        Details
+                                    </caption>
+                                    <tbody>
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Format:
+                                            </th>
+                                            <td class="py-2">
+                                                {{resultCompName}}
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Date:
+                                            </th>
+                                            <td class="py-2">
+                                                {{resultCompDate | date:
+                                                "fullDate" }}
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Tees:
+                                            </th>
+                                            <td class="py-2">
+                                                @if(resultMensTees().length > 0) {
+                                                Mens: {{resultMensTees()}}
+                                                <span class="pl-4"></span>
+                                                }
+                                                @if(resultLadiesTees().length > 0) {
+                                                Ladies: {{resultLadiesTees()}}
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Entry Fee:
+                                            </th>
+                                            <td class="py-2">
+                                                £{{resultCompFees()}}
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Competition entries (from start sheet):
+                                            </th>
+                                            <td class="py-2">
+                                                {{resultCompEntries()}}
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Twos entries (from start sheet):
+                                            </th>
+                                            <td class="py-2">
+                                                {{resultTwosEntries()}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                            </caption>
-                            <tbody>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                    <th scope="row"
-                                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Format:
-                                    </th>
-                                    <td class="py-2">
-                                        {{resultCompName}}
-                                    </td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                    <th scope="row"
-                                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Date:
-                                    </th>
-                                    <td class="py-2">
-                                        {{resultCompDate | date:
-                                        "fullDate" }}
-                                    </td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                    <th scope="row"
-                                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Tees:
-                                    </th>
-                                    <td class="py-2">
-                                        @if(resultMensTees().length > 0) {
-                                        Mens: {{resultMensTees()}}
-                                        <span class="pl-4"></span>
+                                <table class="w-1/2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <caption
+                                        class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                                        Winners
+
+                                    </caption>
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" class="px-3 py-3">
+                                            </th>
+                                            <th scope="col" class="px-3 py-3">
+                                                <!-- Name -->
+                                            </th>
+                                            <th scope="col" class="px-3 py-3">
+                                                <!-- Prize -->
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for(winner of resultWinners(); track winner){
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {{winner.title}}
+                                            </th>
+                                            <td class="py-3">
+                                                {{winner.name}}
+                                            </td>
+                                            <td class="py-3">
+                                                £{{winner.prize}}
+                                        </tr>
                                         }
-                                        @if(resultLadiesTees().length > 0) {
-                                        Ladies: {{resultLadiesTees()}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="grow">
+                            <div class="relative overflow-x-auto">
+                                <table class="w-1/2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <caption
+                                        class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                                        Twos Winners
+
+                                    </caption>
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" class="px-3 py-3">
+                                                Name
+                                            </th>
+                                            <th scope="col" class="px-3 py-3">
+                                                Hole(s)
+                                            </th>
+                                            <th scope="col" class="px-3 py-3">
+                                                Prize
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for(two of resultTwosScorers(); track two.name){
+                                        <tr
+                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
+                                                {{two.name}}
+                                            </th>
+                                            <td class="py-3 text-center">
+                                                {{two.holes}}
+                                            </td>
+                                            <td class="py-3 pr-4 text-right">
+                                                £{{two.count * resultCompFees()}}
+                                        </tr>
                                         }
-                                    </td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                    <th scope="row"
-                                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Entry Fee:
-                                    </th>
-                                    <td class="py-2">
-                                        £{{resultCompFees()}}
-                                    </td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                    <th scope="row"
-                                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Competition entries (from start sheet):
-                                    </th>
-                                    <td class="py-2">
-                                        {{resultCompEntries()}}
-                                    </td>
-                                </tr>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                    <th scope="row"
-                                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Twos entries (from start sheet):
-                                    </th>
-                                    <td class="py-2">
-                                        {{resultTwosEntries()}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class="w-1/2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <caption
-                                class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                                Winners
-
-                            </caption>
-                            <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-3 py-3">
-                                    </th>
-                                    <th scope="col" class="px-3 py-3">
-                                        Name
-                                    </th>
-                                    <th scope="col" class="px-3 py-3">
-                                        Prize
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for(winner of resultWinners(); track winner){
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                    <th scope="row"
-                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{winner.title}}
-                                    </th>
-                                    <td class="py-3">
-                                        {{winner.name}}
-                                    </td>
-                                    <td class="py-3">
-                                        £{{winner.prize}}
-                                </tr>
-                                }
-                            </tbody>
-                        </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="pt-6 inline-flex rounded-md shadow-xs" role="group">
-                        <button type="button"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
-                            (click)="closeResult()">
-                            Close
-                        </button>
-                        <button type="button"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
-                            Print
-                        </button>
-                        <button type="button"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
-                            Export
-                        </button>
+                    <div class="flex grow justify-center">
+                        <div class="pt-6 inline-flex rounded-md shadow-xs" role="group">
+                            <button type="button"
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+                                (click)="closeResult()">
+                                Close
+                            </button>
+                            <button type="button"
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                                Print
+                            </button>
+                            <button type="button"
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                                Export
+                            </button>
+                        </div>
                     </div>
-
-
                     }
                 </div>
             </div>
