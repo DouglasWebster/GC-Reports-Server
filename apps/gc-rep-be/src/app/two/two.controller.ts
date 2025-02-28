@@ -5,7 +5,7 @@ import { TwoService } from './two.service';
 export class TwoController {
   constructor(private readonly twoService: TwoService) {}
 
-  @Get('comp_winners/:id')
+  @Get('comp_twos/:id')
   async getTwosForCompetition(@Param('id') id: string) {
     return this.twoService.getTwosForCompetition(parseInt(id));
   }

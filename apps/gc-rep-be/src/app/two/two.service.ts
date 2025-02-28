@@ -60,7 +60,7 @@ export class TwoService {
   async getTwosForCompetition(compId: number) {
     const twos = await this.database
       .select({
-        forName: schema.member.foreName,
+        foreName: schema.member.foreName,
         surname: schema.member.surname,
         hole: schema.two.hole,
         inTwos: schema.player.inTwos,
