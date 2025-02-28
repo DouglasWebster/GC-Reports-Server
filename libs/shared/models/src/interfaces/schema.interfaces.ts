@@ -66,3 +66,17 @@ export interface IWinners {
   name: string;
   prize: number;
 }
+
+export interface ITwosScorersForComp {
+  foreName: string;
+  surname: string;
+  hole: number;
+  inTwos: boolean;
+}
+
+export interface ITwosResults {
+  name: string;
+  holes: string
+  count: number;
+  inTwos: boolean;
+} 
