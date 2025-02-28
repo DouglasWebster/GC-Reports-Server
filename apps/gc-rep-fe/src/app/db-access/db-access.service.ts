@@ -8,6 +8,7 @@ import {
   IDateRange,
   IResultPlayers,
   ITeesFromCompetitionID,
+  ITwosScorersForComp,
 } from '@libs/models';
 import { Observable } from 'rxjs';
 import * as schema from '@libs/drizzle';
@@ -84,5 +85,9 @@ export class DbAccessService {
 
   getTeesPlayedInCompetition(compId: number) {
     return this.http.get<ITeesFromCompetitionID[]>(`api/tees/competition/${compId}`)
+  }
+
+  getTwosScorersForCompetition(compId: number) {
+    return this.http.get<ITwosScorersForComp[]>(`api/twos/comp_twos/${compId}`)
   }
 }
