@@ -10,6 +10,8 @@ import {
 } from '@libs/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
+import { jsPDF } from 'jspdf';
+// import 'jspdf-autotable';
 
 @Component({
   selector: 'gc-rep-fe-results',
@@ -372,6 +374,7 @@ export class ResultsComponent implements OnInit {
   }
 
   closeResult() {
+    console.log('closing result');
     this.resultCompId = null;
     this.resultCompName = null;
     this.resultCompDate = null;
@@ -381,4 +384,11 @@ export class ResultsComponent implements OnInit {
     this.resultTwosEntries.set(0);
     this.compPlayers = null;
   }
+
+  printResult() { 
+    console.log('printing result');
+    window.print();
+  }
+
+  
 }
