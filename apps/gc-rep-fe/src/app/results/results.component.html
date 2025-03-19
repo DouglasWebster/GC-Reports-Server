@@ -1,4 +1,4 @@
-<div class="p-4">
+<div class="print:hidden p-4">
     <div class="top-4 sm:m-4">
         <section>
             <div class="flex flex-wrap gap-16 pt-4">
@@ -209,12 +209,9 @@
                                 Close
                             </button>
                             <button type="button"
-                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white" (click)="printResult()">
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+                                (click)="printResult()">
                                 Print
-                            </button>
-                            <button type="button"
-                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white" >
-                                Create PDF
                             </button>
                         </div>
                     </div>
@@ -223,4 +220,87 @@
             </div>
         </section>
     </div>
+</div>
+
+<div class="screen:hidden">
+    @if (resultCompName) {
+    <img src="./BawtryTree.png" alt="Print" class="h-32 float-right" />
+    <p class="font-bold dark:text-white pt-8 pb-2 text-left">
+        Competition Result for {{resultCompName}}</p>
+    <p class="font-bold dark:text-white pb-2 text-left">
+        Played on {{resultCompDate | date: "fullDate" }}
+    </p>
+    <p class="font-bold dark:text-white pb-2 text-left">
+        Tees:<span class="pl-4"></span> @if(resultMensTees().length > 0) {
+        Mens: {{resultMensTees()}}
+        }
+        @if(resultMensTees().length > 0 && resultLadiesTees().length > 0) {
+        ,<span class="pl-2"></span>
+        }
+        @if(resultLadiesTees().length > 0) {
+        Ladies: {{resultLadiesTees()}}
+        }
+    </p>
+    <p class="font-bold dark:text-white pt-8 pb-2 text-left">
+        {{resultCompEntries()}} Players entered in the competion:
+    </p>
+    <p class="font-bold dark:text-white pb-2 text-left">
+        {{resultTwosEntries()}} Players entered in the twos:
+    </p>
+    <p class="font-bold dark:text-white pb-2 text-left">
+        {{resultTwosScorers().length}} Players scored a two or better:
+    </p>
+    <div class="grid grid-cols-5 gap-4">
+        <div class="col-span-3">
+            <h2 class="text-lg font-bold dark:text-white pt-2 pb-2 text-center">
+                Competition Winners
+            </h2>
+            <table class="table-fixed w-full">
+                <tbody>
+                    @for(winner of resultWinners(); track winner){
+                    <tr>
+                        <td class="text-xs text-right w-5/12">
+                            {{winner.title}}
+                        </td>
+                        <td class="text-xs w-5/12 pl-2">
+                            {{winner.name}}
+                        </td>
+                        <td class="text-xs w-2/12">
+                            £{{winner.prize}}
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-span-2">
+            <h2 class="text-xl font-bold dark:text-white pt-2 pb-2 text-center">
+                Twos Winners
+            </h2>
+            @if(resultTwosScorers().length > 0) {
+            <table class="table-fixed w-full">
+                <tbody>
+                    @for(two of resultTwosScorers(); track two.name){
+                    <tr>
+                        <td class="text-xs w-7/12">
+                            {{two.name}}
+                        </td>
+                        <td class="text-xs w-3/12 pr-6 text-right">
+                            {{two.holes}}
+                        </td>
+                        <td class="text-xs w-2/12">
+                            £{{two.count * resultCompFees()}}
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            } @else {
+            <p class="font-bold dark:text-white pb-2 text-center">
+                No twos scored
+            </p>
+            }
+        </div>
+    </div>
+    }
 </div>

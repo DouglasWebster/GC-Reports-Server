@@ -98,6 +98,11 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@nestjs/core",
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "lmdb",
+      "msgpackr-extract",
       "nx"
     ]
   }

@@ -14,6 +14,10 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['InterVarialbe', ...defaultTheme.fontFamily.sans] 
+      },
+      screens: {
+        print: { raw: 'print' },
+        screen: { raw: 'screen' },
       }
     },
   },

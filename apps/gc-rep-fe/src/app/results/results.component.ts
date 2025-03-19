@@ -10,8 +10,6 @@ import {
 } from '@libs/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
-import { jsPDF } from 'jspdf';
-// import 'jspdf-autotable';
 
 @Component({
   selector: 'gc-rep-fe-results',
