@@ -51,6 +51,7 @@ export class ResultsComponent implements OnInit {
 
   resultWinners = signal<IWinners[]>([]);
   resultTwosScorers = signal<ITwosResults[]>([]);
+  resultTwosPayout = signal(0);
 
   finalisedComps?: DataTable;
   compPlayers: IResultPlayers[] | null = null;
@@ -202,7 +203,6 @@ export class ResultsComponent implements OnInit {
         if (this.compPlayers.length > 0) {
           if (this.resultCompId !== null) {
             this.fillInCompDetails(this.resultCompId);
-            this.fillInTwosDetails(this.resultCompId);
           }
         }
       });
@@ -233,6 +233,7 @@ export class ResultsComponent implements OnInit {
       this.resultTwosEntries.set(data.twosEntered);
 
       this.determinWinners();
+      this.fillInTwosDetails(compId);
     });
   }
 
@@ -336,6 +337,7 @@ export class ResultsComponent implements OnInit {
         twosScorers = data;
         const twosResult: ITwosResults[] = [];
         const twosScorersNames = new Set<string>();
+        this.resultTwosPayout.set(Math.floor(this.resultTwosEntries() / twosScorers.length));
         for (const twosScorer of twosScorers) {
           const fullName = `${twosScorer.foreName} ${twosScorer.surname}`;
           if (twosScorersNames.has(fullName)) {
