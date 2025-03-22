@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@gcr/server/feature-health": ["libs/server/feature-health/src/index.ts"],
       "@libs/drizzle": ["libs/shared/drizzle/src/index.ts"],
       "@libs/models": ["libs/shared/models/src/index.ts"]
     }

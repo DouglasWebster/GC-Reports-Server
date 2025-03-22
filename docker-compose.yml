@@ -1,5 +1,27 @@
 services:
-  db:
+  server:
+    container_name: server
+    image: gc-rep-be
+    ports:
+      - 3000:3333
+    env_file:
+      - .env
+    environment:
+      - ENVIRONEMNT=docker
+      - DATABASE_H0ST=={DB_HOST}
+      # - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+    healthcheck:
+      test: wget localhost:3000/api/health -q -O - > /dev/null 2>&1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
+  
+  postgres:
+    container_name: postgres
     image: postgres:latest
     restart: always
     environment:
@@ -10,6 +32,12 @@ services:
       - ${DB_PORT}:5432
     volumes:
       - ./db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${DB_USER} -d ${DB_NAME}
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   pgadmin:
     image: dpage/pgadmin4:latest
     ports:

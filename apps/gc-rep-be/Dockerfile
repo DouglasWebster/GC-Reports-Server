@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 COPY dist/apps/gc-rep-be/package.json ./
 RUN npm install --only=production
 
-RUN npm install reflect-metadata tslib sqlite3 pg
+RUN npm install tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios @nestjs/typeorm typeorm
 
 ######################################################
 # Production image, copy all the files and run nest
@@ -37,10 +37,10 @@ WORKDIR /usr/src/app
 COPY dist/apps/gc-rep-be/package*.json ./
 
 # install extracted deps
-RUN npm install --only=production
+RUN npm ci --only=production
 
 # install additional deps
-RUN npm install reflect-metadata tslib rxjs sqlite3 mysql2 pg
+RUN npm ci tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios @nestjs/typeorm typeorm
 
 ######################################################
 # Production image, copy all the files and run nest
