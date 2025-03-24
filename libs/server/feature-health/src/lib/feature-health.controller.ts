@@ -12,7 +12,7 @@ export class FeatureHealthController {
   @HealthCheck()
   healthCheck() {
     return this.health.check([
-      async () => this.db.pingCheck('database', { timeout: 300 }),
+      async () => this.db.pingCheck('golfreports', { timeout: 300 }),
     ]);
   }
 }
