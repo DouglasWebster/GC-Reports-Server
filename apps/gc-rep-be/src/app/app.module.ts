@@ -10,7 +10,7 @@ import { PlayerModule } from './player/player.module';
 import { TeeModule } from './tee/tee.module';
 import { UpdateResultsModule } from './update-results/update-results.module';
 import { TwoModule } from './two/two.module';
-import { FeatureHealthModule } from '@gcr/server/feature-health';
+// import { FeatureHealthModule } from '@gcr/server/feature-health';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { FeatureHealthModule } from '@gcr/server/feature-health';
     UpdateResultsModule,
     MemberModule,
     TwoModule,
-    FeatureHealthModule,
+    // FeatureHealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,18 @@
 services:
+
+  client:
+    container_name: client
+    image: gc-rep-fe
+    ports:
+      - 8081:8080
+    depends_on:
+      - server
+    healthcheck:
+      test: wget localhost:8081 -q -O - > /dev/null 2>&1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
   server:
     container_name: server
     image: gc-rep-be
