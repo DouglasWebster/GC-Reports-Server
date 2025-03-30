@@ -2,7 +2,7 @@ services:
 
   client:
     container_name: client
-    image: gc-rep-fe
+    image: client
     ports:
       - 8081:8080
     depends_on:
@@ -15,21 +15,21 @@ services:
       start_period: 30s
   server:
     container_name: server
-    image: gc-rep-be
+    image: server
     ports:
       - 3000:3333
     env_file:
       - .env
     environment:
-      - ENVIRONEMNT=docker
-      - DATABASE_H0ST=={DB_HOST}
+      - ENVIRONMENT=docker
+      - DATABASE_HOST=={DB_HOST}
       # - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
-    healthcheck:
-      test: wget localhost:3000/api/health -q -O - > /dev/null 2>&1
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    # healthcheck:
+    #   test: wget localhost:3000/api/health -q -O - > /dev/null 2>&1
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 3
+    #   start_period: 30s
     depends_on:
       postgres:
         condition: service_healthy
@@ -51,9 +51,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      - pgadmin
+      - adminer
 
   pgadmin:
     image: dpage/pgadmin4:latest
+    restart: always
     ports:
       - 5050:80
     environment:
