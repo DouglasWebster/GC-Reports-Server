@@ -9,13 +9,16 @@ import { ConfigService } from '@nestjs/config';
 // import * as memberSchema from '../member/schema'
 import * as schemas from '@libs/drizzle'
 
+const ENV = process.env.ENVIRONMENT
+
 @Module({
   providers: [
     {
       provide: DATABASE_CONNECTION,
       useFactory: () => {
+        console.log('ENVIRONMENT:', ENV);
         return drizzle({
-          connection: process.env.DATABASE_URL,
+          connection: ENV==='docker' ? process.env.DOCKER_URL : process.env.DATABASE_URL,
           schema: {
             // ...teesSchema,
             // ...compFormSchema,
