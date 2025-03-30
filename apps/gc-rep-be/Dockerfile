@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 COPY dist/apps/gc-rep-be/package.json ./
 RUN npm install --only=production
 
-RUN npm install tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios @nestjs/typeorm typeorm
+RUN npm install tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios
 
 ######################################################
 # Production image, copy all the files and run nest
@@ -34,13 +34,14 @@ RUN apk add --no-cache dumb-init
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /usr/src/app
+ENV ENVIRONMENT='docker'
 COPY dist/apps/gc-rep-be/package*.json ./
 
 # install extracted deps
 RUN npm ci --only=production
 
 # install additional deps
-RUN npm ci tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios @nestjs/typeorm typeorm
+RUN npm ci tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios
 
 ######################################################
 # Production image, copy all the files and run nest
