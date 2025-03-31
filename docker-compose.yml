@@ -4,7 +4,7 @@ services:
     container_name: client
     image: client
     ports:
-      - 8081:8080
+      - 4200:80
     depends_on:
       - server
     healthcheck:
