@@ -27,9 +27,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.noOfCompsInDb$ = this.dbAccessService.countAllComps();
-    this.noOfCompsToReview$ = this.dbAccessService.countCompsToReview();
-    this.noOfMemersInDb$ = this.dbAccessService.countMembers();
+    this.updateData();
   }
 
   updateData() {
