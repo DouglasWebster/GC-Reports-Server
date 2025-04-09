@@ -57,7 +57,7 @@ export class TwoService {
     return res;
   }
 
-  async getTwosForCompetition(compId: number) {
+  async getTwosWinnersForCompetition(compId: number) {
     const twos = await this.database
       .select({
         foreName: schema.member.foreName,
@@ -74,7 +74,11 @@ export class TwoService {
           eq(schema.two.competitionId, schema.player.competitionId)
         )
       )
-      .where(eq(schema.two.competitionId, compId))
+      .where(
+        and(
+          eq(schema.two.competitionId, compId),
+          eq(schema.player.inTwos, true)
+        ))
       .orderBy(schema.player.inTwos, schema.member.surname, schema.two.hole);
     return twos;
   }
