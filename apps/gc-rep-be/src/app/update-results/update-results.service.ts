@@ -28,9 +28,11 @@ export class UpdateResultsService {
 
     // get the date of the competition - convert to UTC otherwise it is one day off in summer
     const dateItems: string[] = data[4].split(' ');
+    console.log(dateItems);
     const compDate: Date = new Date(
       Date.parse(dateItems[3] + ' ' + dateItems[4] + ' ' + dateItems[5])
     );
+    console.log(compDate.toLocaleDateString());
     const compUTCDateString = compDate.toLocaleDateString();
 
     const compUTCDay = +compUTCDateString.substring(0, 2);
@@ -41,7 +43,7 @@ export class UpdateResultsService {
       Date.UTC(compUTCYear, compUTCMonth, compUTCDay)
     );
 
-    console.log(compDate.toLocaleDateString());
+    console.log(compUTCDate.toLocaleDateString());
 
     const twosWinners: ITwos[] = [];
 
