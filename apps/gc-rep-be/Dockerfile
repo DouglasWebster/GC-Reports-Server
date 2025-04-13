@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 COPY dist/apps/gc-rep-be/package.json ./
 RUN npm install --only=production
 
-RUN npm install tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios
+RUN npm ci tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios
 
 ######################################################
 # Production image, copy all the files and run nest
@@ -35,10 +35,11 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /usr/src/app
 ENV ENVIRONMENT='docker'
+ENV NODE_ENV='production'
 COPY dist/apps/gc-rep-be/package*.json ./
 
 # install extracted deps
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # install additional deps
 RUN npm ci tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios
@@ -54,7 +55,12 @@ LABEL org.opencontainers.image.source=https://github.com/DouglasWebster/GC-Repor
 LABEL org.opencontainers.image.description="NestJS REST API for the GC comp payouts application"
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apk add --no-cache dumb-init
+# RUN apk add --no-cache dumb-init
+# RUN apk add --no-cache --update musl musl-utils musl-locales tzdata
+# ENV TZ=Europe/London
+# RUN cp /usr/share/zoneinfo/Europe/London /etc/localtime
+# RUN echo 'export LC_ALL=en_GB.UTF-8' >> /etc/profile.d/locale.sh && \
+#   sed -i 's|LANG=C.UTF-8|LANG=en_GB.UTF-8|' /etc/profile.d/locale.sh
 
 ENV HOST=0.0.0.0
 ENV PORT=3333
