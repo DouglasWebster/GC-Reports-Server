@@ -144,7 +144,7 @@ export class UpdateResultsService {
     });
 
     const result = await this.memberService.insertMembers(members);
-    // console.log(result);
+    console.log(result);
     return result;
   }
 
