@@ -54,6 +54,7 @@ export class MemberService {
     members.forEach((member) => {
       // Database do not like apostrophes in names so escape them by doubling them
       member.surname = member.surname.replace("'", "''");
+      member.foreName = member.foreName.replace("'", "''");
       
       membersDetails += `('${member.foreName}','${member.surname}'),`
     })
