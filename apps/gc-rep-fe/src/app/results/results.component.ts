@@ -313,7 +313,7 @@ export class ResultsComponent implements OnInit {
       for (const winner of winners) winner.prize = winnersPrize;
 
       // 2 runners up + 1 more for every 20 extra players
-      const extraWinners = 2 + Math.round((this.resultCompEntries() - 46) / 20);
+      const extraWinners = 2 + Math.floor((this.resultCompEntries() - 46) / 20);
       const runnerUpPrize = Math.round((prizeBase * 0.3) / extraWinners);
       for (let i = 0; i < extraWinners; i++) {
         const nextWinner = validPlayers.at(i);

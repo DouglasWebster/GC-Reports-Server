@@ -10,6 +10,7 @@ import { PlayerModule } from './player/player.module';
 import { TeeModule } from './tee/tee.module';
 import { UpdateResultsModule } from './update-results/update-results.module';
 import { TwoModule } from './two/two.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TwoModule } from './two/two.module';
     UpdateResultsModule,
     MemberModule,
     TwoModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
