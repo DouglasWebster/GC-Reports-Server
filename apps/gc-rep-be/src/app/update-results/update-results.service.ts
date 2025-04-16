@@ -140,8 +140,6 @@ export class UpdateResultsService {
         foreName: nameParts.at(0),
         surname: nameParts.at(-1),
       };
-      // Databases don't like apostrophes in names so escape them by doubling them up
-      member.surname = member.surname.replace("'", "''");
       members.push(member);
     });
 
