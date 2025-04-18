@@ -55,7 +55,7 @@ LABEL org.opencontainers.image.source=https://github.com/DouglasWebster/GC-Repor
 LABEL org.opencontainers.image.description="NestJS REST API for the GC comp payouts application"
 LABEL org.opencontainers.image.licenses=MIT
 
-# RUN apk add --no-cache dumb-init
+RUN apk add --no-cache dumb-init
 # RUN apk add --no-cache --update musl musl-utils musl-locales tzdata
 # ENV TZ=Europe/London
 # RUN cp /usr/share/zoneinfo/Europe/London /etc/localtime
@@ -72,6 +72,10 @@ WORKDIR /usr/src/app
 # pull in packages from builder stage
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=deps /usr/src/app/package.json ./package.json
+
+# install additional deps
+RUN npm install tslib sqlite3 pg @nestjs/terminus @nestjs/axios axios
+
 
 # copy local, compiled app
 COPY dist/apps/gc-rep-be .
