@@ -14,8 +14,9 @@ EXPOSE ${PORT}
 WORKDIR /app
 
 # The server expects dates in the GB format so we have to install locales, 
-# generate the en_GB.UTF-8 locale and set the environment variables.
-RUN apt-get update && apt-get install -y locales
+# generate the en_GB.UTF-8 locale and set the environment variables. Also we
+# need curl to check the health of the server.
+RUN apt-get update && apt-get install -y locales curl
 RUN locale-gen en_GB.UTF-8
 ENV LANG=en_GB.UTF-8
 ENV LANGUAGE=en_GB:en
