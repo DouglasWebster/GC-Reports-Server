@@ -13,27 +13,27 @@ EXPOSE ${PORT}
 
 WORKDIR /app
 
+# The server expects dates in the GB format so we have to install locales, 
+# generate the en_GB.UTF-8 locale and set the environment variables.
 RUN apt-get update && apt-get install -y locales
-
 RUN locale-gen en_GB.UTF-8
 ENV LANG=en_GB.UTF-8
 ENV LANGUAGE=en_GB:en
 ENV LC_ALL=en_GB.UTF-8
-# RUN update-locale LANG=en_GB.UTF-8
+
 RUN apt-get install -y --no-install-recommends dumb-init
 
-# RUN addgroup --system gc-rep-be && \
-#           useradd -g gc-rep-be -r gc-rep-be
 COPY dist/apps/gc-rep-be .
-# RUN chown -R gc-rep-be:gc-rep-be .
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
+
+# We used pnpm to install dependencies, so we need to enable it in corepack.
 RUN corepack enable pnpm
+
+# Install dependencies
 RUN pnpm install
 RUN pnpm add pg @nestjs/terminus @nestjs/axios axios tslib
-# RUN npm --prefix gc-rep-be --omit=dev -f install
-# RUN npm --prefix gc-rep-be install pg @nestjs/terminus @nestjs/axios axios
 
 RUN chown -R node:node .
 USER node
