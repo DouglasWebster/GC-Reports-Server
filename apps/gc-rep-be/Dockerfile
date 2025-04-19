@@ -13,7 +13,14 @@ EXPOSE ${PORT}
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
+RUN apt-get update && apt-get install -y locales
+
+RUN locale-gen en_GB.UTF-8
+ENV LANG=en_GB.UTF-8
+ENV LANGUAGE=en_GB:en
+ENV LC_ALL=en_GB.UTF-8
+# RUN update-locale LANG=en_GB.UTF-8
+RUN apt-get install -y --no-install-recommends dumb-init
 
 # RUN addgroup --system gc-rep-be && \
 #           useradd -g gc-rep-be -r gc-rep-be
