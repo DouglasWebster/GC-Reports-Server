@@ -25,7 +25,8 @@ services:
       - DATABASE_HOST=={DB_HOST}
       # - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
     healthcheck:
-      test: wget localhost:3333/api/health -q -O - > /dev/null 2>&1
+      # test: wget localhost:3000/api/health -q -O - > /dev/null 2>&1
+      test: curl --silent --fail localhost:3333/api/health
       interval: 10s
       timeout: 5s
       retries: 3
