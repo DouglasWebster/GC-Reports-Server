@@ -28,3 +28,18 @@ export interface ITees {
   id: number;
   name: string;
 }
+
+export interface IUser {
+  id: string;
+  email: string;
+  password: string;
+}
+
+export type ICreateUser = Pick<IUser, 'email' | 'password'>;
+export type IUpdateUser = Partial<Omit<IUser, 'id'>>;
+export type IUsertUser = IUser;
+
+/**
+ * we need something for exposed API payloads
+ */
+export type IPublicUserData = Omit<IUser, 'password'>;
