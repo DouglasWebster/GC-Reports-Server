@@ -15,7 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@gc-reports-server/decorator": ["libs/shared/decorator/src/index.ts"],
+      "@gc-reports-server/decorators": ["libs/shared/decorators/src/index.ts"],
+      "@lib/mocks": ["libs/shared/mocks/src/index.ts"],
+      "@libs/decorators": ["libs/shared/decorators/src/index.ts"],
       "@libs/drizzle": ["libs/shared/drizzle/src/index.ts"],
+      "@libs/mocks": ["libs/shared/mocks/src/index.ts"],
       "@libs/models": ["libs/shared/models/src/index.ts"]
     }
   },

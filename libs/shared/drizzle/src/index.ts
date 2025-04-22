@@ -34,3 +34,8 @@ export {
   SelectPlayer,
 } from './schema/player.schema';
 export { two, twoRelations, InsertTwo, SelectTwo } from './schema/two.schema';
+export {
+  user,
+  InsertUser,
+  SelectUser,
+} from './schema/user.schema';

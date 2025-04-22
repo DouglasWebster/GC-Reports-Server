@@ -1,0 +1,9 @@
+{
+  "name": "@libs/decorators",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/decorators/src",
+  "projectType": "library",
+  "tags": ["type: util", "scope:server"],
+  "// targets": "to see all targets run: nx show project @libs/decorators --web",
+  "targets": {}
+}

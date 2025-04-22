@@ -11,6 +11,9 @@ import { TeeModule } from './tee/tee.module';
 import { UpdateResultsModule } from './update-results/update-results.module';
 import { TwoModule } from './two/two.module';
 import { HealthModule } from './health/health.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { JwtAuthGuard } from './auth/jwt.auth-guards';
 
 @Module({
   imports: [
@@ -26,8 +29,10 @@ import { HealthModule } from './health/health.module';
     MemberModule,
     TwoModule,
     HealthModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: 'APP_GUARD', useClass: JwtAuthGuard }],
 })
 export class AppModule {}

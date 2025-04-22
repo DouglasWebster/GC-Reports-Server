@@ -30,7 +30,7 @@ export interface ITees {
 }
 
 export interface IUser {
-  id: string;
+  id: number;
   email: string;
   password: string;
 }
@@ -43,3 +43,15 @@ export type IUsertUser = IUser;
  * we need something for exposed API payloads
  */
 export type IPublicUserData = Omit<IUser, 'password'>;
+
+export interface ITokenResponse {
+  access_token: string;
+}
+
+export interface IAccessTokenPayload {
+  email: string;
+ /**
+  * user's ID will be used as the subject
+  */
+  sub: number;
+}
