@@ -6,6 +6,7 @@ import { ResultsComponent } from './results/results.component';
 import { AboutComponent } from './about/about.component';
 import { PrintLayoutComponent } from './print-layout/print-layout.component';
 import { PayoutSheetComponent } from './payout-sheet/payout-sheet.component';
+import { LoginComponent } from './login/login.component';
 
 export const appRoutes: Route[] = [
   {
@@ -22,4 +23,8 @@ export const appRoutes: Route[] = [
     component: PrintLayoutComponent,
     children: [{ path: 'payout', component: PayoutSheetComponent }],
   },
+  {
+    path: 'login',
+    component: LoginComponent,
+  }
 ];

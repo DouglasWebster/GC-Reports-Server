@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
     { routerLink: '/review', text: 'Reviews' },
     { routerLink: '/import-comp', text: 'Import' },
     { routerLink: '/about', text: 'About' },
+    { routerLink: '/login', text: 'Login' },
   ];
 
   ngOnInit(): void {
