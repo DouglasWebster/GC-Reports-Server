@@ -1,5 +1,5 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   ICompetitionGeneral,
   IReviewHeader,
@@ -17,7 +17,8 @@ import * as schema from '@lib/shared/drizzle';
   providedIn: 'root',
 })
 export class DbAccessService {
-  constructor(private readonly http: HttpClient) {}
+  // constructor(private readonly http: HttpClient) {}
+  private http = inject(HttpClient);
 
   addCompetion(fd: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(`/api/update-result`, fd, {
