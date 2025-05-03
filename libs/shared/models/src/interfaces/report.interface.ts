@@ -37,7 +37,7 @@ export interface IUser {
 
 export type ICreateUser = Pick<IUser, 'email' | 'password'>;
 export type IUpdateUser = Partial<Omit<IUser, 'id'>>;
-export type IUsertUser = IUser;
+export type IUpsertUser = IUser;
 
 /**
  * we need something for exposed API payloads
@@ -50,8 +50,16 @@ export interface ITokenResponse {
 
 export interface IAccessTokenPayload {
   email: string;
+
  /**
   * user's ID will be used as the subject
   */
-  sub: number;
+  sub: string;
+
+  [key: string]: string | number | boolean | unknown;
+}
+
+export interface ILoginPayload {
+  email: string;
+  password: string;
 }
