@@ -3,6 +3,7 @@
 @source "../../../node_modules/flowbite";
 
 @custom-variant screen (@media screen);
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* You can add global styles to this file, and also import other style files */
 
