@@ -1,4 +1,4 @@
-import { ICompReviewUpdate } from '@libs/models';
+import { ICompReviewUpdate } from '@lib/shared/models';
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { CompetitionService } from './competition.service';
 

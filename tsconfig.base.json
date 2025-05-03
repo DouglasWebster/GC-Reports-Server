@@ -18,10 +18,11 @@
       "@lib/client/data-acess": ["libs/client/data-acess/src/index.ts"],
       "@lib/client/util": ["libs/client/util/src/index.ts"],
       "@lib/mocks": ["libs/shared/mocks/src/index.ts"],
-      "@libs/decorators": ["libs/shared/decorators/src/index.ts"],
-      "@libs/drizzle": ["libs/shared/drizzle/src/index.ts"],
-      "@libs/mocks": ["libs/shared/mocks/src/index.ts"],
-      "@libs/models": ["libs/shared/models/src/index.ts"]
+      "@lib/shared/util-env": ["libs/shared/util-env/src/index.ts"],
+      "@lib/shared/decorators": ["libs/shared/decorators/src/index.ts"],
+      "@lib/shared/drizzle": ["libs/shared/drizzle/src/index.ts"],
+      "@lib/shared/mock": ["libs/shared/mocks/src/index.ts"],
+      "@lib/shared/models": ["libs/shared/models/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

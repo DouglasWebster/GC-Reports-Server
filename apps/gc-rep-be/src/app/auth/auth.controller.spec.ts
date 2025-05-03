@@ -1,4 +1,4 @@
-import { IUser } from '@libs/models';
+import { IUser } from '@lib/shared/models';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';

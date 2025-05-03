@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { IPublicUserData, ITokenResponse } from '@libs/models';
+import { IPublicUserData, ITokenResponse } from '@lib/shared/models';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {

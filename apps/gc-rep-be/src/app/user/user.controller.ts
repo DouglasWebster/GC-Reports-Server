@@ -1,4 +1,4 @@
-import { InsertUser } from '@libs/drizzle';
+import { InsertUser } from '@lib/shared/drizzle';
 import {
   Body,
   Controller,
@@ -10,8 +10,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { IPublicUserData } from '@libs/models';
-import { ReqUserId } from '@libs/decorators';
+import { IPublicUserData } from '@lib/shared/models';
+import { ReqUserId } from '@lib/shared/decorators';
 
 @Controller('user')
 export class UserController {

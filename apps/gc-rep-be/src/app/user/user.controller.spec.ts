@@ -3,7 +3,7 @@ import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { createMockUser } from '@lib/mocks';
-import { IPublicUserData } from '@libs/models';
+import { IPublicUserData } from '@lib/shared/models';
 
 describe('UserController', () => {
   let controller: UserController;

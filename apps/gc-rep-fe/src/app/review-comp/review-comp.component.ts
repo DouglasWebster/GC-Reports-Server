@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SelectPlayer } from '@libs/drizzle';
+import { SelectPlayer } from '@lib/shared/drizzle';
 import {
   ICompetitionWithFormat,
   ICompReviewUpdate,
   IPlayerReviewUpdate,
-} from '@libs/models';
+} from '@lib/shared/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
 

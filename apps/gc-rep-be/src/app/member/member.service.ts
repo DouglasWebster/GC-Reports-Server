@@ -2,8 +2,8 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '@libs/drizzle';
-import { member, InsertMember } from '@libs/drizzle';
+import * as schema from '@lib/shared/drizzle';
+import { member, InsertMember } from '@lib/shared/drizzle';
 
 @Injectable()
 export class MemberService {

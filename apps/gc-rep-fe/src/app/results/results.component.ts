@@ -7,7 +7,7 @@ import {
   ITwosResults,
   ITwosScorersForComp,
   IWinners,
-} from '@libs/models';
+} from '@lib/shared/models';
 import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
 

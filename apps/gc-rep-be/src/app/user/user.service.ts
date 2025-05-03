@@ -1,9 +1,9 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-// import * as schema from '@libs/drizzle';
-import { InsertUser, user } from '@libs/drizzle';
-import * as schema from '@libs/drizzle';
-import { IUser } from '@libs/models';
+// import * as schema from '@lib/shared/drizzle';
+import { InsertUser, user } from '@lib/shared/drizzle';
+import * as schema from '@lib/shared/drizzle';
+import { IUser } from '@lib/shared/models';
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';

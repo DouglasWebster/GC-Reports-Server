@@ -1,6 +1,6 @@
-import * as schema from '@libs/drizzle';
-import { InsertPlayer, member } from '@libs/drizzle';
-import { ICompetitor } from '@libs/models';
+import * as schema from '@lib/shared/drizzle';
+import { InsertPlayer, member } from '@lib/shared/drizzle';
+import { ICompetitor } from '@lib/shared/models';
 import { Inject, Injectable } from '@nestjs/common';
 import { and, asc, eq, sql } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';

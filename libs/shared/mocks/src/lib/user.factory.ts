@@ -1,4 +1,4 @@
-import { IUser } from '@libs/models';
+import { IUser } from '@lib/shared/models';
 import { randNumber, randPassword, randUser } from '@ngneat/falso';
 
 export const createMockUser = (): IUser => {

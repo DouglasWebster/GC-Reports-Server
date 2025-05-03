@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 // import * as competitionSchema from '../competition/schema'
 // import * as playerSchema from '../player/schema'
 // import * as memberSchema from '../member/schema'
-import * as schemas from '@libs/drizzle'
+import * as schemas from '@lib/shared/drizzle'
 
 const ENV = process.env.ENVIRONMENT
 

@@ -1,6 +1,6 @@
-import * as schema from '@libs/drizzle';
-import { competition, compForm } from '@libs/drizzle';
-import { ICompReviewUpdate } from '@libs/models';
+import * as schema from '@lib/shared/drizzle';
+import { competition, compForm } from '@lib/shared/drizzle';
+import { ICompReviewUpdate } from '@lib/shared/models';
 import { Inject, Injectable } from '@nestjs/common';
 import { and, desc, eq, max, min, sql } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';

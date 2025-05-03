@@ -9,9 +9,9 @@ import {
   IResultPlayers,
   ITeesFromCompetitionID,
   ITwosScorersForComp,
-} from '@libs/models';
+} from '@lib/shared/models';
 import { Observable } from 'rxjs';
-import * as schema from '@libs/drizzle';
+import * as schema from '@lib/shared/drizzle';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,4 @@
-import { IAccessTokenPayload } from '@libs/models';
+import { IAccessTokenPayload } from '@lib/shared/models';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';

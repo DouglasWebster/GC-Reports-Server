@@ -1,5 +1,5 @@
-import { createMockUser } from '@libs/mocks';
-import { IAccessTokenPayload, IPublicUserData } from '@libs/models';
+import { createMockUser } from '@lib/shared/mock';
+import { IAccessTokenPayload, IPublicUserData } from '@lib/shared/models';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { randPassword } from '@ngneat/falso';

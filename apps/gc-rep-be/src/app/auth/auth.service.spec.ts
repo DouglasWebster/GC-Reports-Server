@@ -1,5 +1,5 @@
 import { createMockUser } from '@lib/mocks';
-import { IUser } from '@libs/models';
+import { IUser } from '@lib/shared/models';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { randPassword } from '@ngneat/falso';

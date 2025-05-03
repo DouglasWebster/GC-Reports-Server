@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { InsertCompetion, InsertMember } from '@libs/drizzle';
+import { InsertCompetion, InsertMember } from '@lib/shared/drizzle';
 // import { NewMember } from '../../db/schema/member.schema';
-import { ICompetitor, IResult, ITwos } from '@libs/models';
+import { ICompetitor, IResult, ITwos } from '@lib/shared/models';
 import { CompFormService } from '../comp-form/comp-form.service';
 import { CompetitionService } from '../competition/competition.service';
 import { MemberService } from '../member/member.service';
