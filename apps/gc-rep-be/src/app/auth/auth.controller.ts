@@ -1,5 +1,5 @@
 import { ITokenResponse, IUpdateUser } from '@lib/shared/models';
-import { BadRequestException, Body, Controller, Get } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SkipAuth } from './skip-auth';
 
@@ -9,7 +9,7 @@ export class AuthController {
         private readonly authService: AuthService,
     ) {}
 
-    @Get('login')
+    @Post('login')
     @SkipAuth()
     async login(@Body() {email, password}: IUpdateUser): Promise<ITokenResponse> {
         const user = await this.authService.validateUser(email, password);
