@@ -51,11 +51,11 @@ export class UserService {
       throw new BadRequestException(`User '${newUser.email}' already exists`);
     }
 
-    const { email, password } = newUser;
+    const { email, password, name } = newUser;
     const hashedPassword = await bcrypt.hash(password, 10);
     return await this.database
       .insert(user)
-      .values({ email, password: hashedPassword })
-      .returning({ userId: user.id, email: user.email });
+      .values({ email, password: hashedPassword, name})
+      .returning({ userId: user.id, email: user.email, name: user.name});
   }
 }

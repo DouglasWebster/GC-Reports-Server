@@ -12,6 +12,7 @@ import {
 import { UserService } from './user.service';
 import { IPublicUserData } from '@lib/shared/models';
 import { ReqUserId } from '@lib/shared/decorators';
+import { SkipAuth } from '../auth/skip-auth';
 
 @Controller('user')
 export class UserController {
@@ -31,8 +32,9 @@ export class UserController {
   }
 
   @Post('')
+  @SkipAuth()
   async createUser(@Body() userData: InsertUser): Promise<IPublicUserData> {
-    const { userId, email } = (await this.userService.create(userData)).at(0);
-    return { id: userId, email };
+    const { userId, email, name } = (await this.userService.create(userData)).at(0);
+    return { id: userId, email, name  };
   }
 }

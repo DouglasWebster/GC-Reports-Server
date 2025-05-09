@@ -33,9 +33,10 @@ export interface IUser {
   id: number;
   email: string;
   password: string;
+  name: string
 }
 
-export type ICreateUser = Pick<IUser, 'email' | 'password'>;
+export type ICreateUser = Pick<IUser, 'email' | 'password' | 'name'>;
 export type IUpdateUser = Partial<Omit<IUser, 'id'>>;
 export type IUpsertUser = IUser;
 
