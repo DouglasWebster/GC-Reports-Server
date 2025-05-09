@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { DbAccessService } from '../db-access/db-access.service';
 
 @Component({
-  selector: 'gc-rep-fe-import-data',
+  selector: 'client-import-data',
   imports: [CommonModule, AsyncPipe],
   templateUrl: './import-data.component.html',
   styleUrl: './import-data.component.css',

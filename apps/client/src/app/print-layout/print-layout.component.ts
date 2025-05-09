@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'gc-rep-fe-print-layout',
+  selector: 'client-print-layout',
   imports: [CommonModule, RouterOutlet],
   templateUrl: './print-layout.component.html',
   styleUrl: './print-layout.component.css',

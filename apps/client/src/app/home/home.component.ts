@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataTable } from 'simple-datatables';
 
 @Component({
-  selector: 'gc-rep-fe-home',
+  selector: 'client-home',
   imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

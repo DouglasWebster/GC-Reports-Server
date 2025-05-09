@@ -2,7 +2,7 @@
   "name": "client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "gc-rep-fe",
+  "prefix": "client",
   "sourceRoot": "apps/client/src",
   "tags": ["scope: front-end", "type: app"],
   "targets": {
@@ -45,7 +45,7 @@
           "outputHashing": "all"
         },
         "local": {
-          "outputPath": "apps/client/dist/gc-rep-fe-local",
+          "outputPath": "apps/client/dist/client-local",
           "budgets": [
             {
               "type": "initial",
