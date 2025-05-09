@@ -44,7 +44,7 @@ Thumbs.db
 # private files
 .env
 db-data
-apps/gc-rep-be/drizzle
+apps/server/drizzle
 .vscode/settings.json
 .uploads
 .vscode/launch.json
