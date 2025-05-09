@@ -1,5 +1,5 @@
 {
-  "name": "gc-rep-be-e2e",
+  "name": "server-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "implicitDependencies": ["server"],
@@ -8,7 +8,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "jestConfig": "apps/gc-rep-be-e2e/jest.config.ts",
+        "jestConfig": "apps/server-e2e/jest.config.ts",
         "passWithNoTests": true
       },
       "dependsOn": ["gc-rep-be:build"]
