@@ -1,0 +1,99 @@
+<div class="p-4 max-w-6xl mx-auto">
+  <div class="top-4 m-4">
+    <div>
+      <h3 class="text-4xl font-extrabold dark:text-white">
+        Import competition records into the database
+      </h3>
+      <p class="my-4 text-lg text-gray-500 dark:text-gray-400">
+        From Handicap Master print a competition in .csv format to a local drive
+        location. Once it has been exported use the Chose file to select the
+        file. The raw contents of th file will be displayed for you to check and
+        the Import Competition button will be shown. If all is satisfactory then
+        press the Import Competition button to start the import process. The
+        result of the import is then shown.
+      </p>
+    </div>
+    <form class="max-w-3xl mx-auto">
+      <label
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        for="user_avatar"
+        >Import competion file selection</label
+      >
+      <input
+        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+        aria-describedby="user_avatar_help"
+        id="user_avatar"
+        type="file"
+        accept=".csv"
+        (change)="onChange($event)"
+      />
+
+      <div
+        class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+        id="user_avatar_help"
+      >
+        Select the exported competion file (.csv format) to import the the
+        database.
+      </div>
+
+      <div class="pt-4">
+        <label
+          for="message"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Raw file contents</label
+        >
+        <textarea
+          id="message"
+          rows="10"
+          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Raw competition data for export goes here..."
+          >{{ rawData }}</textarea
+        >
+      </div>
+
+      @if(fileName !== '') {
+      <div class="pt-4">
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          (click)="importFile()"
+          [disabled]="fileNotImported === false"
+          [ngClass]="fileNotImported ? '' : 'hidden'"
+        >
+          Import competion
+          <svg
+            class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 5h12m0 0L9 1m4 4L9 9"
+            />
+          </svg>
+        </button>
+      </div>
+      } @if(response$ | async; as response) {
+      <div class="pt-2">
+        <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+          Import Result:
+        </h2>
+        @for(message of response.body; track $index) {
+        <ul
+          class="max-w-3xl space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400"
+        >
+          <li>
+            {{ message }}
+          </li>
+        </ul>
+        }
+      </div>
+      }
+    </form>
+  </div>
+</div>

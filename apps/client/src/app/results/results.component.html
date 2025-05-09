@@ -1,0 +1,340 @@
+<div class="print:hidden p-4">
+  <div class="top-4 sm:m-4">
+    <section>
+      <div class="flex flex-wrap gap-16 pt-4">
+        <div class="lg:w-1/3 lg:grow-0 grow">
+          <h2 class="text-xl font-bold dark:text-white pt-2 pb-2">
+            Finalised Competions
+          </h2>
+          <div class="flex flex-row w-max">
+            <div class="flex flex-col">
+              <label
+                for="years"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Limit To Year</label
+              >
+              <select
+                #years
+                id="years"
+                (change)="onSelectedYear(years.value)"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option>All</option>
+                @for(year of compYears; track year){
+                <option>{{ year }}</option>
+                }
+              </select>
+            </div>
+            <div class="flex flex-row px-5">
+              <div [hidden]="!filterOnYear">
+                <label
+                  for="months"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Limit To Month</label
+                >
+                <select
+                  #months
+                  id="months"
+                  (change)="onSelectedMonth(months.value)"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option>All</option>
+                  @for(month of viableMonths; track month){
+                  <option>{{ month }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+          <table id="finalisedComp">
+            ...
+          </table>
+        </div>
+        <div class="grow">
+          @if (resultCompName) {
+          <h2 class="text-2xl font-bold dark:text-white pt-2 pb-2 text-center">
+            Competition Result
+          </h2>
+          <div class="flex flex-wrap pt-4">
+            <div class="grow">
+              <div class="relative overflow-x-auto">
+                <table
+                  class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  <caption
+                    class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+                  >
+                    Details
+                  </caption>
+                  <tbody>
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        Format:
+                      </th>
+                      <td class="py-2">
+                        {{ resultCompName }}
+                      </td>
+                    </tr>
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        Date:
+                      </th>
+                      <td class="py-2">
+                        {{ resultCompDate | date : 'fullDate' }}
+                      </td>
+                    </tr>
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        Tees:
+                      </th>
+                      <td class="py-2">
+                        @if(resultMensTees().length > 0) { Mens:
+                        {{ resultMensTees() }}
+                        <span class="pl-4"></span>
+                        } @if(resultLadiesTees().length > 0) { Ladies:
+                        {{ resultLadiesTees() }}
+                        }
+                      </td>
+                    </tr>
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        Entry Fee:
+                      </th>
+                      <td class="py-2">£{{ resultCompFees() }}</td>
+                    </tr>
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        Competition entries (from start sheet):
+                      </th>
+                      <td class="py-2">
+                        {{ resultCompEntries() }}
+                      </td>
+                    </tr>
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        Twos entries (from start sheet):
+                      </th>
+                      <td class="py-2">
+                        {{ resultTwosEntries() }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <table
+                  class="w-1/2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  <caption
+                    class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+                  >
+                    Winners
+                  </caption>
+                  <thead
+                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                  >
+                    <tr>
+                      <th scope="col" class="px-3 py-3"></th>
+                      <th scope="col" class="px-3 py-3">
+                        <!-- Name -->
+                      </th>
+                      <th scope="col" class="px-3 py-3">
+                        <!-- Prize -->
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for(winner of resultWinners(); track winner){
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {{ winner.title }}
+                      </th>
+                      <td class="py-3">
+                        {{ winner.name }}
+                      </td>
+                      <td class="py-3">£{{ winner.prize }}</td>
+                    </tr>
+
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="grow">
+              <div class="relative overflow-x-auto">
+                <table
+                  class="w-1/2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  <caption
+                    class="p-2 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+                  >
+                    Twos Winners
+                  </caption>
+                  <thead
+                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                  >
+                    <tr>
+                      <th scope="col" class="px-3 py-3">Name</th>
+                      <th scope="col" class="px-3 py-3">Hole(s)</th>
+                      <th scope="col" class="px-3 py-3">Prize</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for(two of resultTwosScorers(); track two.name){
+                    <tr
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {{ two.name }}
+                      </th>
+                      <td class="py-3 text-center">
+                        {{ two.holes }}
+                      </td>
+                      <td class="py-3 pr-4 text-right">
+                        £{{ two.count * resultTwosPayout() }}
+                      </td>
+                    </tr>
+
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="flex grow justify-center">
+            <div class="pt-6 inline-flex rounded-md shadow-xs" role="group">
+              <button
+                type="button"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+                (click)="closeResult()"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+                (click)="printResult()"
+              >
+                Print
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="screen:hidden">
+  @if (resultCompName) {
+  <img src="./BawtryTree.png" alt="Print" class="h-32 float-right" />
+  <p class="font-bold dark:text-white pt-8 pb-2 text-left">
+    Competition Result for {{ resultCompName }}
+  </p>
+  <p class="font-bold dark:text-white pb-2 text-left">
+    Played on {{ resultCompDate | date : 'fullDate' }}
+  </p>
+  <p class="font-bold dark:text-white pb-2 text-left">
+    Tees:<span class="pl-4"></span> @if(resultMensTees().length > 0) { Mens:
+    {{ resultMensTees() }} } @if(resultMensTees().length > 0 &&
+    resultLadiesTees().length > 0) { ,<span class="pl-2"></span> }
+    @if(resultLadiesTees().length > 0) { Ladies: {{ resultLadiesTees() }}
+    }
+  </p>
+  <p class="font-bold dark:text-white pt-8 pb-2 text-left">
+    {{ resultCompEntries() }} Players entered in the competion:
+  </p>
+  <p class="font-bold dark:text-white pb-2 text-left">
+    {{ resultTwosEntries() }} Players entered in the twos:
+  </p>
+  <p class="font-bold dark:text-white pb-2 text-left">
+    {{ resultTwosScorers().length }} Players scored a two or better:
+  </p>
+  <div class="grid grid-cols-5 gap-4">
+    <div class="col-span-3">
+      <h2 class="text-lg font-bold dark:text-white pt-2 pb-2 text-center">
+        Competition Winners
+      </h2>
+      <table class="table-fixed w-full">
+        <tbody>
+          @for(winner of resultWinners(); track winner){
+          <tr>
+            <td class="text-xs text-right w-5/12">
+              {{ winner.title }}
+            </td>
+            <td class="text-xs w-5/12 pl-2">
+              {{ winner.name }}
+            </td>
+            <td class="text-xs w-2/12">£{{ winner.prize }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="col-span-2">
+      <h2 class="text-xl font-bold dark:text-white pt-2 pb-2 text-center">
+        Twos Winners
+      </h2>
+      @if(resultTwosScorers().length > 0) {
+      <table class="table-fixed w-full">
+        <tbody>
+          @for(two of resultTwosScorers(); track two.name){
+          <tr>
+            <td class="text-xs w-7/12">
+              {{ two.name }}
+            </td>
+            <td class="text-xs w-3/12 pr-6 text-right">
+              {{ two.holes }}
+            </td>
+            <td class="text-xs w-2/12">
+              £{{ two.count * resultTwosPayout() }}
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      } @else {
+      <p class="font-bold dark:text-white pb-2 text-center">No twos scored</p>
+      }
+    </div>
+  </div>
+  }
+</div>
