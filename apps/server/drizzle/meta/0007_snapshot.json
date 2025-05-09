@@ -1,0 +1,543 @@
+{
+  "id": "8612c282-4e98-4455-8fb3-222d48190da1",
+  "prevId": "5103bad9-2752-459b-9fab-68bf8d1cab13",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.competition": {
+      "name": "competition",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "comp_date": {
+          "name": "comp_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "entry_fee": {
+          "name": "entry_fee",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 2
+        },
+        "comp_form_id": {
+          "name": "comp_form_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "computer_entries": {
+          "name": "computer_entries",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sheet_entries": {
+          "name": "sheet_entries",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "twos_entered": {
+          "name": "twos_entered",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "player_count": {
+          "name": "player_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "comp_format_and_date_idx": {
+          "name": "comp_format_and_date_idx",
+          "columns": [
+            {
+              "expression": "comp_form_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "comp_date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "competition_comp_form_id_comp_form_id_fk": {
+          "name": "competition_comp_form_id_comp_form_id_fk",
+          "tableFrom": "competition",
+          "tableTo": "comp_form",
+          "columnsFrom": [
+            "comp_form_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "twos_entry_check": {
+          "name": "twos_entry_check",
+          "value": "\"competition\".\"twos_entered\" <= \"competition\".\"sheet_entries\""
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.comp_form": {
+      "name": "comp_form",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team_size": {
+          "name": "team_size",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{1}'::integer[]"
+        },
+        "is_medal": {
+          "name": "is_medal",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "is_stableford": {
+          "name": "is_stableford",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_scramble": {
+          "name": "is_scramble",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_major": {
+          "name": "is_major",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "not_both_formats": {
+          "name": "not_both_formats",
+          "value": "\"comp_form\".\"is_medal\" <> \"comp_form\".\"is_stableford\""
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.comp_form_to_tee": {
+      "name": "comp_form_to_tee",
+      "schema": "",
+      "columns": {
+        "comp_form_id": {
+          "name": "comp_form_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tee_id": {
+          "name": "tee_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "comp_form_to_tee_comp_form_id_comp_form_id_fk": {
+          "name": "comp_form_to_tee_comp_form_id_comp_form_id_fk",
+          "tableFrom": "comp_form_to_tee",
+          "tableTo": "comp_form",
+          "columnsFrom": [
+            "comp_form_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "comp_form_to_tee_tee_id_tee_id_fk": {
+          "name": "comp_form_to_tee_tee_id_tee_id_fk",
+          "tableFrom": "comp_form_to_tee",
+          "tableTo": "tee",
+          "columnsFrom": [
+            "tee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "comp_form_to_tee_pk": {
+          "name": "comp_form_to_tee_pk",
+          "columns": [
+            "comp_form_id",
+            "tee_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.member": {
+      "name": "member",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "surname": {
+          "name": "surname",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fore_name": {
+          "name": "fore_name",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "member_name_idx": {
+          "name": "member_name_idx",
+          "columns": [
+            {
+              "expression": "surname",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "fore_name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.player": {
+      "name": "player",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "competition_id": {
+          "name": "competition_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "member_id": {
+          "name": "member_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gross_score": {
+          "name": "gross_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stableford_points": {
+          "name": "stableford_points",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "handicap": {
+          "name": "handicap",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "handicap_index": {
+          "name": "handicap_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "division": {
+          "name": "division",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "signed_in": {
+          "name": "signed_in",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "in_twos": {
+          "name": "in_twos",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "two_holes": {
+          "name": "two_holes",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'::integer[]"
+        },
+        "position": {
+          "name": "position",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team_no": {
+          "name": "team_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "competition_id_and_player_id.idx": {
+          "name": "competition_id_and_player_id.idx",
+          "columns": [
+            {
+              "expression": "competition_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "member_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "player_competition_id_competition_id_fk": {
+          "name": "player_competition_id_competition_id_fk",
+          "tableFrom": "player",
+          "tableTo": "competition",
+          "columnsFrom": [
+            "competition_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "player_member_id_member_id_fk": {
+          "name": "player_member_id_member_id_fk",
+          "tableFrom": "player",
+          "tableTo": "member",
+          "columnsFrom": [
+            "member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tee": {
+      "name": "tee",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mens": {
+          "name": "mens",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "ladies": {
+          "name": "ladies",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp (2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tee_name_unique": {
+          "name": "tee_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
