@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '@lib/client/data-acess';
 import { initFlowbite } from 'flowbite';
 
 interface NavBarInfo {
@@ -15,6 +16,9 @@ interface NavBarInfo {
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
+  readonly authService = inject(AuthService);
+  readonly router = inject(Router);
+
   title = 'BPGC Competition Reports';
   navBarInfos: NavBarInfo[] = [
     { routerLink: '/home', text: 'Home' },
@@ -24,6 +28,8 @@ export class AppComponent implements OnInit {
     { routerLink: '/about', text: 'About' },
     { routerLink: '/login', text: 'Login' },
   ];
+
+  user$ = this.authService.userData$;
 
   ngOnInit(): void {
     initFlowbite();
@@ -73,5 +79,16 @@ export class AppComponent implements OnInit {
         }
       }
     });
+
+    if (this.authService.isTokenExpired()) {
+      this.router.navigate(['/login']);
+    } else {
+      this.router.navigate(['/home']);
+    }
+  }
+
+  logout() {
+    this.authService.logoutUser();
+    this.router.navigate(['/login']);
   }
 }
