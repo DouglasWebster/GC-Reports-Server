@@ -17,7 +17,7 @@ type LoginformType = {
 };
 
 @Component({
-  selector: 'gc-rep-fe-login',
+  selector: 'client-login',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

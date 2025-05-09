@@ -11,7 +11,7 @@ interface NavBarInfo {
 @Component({
   standalone: true,
   imports: [RouterModule],
-  selector: 'gc-rep-fe-root',
+  selector: 'client-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

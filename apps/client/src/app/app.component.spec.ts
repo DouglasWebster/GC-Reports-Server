@@ -24,7 +24,7 @@ describe('AppComponent', () => {
   //   );
   // });
 
-  it(`should have as title 'gc-rep-fe'`, () => {
+  it(`should have as title 'client'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('BPGC Competition Reports');

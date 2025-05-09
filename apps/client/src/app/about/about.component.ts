@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'gc-rep-fe-about',
+  selector: 'client-about',
   imports: [CommonModule],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css',

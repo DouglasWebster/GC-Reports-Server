@@ -12,7 +12,7 @@ import { DataTable } from 'simple-datatables';
 import { DbAccessService } from '../db-access/db-access.service';
 
 @Component({
-  selector: 'gc-rep-fe-review-comp',
+  selector: 'client-review-comp',
   imports: [CommonModule, FormsModule],
   templateUrl: './review-comp.component.html',
   styleUrl: './review-comp.component.css',

@@ -20,7 +20,7 @@ module.exports = [
         'error',
         {
           type: 'element',
-          prefix: 'gc-rep-fe',
+          prefix: 'client',
           style: 'kebab-case',
         },
       ],
