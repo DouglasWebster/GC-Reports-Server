@@ -11,7 +11,7 @@
         "jestConfig": "apps/server-e2e/jest.config.ts",
         "passWithNoTests": true
       },
-      "dependsOn": ["gc-rep-be:build"]
+      "dependsOn": ["server:build"]
     }
   }
 }

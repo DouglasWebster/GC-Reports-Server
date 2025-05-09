@@ -34,7 +34,7 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/gc-rep-be-e2e/**/*"]
+      "exclude": ["apps/server-e2e/**/*"]
     },
     {
       "plugin": "@nx/playwright/plugin",

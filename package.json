@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "db:seed": "cross-env DB_SEEDING=true tsx apps/gc-rep-be/src/db/seeding/seed.ts"
+    "db:seed": "cross-env DB_SEEDING=true tsx apps/server/src/db/seeding/seed.ts"
   },
   "private": true,
   "dependencies": {

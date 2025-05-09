@@ -14,5 +14,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/gc-rep-be-e2e',
+  coverageDirectory: '../../coverage/server-e2e',
 };
