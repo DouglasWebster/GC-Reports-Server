@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule, NgIf} from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '@lib/client/data-acess';
-import { initFlowbite } from 'flowbite';
+import { initFlowbite, Dropdown, DropdownInterface } from 'flowbite';
 
 interface NavBarInfo {
   routerLink: string;
@@ -10,14 +11,18 @@ interface NavBarInfo {
 
 @Component({
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule, NgIf],
   selector: 'client-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit{
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
+
+  $userDropdownEl : HTMLElement | null = null;
+  $userTriggerEl : HTMLElement | null = null;
+
 
   title = 'BPGC Competition Reports';
   navBarInfos: NavBarInfo[] = [
@@ -39,6 +44,9 @@ export class AppComponent implements OnInit {
     const themeToggleLightIcon = document.getElementById(
       'theme-toggle-light-icon'
     );
+
+    this.$userDropdownEl = document.getElementById('user-dropdown');
+    this.$userTriggerEl = document.getElementById('user-menu-button');
 
     // Change the icons inside the button based on previous settings
     if (
@@ -88,6 +96,10 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
+    const dropdown: DropdownInterface = new Dropdown(
+      this.$userDropdownEl, this.$userTriggerEl
+    )
+    dropdown.hide();
     this.authService.logoutUser();
     this.router.navigate(['/login']);
   }
