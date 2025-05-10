@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DbAccessService } from '../db-access/db-access.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { DataTable } from 'simple-datatables';
+import { DbAccessService } from '../db-access/db-access.service';
 
 @Component({
   selector: 'client-home',
@@ -12,19 +10,11 @@ import { DataTable } from 'simple-datatables';
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
+  private readonly dbAccessService = inject(DbAccessService);
+
   noOfCompsInDb$!: Observable<number>;
   noOfMemersInDb$!: Observable<number>;
   noOfCompsToReview$!: Observable<number>;
-  compYears: number[] = [];
-  compId: number | null = null;
-
-  finalisedComps?: DataTable;
-  playerTable?: DataTable;
-
-  constructor(
-    private readonly dbAccessService: DbAccessService,
-    private readonly http: HttpClient
-  ) {}
 
   ngOnInit(): void {
     this.updateData();
