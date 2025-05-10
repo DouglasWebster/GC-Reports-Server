@@ -50,7 +50,9 @@ export class LoginComponent {
         .subscribe({
           next: () => {
             console.log(`User authenticated, redirecting to dashboard...`);
-            this.router.navigate(['/home']);
+            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+              this.router.navigate(['/home'])
+            });
           },
           error: (err) => {
             if (err instanceof HttpErrorResponse) {
