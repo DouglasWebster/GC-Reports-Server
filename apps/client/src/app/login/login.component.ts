@@ -56,7 +56,7 @@ export class LoginComponent {
           },
           error: (err) => {
             if (err instanceof HttpErrorResponse) {
-              this.errorMessage$.next(err.error.error);
+              this.errorMessage$.next(err.error.message);
             } else {
               this.errorMessage$.next(`unknown error occured while loggin in!`);
             }
