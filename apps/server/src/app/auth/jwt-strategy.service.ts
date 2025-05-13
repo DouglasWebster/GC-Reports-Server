@@ -33,6 +33,6 @@ export class JwtStrategyService extends PassportStrategy(Strategy) {
    */
 
   async validate(payload: IAccessTokenPayload) {
-    return { userId: payload.sub, email: payload.email };
+    return { userId: payload.sub, name: payload.name, email: payload.email };
   }
 }

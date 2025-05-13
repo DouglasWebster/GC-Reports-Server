@@ -52,6 +52,8 @@ export interface ITokenResponse {
 export interface IAccessTokenPayload {
   email: string;
 
+  name: string;
+
  /**
   * user's ID will be used as the subject
   */

@@ -21,13 +21,14 @@ export class AuthService {
       this.logger.debug(`User '${email}' authenticated successfully`);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...publicUserData } = user;
+      // console.log(`User data: ${JSON.stringify(publicUserData, null, 1)}`)
       return publicUserData;
     }
     return null;
   }
 
   async generateAccessToken(user: IPublicUserData): Promise<ITokenResponse> {
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, name: user.name, sub: user.id };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
