@@ -10,6 +10,7 @@ import { AuthService } from '@lib/client/data-acess';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PasswordValidator } from '@lib/client/data-acess';
 
 type LoginformType = {
   email: FormControl<string>;
@@ -33,7 +34,10 @@ export class LoginComponent {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
     }),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl<string>('', [
+      Validators.required,
+      PasswordValidator.passwordStrength(),
+    ]),
   });
 
   submit() {
@@ -50,9 +54,11 @@ export class LoginComponent {
         .subscribe({
           next: () => {
             console.log(`User authenticated, redirecting to dashboard...`);
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-              this.router.navigate(['/home'])
-            });
+            this.router
+              .navigateByUrl('/', { skipLocationChange: true })
+              .then(() => {
+                this.router.navigate(['/home']);
+              });
           },
           error: (err) => {
             if (err instanceof HttpErrorResponse) {
