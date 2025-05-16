@@ -1,1 +1,0 @@
-ALTER TABLE "competition" ADD COLUMN "is_valid" boolean DEFAULT false NOT NULL;

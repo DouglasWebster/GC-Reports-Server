@@ -1,1 +1,0 @@
-ALTER TABLE "two" ADD CONSTRAINT "valid_hole_number" CHECK ("two"."hole" > 0 AND "two"."hole" < 19);

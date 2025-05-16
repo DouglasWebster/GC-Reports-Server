@@ -1,1 +1,0 @@
-ALTER TABLE "competition" ALTER COLUMN "comp_date" DROP DEFAULT;

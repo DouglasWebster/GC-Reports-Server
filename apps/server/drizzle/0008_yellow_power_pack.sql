@@ -1,1 +1,0 @@
-ALTER TABLE "player" ALTER COLUMN "in_twos" SET DEFAULT true;
