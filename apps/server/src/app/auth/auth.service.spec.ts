@@ -30,7 +30,7 @@ describe('AuthService', () => {
         {
           provide: UserService,
           useValue: {
-            getOneByEmail: jest.fn(async (email, password) => {
+            getOneByEmail: jest.fn(async (email) => {
               if (email !== mockUser.email) {
                 return null;
               }
@@ -56,6 +56,7 @@ describe('AuthService', () => {
     expect(validUser).toStrictEqual({
       id: mockUser.id,
       email: mockUser.email,
+      name: mockUser.name,
     });
   });
 
