@@ -50,4 +50,6 @@ apps/server/drizzle
 .vscode/launch.json
 test-data
 
+# Transient data
+apps/server/drizzle
 .angular
