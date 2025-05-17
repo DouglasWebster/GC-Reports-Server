@@ -46,15 +46,17 @@ describe('UserController', () => {
     const publicUser: IPublicUserData = {
       id: user.id,
       email: user.email,
+      name: user.name
     };
     jest
       .spyOn(service, 'create')
       .mockReturnValue(
-        Promise.resolve([{ email: user.email, userId: user.id }])
+        Promise.resolve([{ email: user.email, userId: user.id, name: user.name }])
       );
     const res = await controller.createUser({
       email: user.email,
       password: user.password,
+      name: user.name,
     });
     expect(res).toStrictEqual(publicUser);
   });
@@ -64,6 +66,7 @@ describe('UserController', () => {
     const publicUser: IPublicUserData = {
       id: user.id,
       email: user.email,
+      name: user.name
     };
     jest.spyOn(service, 'getOne').mockReturnValue(Promise.resolve(user));
     const res = await controller.getUser(user.id, user.id);
