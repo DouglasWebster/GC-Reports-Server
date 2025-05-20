@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi'
 import { DatabaseModule } from '../db/database/database.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -21,15 +22,21 @@ import { JwtAuthGuard } from './auth/jwt.auth-guards';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        host: configService.get('POSTGRES_HOST'),
-        port: configService.get('POSTGRES_PORT'),
-        user: configService.get('POSTGRES_USER'),
-        password: configService.get('POSTGRES_PASSWORD'),
-        database: configService.get('POSTGRES_DATABASE'),
-      })
+        host: configService.get('DB_HOST'),
+        port: configService.get('DB_PORT'),
+        user: configService.get('DB_USER'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+      }),
     }),
     ConfigModule.forRoot({
-      isGlobal: true,
+      validationSchema: Joi.object({
+        DB_HOST: Joi.string().required(),
+        DB_PORT: Joi.number().required(),
+        DB_USER: Joi.string().required(),
+        DB_PASSWORD: Joi.string().required(),
+        DB_NAME: Joi.string().required(),
+      }),
     }),
     // TeeModule,
     // CompFormModule,
@@ -39,7 +46,7 @@ import { JwtAuthGuard } from './auth/jwt.auth-guards';
     // MemberModule,
     // TwoModule,
     // HealthModule,
-    AuthModule,
+    // AuthModule,
     UserModule,
   ],
   controllers: [AppController],
