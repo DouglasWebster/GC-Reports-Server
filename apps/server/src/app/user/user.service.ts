@@ -12,16 +12,16 @@ import { IUser } from '@lib/shared/models';
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DATABASE_CONNECTION } from '../../db/database/database-connection';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(DATABASE_CONNECTION)
-    private readonly database: NodePgDatabase<typeof schema>
+    private readonly drizzleService: DrizzleService
   ) {}
 
   async getOne(id: number): Promise<IUser> {
-    const found = this.database.query.user.findFirst({
+    const found = this.drizzleService.db.query.user.findFirst({
       where: eq(user.id, id),
     });
     if (!user) {
@@ -31,7 +31,7 @@ export class UserService {
   }
 
   async getOneByEmail(email: string): Promise<IUser> {
-    const found = this.database.query.user.findFirst({
+    const found = this.drizzleService.db.query.user.findFirst({
       where: eq(user.email, email),
     });
     if (!found) {
@@ -43,7 +43,7 @@ export class UserService {
   }
 
   async create(newUser: InsertUser) {
-    const existingUser = await this.database
+    const existingUser = await this.drizzleService.db
       .select({ email: user.email })
       .from(user)
       .where(eq(user.email, newUser.email));
@@ -53,7 +53,7 @@ export class UserService {
 
     const { email, password, name } = newUser;
     const hashedPassword = await bcrypt.hash(password, 10);
-    return await this.database
+    return await this.drizzleService.db
       .insert(user)
       .values({ email, password: hashedPassword, name})
       .returning({ userId: user.id, email: user.email, name: user.name});

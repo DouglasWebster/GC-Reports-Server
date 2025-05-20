@@ -1,41 +1,34 @@
-import { Module } from '@nestjs/common';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from './database-connection';
-import { ConfigService } from '@nestjs/config';
-// import * as teesSchema from '../tee/schema';
-// import * as compFormSchema from '../comp-form/schema';
-// import * as competitionSchema from '../competition/schema'
-// import * as playerSchema from '../player/schema'
-// import * as memberSchema from '../member/schema'
-import * as schemas from '@lib/shared/drizzle';
+import { Global, Module } from '@nestjs/common';
+import {
+  ConfigurableDatabaseModule,
+  CONNECTION_POOL,
+  DATABASE_OPTIONS,
+} from './database.module-definition';
+import { DatabaseOptions } from './database-options';
+import { Pool } from 'pg';
+import { DrizzleService } from './drizzle.service';
 
 const ENV = process.env.ENVIRONMENT;
 
+@Global()
 @Module({
+  exports: [DrizzleService],
   providers: [
+    DrizzleService,
     {
-      provide: DATABASE_CONNECTION,
-      useFactory: () => {
+      provide: CONNECTION_POOL,
+      inject: [DATABASE_OPTIONS],
+      useFactory: (databaseOptions: DatabaseOptions) => {
         console.log('ENVIRONMENT:', ENV);
-        return drizzle({
-          connection:
-            ENV === 'docker'
-              ? process.env.DOCKER_URL
-              : process.env.DATABASE_URL,
-          schema: {
-            // ...teesSchema,
-            // ...compFormSchema,
-            // ...competitionSchema,
-            // ...playerSchema,
-            // ...memberSchema,
-            ...schemas,
-          },
-          casing: 'snake_case',
+        return new Pool({
+          host: databaseOptions.host,
+          port: databaseOptions.port,
+          user: databaseOptions.user,
+          password: databaseOptions.password,
+          database: databaseOptions.database,
         });
       },
-      inject: [ConfigService],
     },
   ],
-  exports: [DATABASE_CONNECTION],
 })
-export class DatabaseModule {}
+export class DatabaseModule extends ConfigurableDatabaseModule {}
