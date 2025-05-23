@@ -4,14 +4,14 @@ import * as Joi from 'joi'
 import { DatabaseModule } from '../db/database/database.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { CompFormModule } from './comp-form/comp-form.module';
-// import { CompetitionModule } from './competition/competition.module';
-// import { MemberModule } from './member/member.module';
-// import { PlayerModule } from './player/player.module';
-// import { TeeModule } from './tee/tee.module';
-// import { UpdateResultsModule } from './update-results/update-results.module';
-// import { TwoModule } from './two/two.module';
-// import { HealthModule } from './health/health.module';
+import { CompFormModule } from './comp-form/comp-form.module';
+import { CompetitionModule } from './competition/competition.module';
+import { MemberModule } from './member/member.module';
+import { PlayerModule } from './player/player.module';
+import { TeeModule } from './tee/tee.module';
+import { UpdateResultsModule } from './update-results/update-results.module';
+import { TwoModule } from './two/two.module';
+import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { JwtAuthGuard } from './auth/jwt.auth-guards';
@@ -36,17 +36,19 @@ import { JwtAuthGuard } from './auth/jwt.auth-guards';
         DB_USER: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().required(),
       }),
     }),
-    // TeeModule,
-    // CompFormModule,
-    // CompetitionModule,
-    // PlayerModule,
-    // UpdateResultsModule,
-    // MemberModule,
-    // TwoModule,
-    // HealthModule,
-    // AuthModule,
+    TeeModule,
+    CompFormModule,
+    CompetitionModule,
+    PlayerModule,
+    UpdateResultsModule,
+    MemberModule,
+    TwoModule,
+    HealthModule,
+    AuthModule,
     UserModule,
   ],
   controllers: [AppController],

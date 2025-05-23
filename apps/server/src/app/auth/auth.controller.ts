@@ -3,8 +3,7 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get,
-  Post,
+  Post
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SkipAuth } from './skip-auth';

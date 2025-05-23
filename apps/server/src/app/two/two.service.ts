@@ -5,12 +5,13 @@ import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import { member, InsertTwo } from '@lib/shared/drizzle';
 import * as schema from '@lib/shared/drizzle';
 import { ITwos } from '@lib/shared/models';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
 export class TwoService {
   constructor(
-    @Inject(DATABASE_CONNECTION)
-    private readonly database: NodePgDatabase<typeof schema>
+   
+    private readonly drizzleService: DrizzleService
   ) {}
 
   async registerTwosForCompetition(compId: number, twos: ITwos[]) {
@@ -21,7 +22,7 @@ export class TwoService {
         const memberForename = memberNameParts.at(0);
         const memberSurname = memberNameParts.at(-1);
 
-        const twoMemberId = await this.database
+        const twoMemberId = await this.drizzleService.db
           .select({ id: member.id })
           .from(member)
           .where(
@@ -51,14 +52,14 @@ export class TwoService {
 
     const twosInsertSqlStatment = `WITH data(competition_id, member_id, hole) AS (values ${twosValueString}) INSERT INTO two (competition_id, member_id, hole)SELECT d.competition_id, d.member_id, d.hole FROM data d WHERE not EXISTS (SELECT 1 FROM two m2 WHERE m2.competition_id = d.competition_id AND m2.member_id = d.member_id AND m2.hole = d.hole);`;
     console.log(`twos insert statement: \n${twosInsertSqlStatment}`);
-    const res = await this.database.execute(twosInsertSqlStatment);
+    const res = await this.drizzleService.db.execute(twosInsertSqlStatment);
     console.log(`${res.rowCount} twos registered for the competion`);
 
     return res;
   }
 
   async getTwosWinnersForCompetition(compId: number) {
-    const twos = await this.database
+    const twos = await this.drizzleService.db
       .select({
         foreName: schema.member.foreName,
         surname: schema.member.surname,

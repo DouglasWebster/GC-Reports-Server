@@ -6,6 +6,7 @@ import {
   Logger,
   NotFoundException,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
@@ -22,7 +23,7 @@ export class UserController {
   @Get(':id')
   async getUser(
     @ReqUserId() reqUserId: number,
-    @Param('id', ParseUUIDPipe) id: number
+    @Param('id', ParseIntPipe) id: number
   ): Promise<IPublicUserData> {
     if (reqUserId !== id) {
       throw new NotFoundException();

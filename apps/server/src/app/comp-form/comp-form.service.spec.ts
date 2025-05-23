@@ -1,18 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CompFormService } from './comp-form.service';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 describe('CompFormService', () => {
-  let service: CompFormService;
+  let compFormService: CompFormService;
+  let findFirstMock: jest.Mock;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CompFormService],
-    }).compile();
+     providers: [
+             CompFormService,
+             {
+               provide: DrizzleService,
+               useValue: {
+                 db: {
+                   query: {
+                     user: {
+                       findFirst: findFirstMock,
+                     }
+                   }
+                 }
+               }
+             },
+           ],
+         }).compile();
 
-    service = module.get<CompFormService>(CompFormService);
+    compFormService = module.get<CompFormService>(CompFormService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(compFormService).toBeDefined();
   });
 });

@@ -1,20 +1,18 @@
 import * as schema from '@lib/shared/drizzle';
 import { competition, compForm } from '@lib/shared/drizzle';
 import { ICompReviewUpdate } from '@lib/shared/models';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { and, desc, eq, max, min, sql } from 'drizzle-orm';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
 export class CompetitionService {
   constructor(
-    @Inject(DATABASE_CONNECTION)
-    private readonly database: NodePgDatabase<typeof schema>
+      private readonly drizzleService: DrizzleService
   ) {}
 
   async getCompetitionList() {
-    return await this.database
+    return await this.drizzleService.db
       .select({
         id: competition.id,
         date: competition.compDate,
@@ -27,7 +25,7 @@ export class CompetitionService {
   }
 
   async getCompetitionReviewedList(isReviewed: boolean) {
-    return await this.database
+    return await this.drizzleService.db
       .select({
         id: competition.id,
         // date: competition.compDate,
@@ -44,35 +42,35 @@ export class CompetitionService {
   }
 
   async getCompetition(compId: number) {
-    return await this.database.query.competition.findFirst({
+    return await this.drizzleService.db.query.competition.findFirst({
       where: eq(competition.id, compId),
     });
   }
 
   async getCompetitionDetails() {
-    return await this.database.query.competition.findMany();
+    return await this.drizzleService.db.query.competition.findMany();
   }
 
   async getAllCompsCount() {
-    return await this.database.$count(competition);
+    return await this.drizzleService.db.$count(competition);
   }
 
   async getCompsToReviewCount() {
-    return await this.database.$count(
+    return await this.drizzleService.db.$count(
       competition,
       eq(competition.isValid, false)
     );
   }
 
   async getCompsReviewedCount() {
-    return await this.database.$count(
+    return await this.drizzleService.db.$count(
       competition,
       eq(competition.isValid, true)
     );
   }
 
   async createNamedComp(record: schema.InsertCompetion) {
-    const competitionId = await this.database
+    const competitionId = await this.drizzleService.db
       .select({
         date: competition.compDate,
         formatId: competition.compFormId,
@@ -86,14 +84,14 @@ export class CompetitionService {
       );
 
     if (competitionId.length !== 0) return undefined;
-    return await this.database
+    return await this.drizzleService.db
       .insert(competition)
       .values(record)
       .returning({ competitionId: competition.id });
   }
 
   async getCompetitionFromFormatIdAndDate(formatId: number, date: Date) {
-    return await this.database.query.competition.findFirst({
+    return await this.drizzleService.db.query.competition.findFirst({
       where: and(
         eq(competition.compFormId, formatId),
         eq(competition.compDate, date)
@@ -102,7 +100,7 @@ export class CompetitionService {
   }
 
   async getCompetitionReviewDetails(compId: number) {
-    return await this.database.query.competition.findFirst({
+    return await this.drizzleService.db.query.competition.findFirst({
       where: eq(competition.id, compId),
       columns: {
         id: true,
@@ -127,7 +125,7 @@ export class CompetitionService {
     const updatesToDo = reviewResult.players.length + 1;
     let updatesDone = 0;
     try {
-      return await this.database.transaction(async (compDetailsTx) => {
+      return await this.drizzleService.db.transaction(async (compDetailsTx) => {
         for (const member of reviewResult.players) {
           const playerResult = await compDetailsTx
             .update(schema.player)
@@ -183,7 +181,7 @@ export class CompetitionService {
   }
 
   async getMinMaxDates() {
-    return await this.database
+    return await this.drizzleService.db
       .select({
         minDate: min(competition.compDate),
         maxDate: max(competition.compDate),
@@ -193,12 +191,12 @@ export class CompetitionService {
   }
 
   async getCompetitionResults(compId: number) {
-    const isValid = await this.database.query.competition.findFirst({
+    const isValid = await this.drizzleService.db.query.competition.findFirst({
       where: and(eq(competition.id, compId), eq(competition.isValid, true)),
     });
     console.log(isValid);
     if (isValid === undefined) return isValid;
-    return await this.database
+    return await this.drizzleService.db
       .select({
         foreName: schema.member.foreName,
         surnamne: schema.member.surname,

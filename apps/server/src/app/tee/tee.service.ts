@@ -1,28 +1,24 @@
 import * as schema from '@lib/shared/drizzle';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
 export class TeeService {
-  constructor(
-    @Inject(DATABASE_CONNECTION)
-    private readonly database: NodePgDatabase<typeof schema>
-  ) {}
+  constructor(private readonly drizzleService: DrizzleService) {}
 
   async getTees() {
-    return this.database.query.tee.findMany();
+    return this.drizzleService.db.query.tee.findMany();
   }
 
   async getTee(teeId: number) {
-    return this.database.query.tee.findFirst({
+    return this.drizzleService.db.query.tee.findFirst({
       where: eq(schema.tee.id, teeId),
     });
   }
 
   getTeesForCompetition(arg0: number) {
-    return this.database
+    return this.drizzleService.db
       .select({
         teeName: schema.tee.name,
         isLadies: schema.tee.ladies,

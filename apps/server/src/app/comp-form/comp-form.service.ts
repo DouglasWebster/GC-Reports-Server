@@ -1,20 +1,15 @@
 import { compForm, compFormToTee, tee } from '@lib/shared/drizzle';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '@lib/shared/drizzle';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
 export class CompFormService {
-  constructor(
-    @Inject(DATABASE_CONNECTION)
-    private readonly database: NodePgDatabase<typeof schema>
-  ) {}
+  constructor(private readonly drizzleService: DrizzleService) {}
 
   async getCompsForms() {
     // const compForm = aliasedTable(schema.compForm, 'comp_form');
-    return this.database
+    return this.drizzleService.db
       .select({
         Name: compForm.title,
         'Team size': compForm.teamSize,
@@ -31,7 +26,7 @@ export class CompFormService {
 
   getCompsForm(compFormId: number) {
     // const compForm = aliasedTable(schema.compForm, 'comp_form');
-    return this.database
+    return this.drizzleService.db
       .select({
         Name: compForm.title,
         'Team size': compForm.teamSize,
@@ -48,7 +43,7 @@ export class CompFormService {
   }
   async getCompFormIdFromName(compName: string) {
     // const compForm = aliasedTable(schema.compForm, 'comp_form');
-    const result = this.database.query.compForm.findFirst({
+    const result = this.drizzleService.db.query.compForm.findFirst({
       columns: {
         id: true,
       },

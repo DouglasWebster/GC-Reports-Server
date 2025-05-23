@@ -3,10 +3,10 @@ import { IAccessTokenPayload, IPublicUserData } from '@lib/shared/models';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { randPassword } from '@ngneat/falso';
-import { JwtStrategyService } from './jwt-strategy.service';
+import { JwtStrategy } from './jwt-strategy.service';
 
 describe('JwtStrategyService', () => {
-  let service: JwtStrategyService;
+  let service: JwtStrategy;
   let mockUser: IPublicUserData;
 
   beforeAll(() => {
@@ -16,10 +16,10 @@ describe('JwtStrategyService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [JwtStrategyService, ConfigService],
+      providers: [JwtStrategy, ConfigService],
     }).compile();
 
-    service = module.get<JwtStrategyService>(JwtStrategyService);
+    service = module.get<JwtStrategy>(JwtStrategy);
   });
 
   it('should be defined', () => {
@@ -28,14 +28,16 @@ describe('JwtStrategyService', () => {
 
   it('should return an access token payload object', async () => {
     const tokenPayload: IAccessTokenPayload = {
-      sub: mockUser.id,
+      sub: mockUser.id.toString(),
       email: mockUser.email,
+      name: mockUser.name,
     };
 
     const respData = await service.validate(tokenPayload);
     expect(respData).toStrictEqual({
-      userId: mockUser.id,
+      userId: mockUser.id.toString(),
       email: mockUser.email,
+      name: mockUser.name,
     });
   });
 });

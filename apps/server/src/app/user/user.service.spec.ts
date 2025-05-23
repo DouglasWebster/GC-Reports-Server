@@ -1,26 +1,68 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { NotFoundException } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+import { InferSelectModel } from 'drizzle-orm';
+import { databaseSchema } from '../../db/database/database-schema';
+import { DrizzleService } from '../../db/database/drizzle.service';
 import { UserService } from './user.service';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 
 describe('UserService', () => {
-  let service: UserService;
+  let userService: UserService;
+  let findFirstMock: jest.Mock;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    findFirstMock = jest.fn();
+    const module = await Test.createTestingModule({
       providers: [
         UserService,
         {
-          provide: DATABASE_CONNECTION,
-          useValue: drizzle.mock(),
+          provide: DrizzleService,
+          useValue: {
+            db: {
+              query: {
+                user: {
+                  findFirst: findFirstMock,
+                },
+              },
+            },
+          },
         },
       ],
     }).compile();
 
-    service = module.get<UserService>(UserService);
+    userService = module.get<UserService>(UserService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(userService).toBeDefined();
+  });
+
+  
+  describe('when the getById function is called', () => {
+    describe('and the findFirst method returns the user', () => {
+      let user: InferSelectModel<typeof databaseSchema.user>;
+      beforeEach(() => {
+        user = {
+          id: 1,
+          email: 'john@smith.com',
+          name: 'John',
+          password: 'strongPassword123',
+        };
+        findFirstMock.mockResolvedValue(user);
+      });
+      it('should return the user', async () => {
+        const result = await userService.getOne(user.id);
+        expect(result).toBe(user);
+      });
+    });
+    describe('and the findFirst method does not return the user', () => {
+      beforeEach(() => {
+        findFirstMock.mockResolvedValue(undefined);
+      });
+      it('should throw the NotFoundException', async () => {
+        return expect(async () => {
+          await userService.getOne(1);
+        }).rejects.toThrow(NotFoundException);
+      });
+    });
   });
 });

@@ -1,27 +1,22 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { InsertMember, member } from '@lib/shared/drizzle';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import * as schema from '@lib/shared/drizzle';
-import { member, InsertMember } from '@lib/shared/drizzle';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
 export class MemberService {
-  constructor(
-    @Inject(DATABASE_CONNECTION)
-    private readonly database: NodePgDatabase<typeof schema>
-  ) {}
+  constructor(private readonly drizzleService: DrizzleService) {}
 
   async getMembers() {
-    return await this.database.query.member.findMany();
+    return await this.drizzleService.db.query.member.findMany();
   }
 
   async countMembers() {
-    return await this.database.$count(member);
+    return await this.drizzleService.db.$count(member);
   }
 
   async getMemberByName(memberName: InsertMember) {
-    const result = await this.database
+    const result = await this.drizzleService.db
       .select()
       .from(member)
       .where(
@@ -34,7 +29,7 @@ export class MemberService {
   }
 
   async createMember(memberName: InsertMember) {
-    const memberId = await this.database
+    const memberId = await this.drizzleService.db
       .select({ id: member.id })
       .from(member)
       .where(
@@ -46,7 +41,7 @@ export class MemberService {
 
     if (memberId.length !== 0)
       return { error: HttpStatus.FOUND, message: 'Member already exists.' };
-    await this.database.insert(member).values(memberName);
+    await this.drizzleService.db.insert(member).values(memberName);
   }
 
   async insertMembers(members: InsertMember[]): Promise<number> {
@@ -65,7 +60,7 @@ export class MemberService {
 
     // console.log(`sql statement: ${sqlStatement}`)
 
-    const res = await this.database.execute(sqlStatement);
+    const res = await this.drizzleService.db.execute(sqlStatement);
     return res.rowCount;
   }
 }

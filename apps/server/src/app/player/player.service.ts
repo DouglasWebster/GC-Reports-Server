@@ -1,16 +1,14 @@
 import * as schema from '@lib/shared/drizzle';
 import { InsertPlayer, member } from '@lib/shared/drizzle';
 import { ICompetitor } from '@lib/shared/models';
-import { Inject, Injectable } from '@nestjs/common';
-import { and, asc, eq, sql } from 'drizzle-orm';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
+import { Injectable } from '@nestjs/common';
+import { and, asc, eq } from 'drizzle-orm';
+import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
 export class PlayerService {
   constructor(
-    @Inject(DATABASE_CONNECTION)
-    private readonly database: NodePgDatabase<typeof schema>
+    private readonly drizzleService: DrizzleService
   ) {}
 
   async addPlayersToCompetition(compId: number, players: ICompetitor[]) {
@@ -34,7 +32,7 @@ export class PlayerService {
         // a card that has not been returned will have no handicap so set that to -1 as well.
         const handicap = player.handicap === null ? -1 : player.handicap;
 
-        const playerMemberId = await this.database
+        const playerMemberId = await this.drizzleService.db
           .select({ id: member.id })
           .from(member)
           .where(
@@ -74,23 +72,23 @@ export class PlayerService {
     const playersInsertSqlStatment = `WITH data(competition_id, division, gross_score, handicap, member_id, position, stableford_points, signed_in, in_twos) AS (values ${playersValuesString}) INSERT INTO player (competition_id, division, gross_score, handicap, member_id, position, stableford_points, signed_in, in_twos) SELECT d.competition_id, d.division, d.gross_score, d.handicap, d.member_id, d.position, d.stableford_points, d.signed_in, d.in_twos FROM data d WHERE not EXISTS (SELECT 1 FROM player m2 WHERE m2.competition_id = d.competition_id AND m2.member_id = d.member_id);`;
 
     // console.log(playersInsertSqlStatment);
-    const res = await this.database.execute(playersInsertSqlStatment);
+    const res = await this.drizzleService.db.execute(playersInsertSqlStatment);
     // console.log(`${res.rowCount} players details added for competion`)
     return res;
   }
 
   async getPlayersInComp(compId: number) {
-    return await this.database.query.player.findMany({
+    return await this.drizzleService.db.query.player.findMany({
       where: eq(schema.player.competitionId, compId),
     });
   }
 
   async getPlayers() {
-    return await this.database.select().from(schema.player);
+    return await this.drizzleService.db.select().from(schema.player);
   }
 
   async GetPlayersForCompToReview(compId: number) {
-    return await this.database
+    return await this.drizzleService.db
       .select({
         memberId: schema.player.memberId,
         inTwos: schema.player.inTwos,

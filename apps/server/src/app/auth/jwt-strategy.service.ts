@@ -5,12 +5,12 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
-export class JwtStrategyService extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.getOrThrow<string>('JWT_SECRET'),
+      secretOrKey: configService.getOrThrow('JWT_SECRET'),
     });
   }
 
@@ -30,9 +30,12 @@ export class JwtStrategyService extends PassportStrategy(Strategy) {
    * username properties. Recall again that Passport will build a user
    * object based on the return value of our validate() method, and
    * attach it as a property on the Request object.
+   *
+   * @param payload
+   * @returns
    */
-
   async validate(payload: IAccessTokenPayload) {
-    return { userId: payload.sub, name: payload.name, email: payload.email };
+    const { sub, ...rest } = payload;
+    return { userId: sub, ...rest };
   }
 }
