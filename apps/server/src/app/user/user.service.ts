@@ -1,17 +1,13 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
-  NotFoundException,
+  NotFoundException
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 // import * as schema from '@lib/shared/drizzle';
 import { InsertUser, user } from '@lib/shared/drizzle';
-import * as schema from '@lib/shared/drizzle';
 import { IUser } from '@lib/shared/models';
 import { eq } from 'drizzle-orm';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
 import { DrizzleService } from '../../db/database/drizzle.service';
 
 @Injectable()
@@ -21,10 +17,10 @@ export class UserService {
   ) {}
 
   async getOne(id: number): Promise<IUser> {
-    const found = this.drizzleService.db.query.user.findFirst({
+    const found = await this.drizzleService.db.query.user.findFirst({
       where: eq(user.id, id),
     });
-    if (!user) {
+    if (!found) {
       throw new NotFoundException(`User could not not found`);
     }
     return found;
