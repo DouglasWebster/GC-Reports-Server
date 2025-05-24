@@ -27,7 +27,7 @@ export class UserService {
   }
 
   async getOneByEmail(email: string): Promise<IUser> {
-    const found = this.drizzleService.db.query.user.findFirst({
+    const found = await this.drizzleService.db.query.user.findFirst({
       where: eq(user.email, email),
     });
     if (!found) {
