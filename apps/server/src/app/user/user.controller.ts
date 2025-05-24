@@ -1,4 +1,6 @@
+import { ReqUserId } from '@lib/shared/decorators';
 import { InsertUser } from '@lib/shared/drizzle';
+import { IPublicUserData } from '@lib/shared/models';
 import {
   Body,
   Controller,
@@ -7,13 +9,10 @@ import {
   NotFoundException,
   Param,
   ParseIntPipe,
-  ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { IPublicUserData } from '@lib/shared/models';
-import { ReqUserId } from '@lib/shared/decorators';
 import { SkipAuth } from '../auth/skip-auth';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
@@ -35,7 +34,7 @@ export class UserController {
   @Post('')
   @SkipAuth()
   async createUser(@Body() userData: InsertUser): Promise<IPublicUserData> {
-    const { userId, email, name } = (await this.userService.create(userData)).at(0);
-    return { id: userId, email, name  };
+    const { userId, email, name } = await this.userService.create(userData);
+    return { id: userId, email, name };
   }
 }
