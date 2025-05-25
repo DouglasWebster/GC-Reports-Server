@@ -40,13 +40,6 @@ export class UserService {
   }
 
   async create(newUser: InsertUser) {
-    // const existingUser = await this.drizzleService.db
-    //   .select({ email: user.email })
-    //   .from(user)
-    //   .where(eq(user.email, newUser.email));
-    // if (existingUser.length > 0) {
-    //   throw new BadRequestException(`User '${newUser.email}' already exists`);
-    // }
 
     const { email, password, name } = newUser;
     const hashedPassword = await bcrypt.hash(password, 10);
