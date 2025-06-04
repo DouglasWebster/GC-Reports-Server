@@ -1,25 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { DrizzleService } from '../../db/database/drizzle.service';
-import { TeeService } from './tee.service';
+import { PlayerService } from './player.service';
 
-describe('TeesService', () => {
-  let service: TeeService;
+describe('PlayerService', () => {
+  let playerService: PlayerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TeeService,
-        {
-          provide: DrizzleService,
-          useValue: drizzle.mock(),
-        }
-      ],
+      providers: [PlayerService, { provide: DrizzleService,
+        useValue: drizzle.mock()
+       }],
     }).compile();
 
-    service = module.get<TeeService>(TeeService);
+    playerService = module.get<PlayerService>(PlayerService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(playerService).toBeDefined();
   });
 });

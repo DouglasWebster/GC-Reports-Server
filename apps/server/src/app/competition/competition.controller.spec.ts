@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { DrizzleService } from '../../db/database/drizzle.service';
 import { CompetitionController } from './competition.controller';
 import { CompetitionService } from './competition.service';
-import { DATABASE_CONNECTION } from '../../db/database/database-connection';
-import { drizzle } from 'drizzle-orm/node-postgres';
 
 describe('CompetitionController', () => {
   let controller: CompetitionController;
@@ -13,7 +13,7 @@ describe('CompetitionController', () => {
       providers: [
         CompetitionService,
         {
-          provide: DATABASE_CONNECTION,
+          provide: DrizzleService,
           useValue: drizzle.mock()
         }
       ],
