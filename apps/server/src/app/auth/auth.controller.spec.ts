@@ -7,6 +7,7 @@ import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { createMockUser } from '@lib/mocks';
 import * as bcrypt from 'bcrypt';
+import { BadRequestException } from '@nestjs/common';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -57,5 +58,16 @@ describe('AuthController', () => {
     });
     expect(res.access_token).toBeDefined();
     expect(typeof res.access_token).toBe('string');
+  });
+
+  it('should throw with a bad email', async () => {
+    try {
+      await controller.login({
+        email: '',
+        password: '',
+      });
+    } catch (err) {
+      expect(err).toBeInstanceOf(BadRequestException);
+    }
   });
 });
