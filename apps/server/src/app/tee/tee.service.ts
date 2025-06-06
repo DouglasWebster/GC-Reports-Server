@@ -33,9 +33,3 @@ export class TeeService {
       .where(eq(schema.competition.id, arg0));
   }
 }
-
-//   SELECT tee.name as "Tee", tee.ladies as "Ladies", tee.mens as "Mens" FROM competition
-// left join comp_form_to_tee
-// ON comp_form_to_tee.comp_form_id = competition.comp_form_id
-// left join tee ON tee.id = comp_form_to_tee.tee_id
-// where competition.id = 5
