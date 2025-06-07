@@ -8,7 +8,6 @@ import {
 } from 'drizzle-orm/pg-core';
 import { compFormToTee } from '../index';
 import { createInsertSchema } from 'drizzle-zod';
-import { z } from 'zod';
 
 export const tee = pgTable('tee', {
   id: serial().primaryKey(),
@@ -26,7 +25,6 @@ export const teeRelations = relations(tee, ({ many }) => ({
 }));
 
 export const teeSchema = createInsertSchema(tee);
-export type TeeSchema = z.infer<typeof teeSchema>;
 
 export type InsertTee = typeof tee.$inferInsert
 export type SelectTee = typeof tee.$inferSelect

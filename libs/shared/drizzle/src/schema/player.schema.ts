@@ -1,8 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
 import { boolean, integer, pgTable, serial, uniqueIndex } from 'drizzle-orm/pg-core';
-import { competition, member } from '../index';
 import { createInsertSchema } from 'drizzle-zod';
-import { z } from 'zod';
+import { competition, member } from '../index';
 
 export const player = pgTable('player', {
   id: serial().primaryKey(),
@@ -41,6 +40,5 @@ export const playerRelations = relations(player, ({ one }) => ({
 }));
 
 export const playerSchema = createInsertSchema(player)
-export type PlayerSchema = z.infer<typeof playerSchema>
 export type InsertPlayer = typeof player.$inferInsert
 export type SelectPlayer = typeof player.$inferSelect

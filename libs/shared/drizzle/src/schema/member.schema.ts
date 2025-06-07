@@ -7,7 +7,6 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
-import { z } from 'zod';
 import { player, two } from '../index';
 
 export const member = pgTable(
@@ -30,6 +29,5 @@ export const memberRelations = relations(member, ({ many }) => ({
 }));
 
 export const memberSchema = createInsertSchema(member);
-export type MemberSchemaDTO = z.infer<typeof memberSchema>;
 export type InsertMember = typeof member.$inferInsert;
 export type SelectMember = typeof member.$inferSelect;
