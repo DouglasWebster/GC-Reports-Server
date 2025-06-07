@@ -109,7 +109,6 @@ describe('UserService', () => {
 
     describe('and the user is a new user', () => {
       it('should insert the new user using the drizzle ORM', async () => {
-        console.log(JSON.stringify(newUser));
         await userService.create(newUser);
         expect(drizzleInsertValuesMock).toHaveBeenCalledWith({
           ...newUser,
