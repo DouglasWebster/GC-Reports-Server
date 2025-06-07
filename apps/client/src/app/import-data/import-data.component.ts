@@ -1,7 +1,7 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 // import { ChangeDetectorRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { DbAccessService } from '../db-access/db-access.service';
 
@@ -22,9 +22,7 @@ export class ImportDataComponent {
   fileNotImported = true;
 
   response$!: Observable<HttpResponse<string>>;
-  constructor(
-    private dbAccessService: DbAccessService // private ref: ChangeDetectorRef
-  ) {}
+  dbAccessService = inject (DbAccessService) // private ref: ChangeDetectorRef
 
   // @ts-expect-error Parameter '$event' implicitly has an 'any' type.ts(7006)
   onChange($event) {

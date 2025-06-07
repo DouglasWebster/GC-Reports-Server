@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   IDateRange,
   IResultPlayers,
@@ -18,6 +18,9 @@ import { DbAccessService } from '../db-access/db-access.service';
   styleUrl: './results.component.css',
 })
 export class ResultsComponent implements OnInit {
+  dbAccessService = inject(DbAccessService);
+  http = inject(HttpClient);
+
   compYears: string[] = [];
   selectedYear = 0;
   minMonth = 1;
@@ -55,11 +58,6 @@ export class ResultsComponent implements OnInit {
 
   finalisedComps?: DataTable;
   compPlayers: IResultPlayers[] | null = null;
-
-  constructor(
-    private readonly dbAccessService: DbAccessService,
-    private readonly http: HttpClient
-  ) {}
 
   ngOnInit(): void {
     this.calculateYearRanges();
@@ -152,7 +150,7 @@ export class ResultsComponent implements OnInit {
             this.compYears.push(year.toString());
 
           console.log(
-            `Min date: ${earliestCompYear}, Max date: ${latestCompYear}, Min Month: ${this.minMonth}, Max Month: ${this.maxMonth}`
+            `Min date: ${earliestCompYear}, Max date: ${latestCompYear}, Min Month: ${this.minMonth}, Max Month: ${this.maxMonth}`,
           );
         }
       });
@@ -191,7 +189,7 @@ export class ResultsComponent implements OnInit {
 
   populateCompetionPlayers() {
     console.log(
-      `competition ${this.resultCompId}, date: ${this.resultCompDate}, name: ${this.resultCompName} selected`
+      `competition ${this.resultCompId}, date: ${this.resultCompDate}, name: ${this.resultCompName} selected`,
     );
     if (this.resultCompId === null) return;
     this.dbAccessService
@@ -242,13 +240,13 @@ export class ResultsComponent implements OnInit {
     if (this.compPlayers === null) return;
 
     const validPlayers = this.compPlayers.filter(
-      (player) => player.position > 0
+      (player) => player.position > 0,
     );
 
     validPlayers.sort((a, b) => a.position - b.position);
 
     const maxDivision = Math.max(
-      ...validPlayers.map((player) => player.division)
+      ...validPlayers.map((player) => player.division),
     );
     const winners: IWinners[] = [];
 
@@ -269,14 +267,14 @@ export class ResultsComponent implements OnInit {
 
     for (let i = 1; i <= maxDivision; i++) {
       const divisionWinner = validPlayers.find(
-        (player) => player.division === i
+        (player) => player.division === i,
       );
       if (divisionWinner) {
         validPlayers.splice(
           validPlayers.findIndex(
-            (player) => player.position === divisionWinner.position
+            (player) => player.position === divisionWinner.position,
           ),
-          1
+          1,
         );
         const winner = winners.at(i - 1);
         if (winner) {
@@ -338,13 +336,13 @@ export class ResultsComponent implements OnInit {
         const twosResult: ITwosResults[] = [];
         const twosScorersNames = new Set<string>();
         this.resultTwosPayout.set(
-          Math.floor(this.resultTwosEntries() / twosScorers.length)
+          Math.floor(this.resultTwosEntries() / twosScorers.length),
         );
         for (const twosScorer of twosScorers) {
           const fullName = `${twosScorer.foreName} ${twosScorer.surname}`;
           if (twosScorersNames.has(fullName)) {
             const existingTwos = twosResult.find(
-              (twos) => twos.name === fullName
+              (twos) => twos.name === fullName,
             );
             if (existingTwos) {
               existingTwos.holes += `, ${twosScorer.hole}`;

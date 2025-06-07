@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, inject, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectPlayer } from '@lib/shared/drizzle';
 import {
@@ -34,10 +34,8 @@ export class ReviewCompComponent implements OnInit {
   playerTable?: DataTable;
   haveUnreviewedComps$!: boolean;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly dbAccessService: DbAccessService
-  ) {}
+  http = inject(HttpClient);
+  dbAccessService = inject(DbAccessService);
 
   ngOnInit(): void {
     this.dbAccessService.countCompsToReview().subscribe((result) => {
@@ -253,10 +251,10 @@ export class ReviewCompComponent implements OnInit {
     let notInTwos = 0;
     if (this.playerUpdates?.length !== 0) {
       notSignedIn = this.playerUpdates.filter(
-        (item) => item.onSheet === false
+        (item) => item.onSheet === false,
       ).length;
       notInTwos = this.playerUpdates.filter(
-        (item) => item.inTwos === false
+        (item) => item.inTwos === false,
       ).length;
     }
 
