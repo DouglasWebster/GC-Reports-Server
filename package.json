@@ -108,7 +108,7 @@
     "typescript-eslint": "^8.33.1",
     "webpack-cli": "^6.0.1"
   },
-  "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912",
+  "packageManager": "pnpm@10.29.1+sha512.48dae233635a645768a3028d19545cacc1688639eeb1f3734e42d6d6b971afbf22aa1ac9af52a173d9c3a20c15857cfa400f19994d79a2f626fcc73fccda9bbc",
   "pnpm": {
     "onlyBuiltDependencies": [
       "@nestjs/core",
