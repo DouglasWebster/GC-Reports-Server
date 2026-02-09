@@ -7,10 +7,8 @@ import { CompetitionService } from '../competition/competition.service';
 import { PlayerService } from '../player/player.service';
 import { TwoService } from '../two/two.service';
 import { DrizzleService } from '../../db/database/drizzle.service';
-
 describe('UpdateResultsService', () => {
   let service: UpdateResultsService;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -26,10 +24,8 @@ describe('UpdateResultsService', () => {
         },
       ],
     }).compile();
-
     service = module.get<UpdateResultsService>(UpdateResultsService);
   });
-
   it('should be defined', () => {
     expect(service).toBeDefined();
   });

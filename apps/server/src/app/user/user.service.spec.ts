@@ -8,13 +8,11 @@ import { DrizzleService } from '../../db/database/drizzle.service';
 import { PostgresErrorCode } from '../../db/database/postgres-error-code.enum';
 import { UserAlreadyExistsException } from './user-already-exists.exception';
 import { UserService } from './user.service';
-
 jest.mock('bcrypt', () => ({
   hash: () => {
     return Promise.resolve('hashed-password');
   },
 }));
-
 describe('UserService', () => {
   let userService: UserService;
   let findFirstMock: jest.Mock;
@@ -22,7 +20,6 @@ describe('UserService', () => {
   let drizzleInsertReturningMock: jest.Mock;
   let user: InferSelectModel<typeof databaseSchema.user>;
   let newUser: InsertUser;
-
   beforeEach(async () => {
     findFirstMock = jest.fn();
     drizzleInsertValuesMock = jest.fn().mockReturnThis();
@@ -33,7 +30,6 @@ describe('UserService', () => {
       name: 'John',
       password: 'strongPassword123',
     };
-
     const module = await Test.createTestingModule({
       providers: [
         UserService,
@@ -54,14 +50,11 @@ describe('UserService', () => {
         },
       ],
     }).compile();
-
     userService = module.get<UserService>(UserService);
   });
-
   it('should be defined', () => {
     expect(userService).toBeDefined();
   });
-
   describe('when the getById function is called', () => {
     describe('and the findFirst method returns the user', () => {
       it('should return the user', async () => {
@@ -79,7 +72,6 @@ describe('UserService', () => {
       });
     });
   });
-
   describe('when the getOneByEmail function is called', () => {
     describe('and the findFirst method returns the user', () => {
       it('should return the user', async () => {
@@ -97,7 +89,6 @@ describe('UserService', () => {
       });
     });
   });
-
   describe('when create function is called with a users details', () => {
     beforeEach(() => {
       newUser = {
@@ -106,7 +97,6 @@ describe('UserService', () => {
         password: user.password,
       };
     });
-
     describe('and the user is a new user', () => {
       it('should insert the new user using the drizzle ORM', async () => {
         await userService.create(newUser);
@@ -117,7 +107,6 @@ describe('UserService', () => {
       });
     });
   });
-
   describe('and the DrizzleService throws a UniqueViolation error', () => {
     beforeEach(() => {
       const databaseError: DatabaseError = {
@@ -135,17 +124,16 @@ describe('UserService', () => {
       }).rejects.toThrow(UserAlreadyExistsException);
     });
   });
-
   describe('and the DrizzleService throws an non DatabaseException', () => {
     beforeEach(() => {
       drizzleInsertReturningMock.mockImplementation(() => {
-        throw new ImATeapotException
-      })
-    })
+        throw new ImATeapotException();
+      });
+    });
     it('should just return the exception', () => {
       return expect(async () => {
-        await userService.create(user)
-      }).rejects.toThrow(ImATeapotException)
-    })
-  })
+        await userService.create(user);
+      }).rejects.toThrow(ImATeapotException);
+    });
+  });
 });

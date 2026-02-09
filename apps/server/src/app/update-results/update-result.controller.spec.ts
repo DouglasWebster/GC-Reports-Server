@@ -8,10 +8,8 @@ import { CompetitionService } from '../competition/competition.service';
 import { PlayerService } from '../player/player.service';
 import { TwoService } from '../two/two.service';
 import { MemberService } from '../member/member.service';
-
 describe('UpdateResultController', () => {
   let controller: UpdateResultController;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UpdateResultController],
@@ -25,15 +23,13 @@ describe('UpdateResultController', () => {
         {
           provide: DrizzleService,
           useValue: {
-            db: drizzle.mock()
-          }
-        }
-      ]
+            db: drizzle.mock(),
+          },
+        },
+      ],
     }).compile();
-
     controller = module.get<UpdateResultController>(UpdateResultController);
   });
-
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });

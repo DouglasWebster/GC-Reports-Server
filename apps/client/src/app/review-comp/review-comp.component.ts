@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, inject, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { DbAccessService } from '../db-access/db-access.service';
 
 @Component({
   selector: 'client-review-comp',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './review-comp.component.html',
   styleUrl: './review-comp.component.css',
 })

@@ -98,7 +98,8 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/client/jest.config.ts",
-        "codeCoverage": true
+        "codeCoverage": true,
+        "tsConfig": "apps/client/tsconfig.spec.json"
       }
     },
     "serve-static": {

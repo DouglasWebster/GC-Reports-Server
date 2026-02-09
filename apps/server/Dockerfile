@@ -19,7 +19,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y locales curl
 RUN locale-gen en_GB.UTF-8
 ENV LANG=en_GB.UTF-8
-ENV LANGUAGE=en_GB:en
+ENV LANGUAGE=en_GB:UTF-8
 ENV LC_ALL=en_GB.UTF-8
 
 RUN apt-get install -y --no-install-recommends dumb-init
@@ -30,11 +30,11 @@ COPY dist/apps/server .
 # The bundled output will include external dependencies.
 
 # We used pnpm to install dependencies, so we need to enable it in corepack.
-RUN corepack enable pnpm
+# RUN corepack enable pnpm
 
 # Install dependencies
-RUN pnpm install
-RUN pnpm add pg @nestjs/terminus @nestjs/axios axios tslib
+RUN npm install
+RUN npm add pg @nestjs/terminus @nestjs/axios axios tslib drizzle-zod
 
 RUN chown -R node:node .
 USER node

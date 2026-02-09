@@ -5,12 +5,10 @@ import { DrizzleService } from '../../db/database/drizzle.service';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { NotFoundException } from '@nestjs/common';
-
 describe('UserController', () => {
   let controller: UserController;
   let service: UserService;
   let findFirstMock: jest.Mock;
-
   beforeEach(async () => {
     findFirstMock = jest.fn();
     const module: TestingModule = await Test.createTestingModule({
@@ -31,17 +29,13 @@ describe('UserController', () => {
       ],
       controllers: [UserController],
     }).compile();
-
     service = module.get<UserService>(UserService);
-
     controller = module.get<UserController>(UserController);
   });
-
   it('should be defined', () => {
     expect(controller).toBeDefined();
     expect(service).toBeTruthy();
   });
-
   it('should create a user', async () => {
     const user = createMockUser();
     const publicUser: IPublicUserData = {
@@ -49,11 +43,13 @@ describe('UserController', () => {
       email: user.email,
       name: user.name,
     };
-    jest
-      .spyOn(service, 'create')
-      .mockReturnValue(
-        Promise.resolve({ email: user.email, userId: user.id, name: user.name })
-      );
+    jest.spyOn(service, 'create').mockReturnValue(
+      Promise.resolve({
+        email: user.email,
+        userId: user.id,
+        name: user.name,
+      }),
+    );
     const res = await controller.createUser({
       email: user.email,
       password: user.password,
@@ -61,7 +57,6 @@ describe('UserController', () => {
     });
     expect(res).toStrictEqual(publicUser);
   });
-
   describe('when the GET /user/id is called', () => {
     describe('and the requester is authenticated', () => {
       let user1: IUser;
@@ -85,10 +80,9 @@ describe('UserController', () => {
       describe('and the user tries to access other user details', () => {
         it('should respond with a NotFoundException sayin status code 404 Message Not Found ', async () => {
           try {
-          await controller.getUser(user1.id, user2.id);
-          }
-          catch(err) {
-            expect(err).toBeInstanceOf(NotFoundException)
+            await controller.getUser(user1.id, user2.id);
+          } catch (err) {
+            expect(err).toBeInstanceOf(NotFoundException);
           }
         });
       });

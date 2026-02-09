@@ -9,6 +9,7 @@ const envSchema = z.object({
   DB_NAME: z.string().min(1),
   DB_PORT: z.coerce.number().min(1),
   DATABASE_URL: z.string().min(1),
+  DOCKER_URL: z.string().min(1),
   JWT_SECRET: z.string().min(1),
   JWT_ACCESS_TOKEN_EXPIRES_IN: z.string().min(1),
 });

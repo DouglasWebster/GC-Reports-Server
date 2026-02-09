@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule, NgIf} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '@lib/client/data-acess';
 import { initFlowbite, Dropdown, DropdownInterface } from 'flowbite';
@@ -11,7 +11,7 @@ interface NavBarInfo {
 
 @Component({
   standalone: true,
-  imports: [RouterModule, CommonModule, NgIf],
+  imports: [RouterModule, CommonModule],
   selector: 'client-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

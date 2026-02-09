@@ -6,18 +6,15 @@ import { randPassword } from '@ngneat/falso';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
-
 describe('AuthService', () => {
   let service: AuthService;
   let mockUser: IUser;
   let mockUserUnhashedPassword: string;
-
   beforeAll(async () => {
     mockUser = createMockUser();
     mockUserUnhashedPassword = mockUser.password;
     mockUser.password = await bcrypt.hash(mockUserUnhashedPassword, 10);
   });
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -40,18 +37,15 @@ describe('AuthService', () => {
         },
       ],
     }).compile();
-
     service = module.get<AuthService>(AuthService);
   });
-
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
   it('should validate a user', async () => {
     const validUser = await service.validateUser(
       mockUser.email,
-      mockUserUnhashedPassword
+      mockUserUnhashedPassword,
     );
     expect(validUser).toStrictEqual({
       id: mockUser.id,
@@ -59,12 +53,10 @@ describe('AuthService', () => {
       name: mockUser.name,
     });
   });
-
   it('should return null for an invalid user', async () => {
     const invalidUser = await service.validateUser('foo', 'bar');
     expect(invalidUser).toBeNull();
   });
-
   it('should generate an access token', async () => {
     const { access_token } = await service.generateAccessToken(mockUser);
     expect(access_token).toBeDefined();

@@ -8,6 +8,7 @@ export default defineConfig({
   casing: 'snake_case',
   dbCredentials: {
     url: env.DATABASE_URL,
+    // url: env.DOCKER_URL,
   },
   verbose: true,
   strict: true,

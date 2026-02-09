@@ -8,18 +8,15 @@ import { AuthService } from './auth.service';
 import { createMockUser } from '@lib/mocks';
 import * as bcrypt from 'bcrypt';
 import { BadRequestException } from '@nestjs/common';
-
 describe('AuthController', () => {
   let controller: AuthController;
   let mockUser: IUser;
   let mockUserUnhashedPassword: string;
-
   beforeAll(async () => {
     mockUser = createMockUser();
     mockUserUnhashedPassword = mockUser.password;
     mockUser.password = await bcrypt.hash(mockUserUnhashedPassword, 10);
   });
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -43,14 +40,11 @@ describe('AuthController', () => {
       ],
       controllers: [AuthController],
     }).compile();
-
     controller = module.get(AuthController);
   });
-
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
   it('should login a user', async () => {
     const res = await controller.login({
       email: mockUser.email,
@@ -59,7 +53,6 @@ describe('AuthController', () => {
     expect(res.access_token).toBeDefined();
     expect(typeof res.access_token).toBe('string');
   });
-
   it('should throw with a bad email', async () => {
     try {
       await controller.login({

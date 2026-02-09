@@ -13,7 +13,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-  server:
+  server: 
     container_name: server
     image: server
     ports:
@@ -23,7 +23,7 @@ services:
     environment:
       - ENVIRONMENT=docker
       - DATABASE_HOST=={DB_HOST}
-      # - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+      # - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${PG_HOST}:${DB_PORT}/${DB_NAME}
     healthcheck:
       # test: wget localhost:3000/api/health -q -O - > /dev/null 2>&1
       test: curl --silent --fail localhost:3333/api/health
@@ -37,7 +37,7 @@ services:
   
   postgres:
     container_name: postgres
-    image: postgres:latest
+    image: postgres:17
     restart: always
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
